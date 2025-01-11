@@ -9,8 +9,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        notFoundBackground: "#1b263b",
-        notFoundText: "#f8f7ff"
+        darkBackground: "#141315",
+        customWhite: "#f8f7ff"
       },
     },
   },

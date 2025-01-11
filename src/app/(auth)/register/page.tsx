@@ -8,7 +8,10 @@ export const metadata: Metadata = {
 
 const Register: React.FC = () => {
   return (
-    <div className="flex flex-col items-center justify-center gap-4 h-screen bg-notFoundBackground">
+    <div
+      style={{ height: "calc(100vh - 7rem)" }}
+      className="flex flex-col items-center justify-center gap-4 bg-darkBackground"
+    >
       <RegisterForm />
     </div>
   );

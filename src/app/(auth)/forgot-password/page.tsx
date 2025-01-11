@@ -1,20 +1,20 @@
 import { Metadata } from "next";
-import LoginForm from "./login-form";
+import ForgotPasswordForm from "./forgot-password-form";
 
 export const metadata: Metadata = {
-  title: "Sign In",
-  description: "Sign In page.",
+  title: "Forgot Password",
+  description: "Forgot Password page.",
 };
 
-const Login: React.FC = () => {
+const ForgotPassword: React.FC = () => {
   return (
     <div
       style={{ height: "calc(100vh - 7rem)" }}
       className="flex flex-col items-center justify-center gap-4 bg-darkBackground"
     >
-      <LoginForm />
+      <ForgotPasswordForm />
     </div>
   );
 };
 
-export default Login;
+export default ForgotPassword;

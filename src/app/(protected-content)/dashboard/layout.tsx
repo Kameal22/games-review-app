@@ -10,16 +10,17 @@ const DashboardLayout = ({
   user: React.ReactNode;
 }) => {
   return (
-    <div className="flex flex-col items-center justify-center gap-4 h-screen bg-notFoundBackground">
-      <div>{children}</div>
-      <div className="flex flex-row items-center justify-center gap-4">
-        <Suspense
-          fallback={<p className="text-notFoundText">Loading Games..</p>}
-        >
-          <div>{games}</div>
-        </Suspense>
-        <div>{user}</div>
-      </div>
+    <div
+      style={{ height: "calc(100vh - 7rem)" }}
+      className="flex bg-darkBackground"
+    >
+      <Suspense fallback={<p className="text-customWhite">Loading User..</p>}>
+        <div className="flex-none h-full w-1/5 p-4">{user}</div>
+      </Suspense>
+
+      <Suspense fallback={<p className="text-customWhite">Loading Games..</p>}>
+        <div className="flex-grow h-full p-4">{games}</div>
+      </Suspense>
     </div>
   );
 };

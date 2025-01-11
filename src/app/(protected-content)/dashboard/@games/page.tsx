@@ -17,10 +17,9 @@ const GamesList = () => {
     console.log(error);
   }
 
-  console.log(data, "DATA");
   return (
     <div>
-      <p className="text-m text-notFoundText">Games List</p>
+      <p className="text-m text-customWhite">Games List</p>
     </div>
   );
 };

@@ -7,8 +7,8 @@ export const metadata: Metadata = {
 
 const NotFound: React.FC = () => {
   return (
-    <div className="flex items-center justify-center h-screen bg-notFoundBackground">
-      <h1 className="text-2xl text-notFoundText">Sorry, Page Not Found</h1>
+    <div className="flex items-center justify-center h-screen bg-darkBackground">
+      <h1 className="text-2xl text-customWhite">Sorry, Page Not Found</h1>
     </div>
   );
 };
