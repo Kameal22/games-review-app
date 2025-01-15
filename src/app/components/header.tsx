@@ -5,7 +5,7 @@ const Header: React.FC = () => {
   return (
     <div className="flex items-center justify-center bg-darkBackground pl-6 pr-6 w-full relative h-28 ">
       <div className="flex items-center">
-        <Link className="absolute top-4 left-4" href="/">
+        <Link href="/">
           <Image
             src="/logo_white.png"
             alt="Logo"
@@ -15,9 +15,9 @@ const Header: React.FC = () => {
           />
         </Link>
       </div>
-      <Link href="/" className="text-4xl font-semibold text-customWhite">
+      {/* <Link href="/" className="text-4xl font-semibold text-customWhite">
         Reviewslike
-      </Link>
+      </Link> */}
     </div>
   );
 };

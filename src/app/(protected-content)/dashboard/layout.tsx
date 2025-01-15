@@ -15,7 +15,9 @@ const DashboardLayout = ({
       className="flex bg-darkBackground"
     >
       <Suspense fallback={<p className="text-customWhite">Loading User..</p>}>
-        <div className="flex-none h-full w-1/5 p-4">{user}</div>
+        <div className="flex-none h-full w-1/6 p-4 bg-darkGreyBackground rounded-xl">
+          {user}
+        </div>
       </Suspense>
 
       <Suspense fallback={<p className="text-customWhite">Loading Games..</p>}>
