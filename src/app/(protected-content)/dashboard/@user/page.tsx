@@ -1,5 +1,5 @@
-import UserInfo from "./components/user-info";
-import UserMenu from "./components/user-menu";
+import UserInfo from "./_components/user-info";
+import UserMenu from "./_components/user-menu";
 
 const UserData: React.FC = () => {
   return (

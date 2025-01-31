@@ -1,7 +1,7 @@
 "use client";
-
 import { useQuery } from "@tanstack/react-query";
 import { fetchGames } from "./utils";
+import GamesListDashboard from "./_components/games-list";
 
 const GamesList = () => {
   const { data, error, isLoading } = useQuery({
@@ -17,11 +17,7 @@ const GamesList = () => {
     console.log(error);
   }
 
-  return (
-    <div>
-      <p className="text-m text-customWhite">Games List</p>
-    </div>
-  );
+  return <GamesListDashboard />;
 };
 
 export default GamesList;

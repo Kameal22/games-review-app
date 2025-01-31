@@ -33,20 +33,29 @@ const ForgotPasswordForm: React.FC = () => {
     }
   };
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
+    <div className="flex flex-col items-center justify-center gap-12">
       <h1 className="text-4xl text-customWhite">Forgot Password</h1>
 
       <form
-        className="flex flex-col items-center justify-center gap-6"
+        className="flex flex-col items-center justify-center gap-6 w-[420px]"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div>
-          <input {...register("email")} type="text" placeholder="Email *" />
+        <div className="w-full">
+          <input
+            className="p-3 rounded-xl w-full"
+            {...register("email")}
+            type="text"
+            placeholder="Email *"
+          />
           {errors.email && (
             <p className="text-red-500">{errors.email.message}</p>
           )}
         </div>
-        <button disabled={isSubmitting} type="submit">
+        <button
+          className="p-2 text-darkBackground bg-customWhite rounded-xl w-full"
+          disabled={isSubmitting}
+          type="submit"
+        >
           {isSubmitting ? "Loading.." : "Submit"}
         </button>
       </form>
@@ -54,13 +63,13 @@ const ForgotPasswordForm: React.FC = () => {
       <div className="w-full flex justify-between gap-4">
         <Link
           href="/register"
-          className="text-m text-customWhite underline cursor-pointer"
+          className="text-s text-customWhite underline cursor-pointer"
         >
           New to Reviewslike? Sign up here
         </Link>
         <Link
           href="/login"
-          className="text-m text-customWhite underline cursor-pointer"
+          className="text-s text-customWhite underline cursor-pointer"
         >
           Sign In
         </Link>

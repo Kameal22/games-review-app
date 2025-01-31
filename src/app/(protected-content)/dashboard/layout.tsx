@@ -12,16 +12,16 @@ const DashboardLayout = ({
   return (
     <div
       style={{ height: "calc(100vh - 7rem)" }}
-      className="flex bg-darkBackground"
+      className="flex bg-darkBackground gap-2"
     >
       <Suspense fallback={<p className="text-customWhite">Loading User..</p>}>
-        <div className="flex-none h-full w-1/6 p-4 bg-darkGreyBackground rounded-xl">
+        <div className="flex-none h-full w-1/6 p-4 min-w-96 bg-darkGreyBackground rounded-xl mt-2">
           {user}
         </div>
       </Suspense>
 
       <Suspense fallback={<p className="text-customWhite">Loading Games..</p>}>
-        <div className="flex-grow h-full p-4">{games}</div>
+        <div className="flex-grow h-full mt-2">{games}</div>
       </Suspense>
     </div>
   );

@@ -10,7 +10,7 @@ import Cookies from "js-cookie";
 
 const scheema = z.object({
   email: z.string().email(),
-  password: z.string().min(8),
+  password: z.string(),
 });
 
 type FormFields = z.infer<typeof scheema>;
@@ -92,16 +92,16 @@ const LoginForm: React.FC = () => {
         </button>
       </form>
 
-      <div>
+      <div className="w-full flex justify-center gap-4">
         <Link
           href="/register"
-          className="text-m text-customWhite underline cursor-pointer"
+          className="text-s text-customWhite underline cursor-pointer"
         >
           New to Reviewslike? Sign up here
         </Link>
         <Link
           href="/forgot-password"
-          className="text-m text-customWhite underline cursor-pointer"
+          className="text-s text-customWhite underline cursor-pointer"
         >
           Forgot Password?
         </Link>
