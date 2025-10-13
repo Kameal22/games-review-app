@@ -1,89 +1,30 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Pagination from "@/app/_components/pagination";
-
-const dummyGameData = [
-  {
-    name: "The Last of Us Part II",
-    rating: 9.5,
-    image:
-      "https://image.api.playstation.com/vulcan/ap/rnd/202312/0117/da083fa5e19458dd750aa8a6ea30ba10bac6f87074693df5.jpg",
-  },
-  {
-    name: "Ghost of Tsushima",
-    rating: 9.3,
-    image: "https://www.gamereactor.pl/media/94/ghosttsushima_3209423b.jpg",
-  },
-  {
-    name: "Cyberpunk 2077",
-    rating: 7.8,
-    image:
-      "https://www.cyberpunk.net/build/images/pre-order/buy-b/keyart-standard-pl-0b37d851.jpg",
-  },
-  {
-    name: "Spider-Man: Miles Morales",
-    rating: 8.7,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRj4eVmo3veu3wF83wgmusm1OLHobV5zMk24g&s",
-  },
-  {
-    name: "Hades",
-    rating: 9.0,
-    image:
-      "https://cdn1.epicgames.com/min/offer/2560x1440-2560x1440-5e710b93049cbd2125cf0261dcfbf943.jpg",
-  },
-  {
-    name: "Dead Cells",
-    rating: 9.5,
-    image:
-      "https://cdn2.unrealengine.com/egs-deadcells-motiontwin-s1-2560x1440-312502186.jpg",
-  },
-  {
-    name: "Elden Ring",
-    rating: 9.8,
-    image:
-      "https://cdn.akamai.steamstatic.com/steam/apps/1245620/capsule_616x353.jpg?t=1650626414",
-  },
-  {
-    name: "Red Dead Redemption 2",
-    rating: 9.7,
-    image:
-      "https://cdn.akamai.steamstatic.com/steam/apps/1174180/capsule_616x353.jpg?t=1671485008",
-  },
-  {
-    name: "Hollow Knight",
-    rating: 9.6,
-    image:
-      "https://cdn.akamai.steamstatic.com/steam/apps/367520/capsule_616x353.jpg?t=1580308838",
-  },
-  {
-    name: "Sekiro: Shadows Die Twice",
-    rating: 9.4,
-    image:
-      "https://cdn.akamai.steamstatic.com/steam/apps/814380/capsule_616x353.jpg?t=1670519968",
-  },
-  {
-    name: "Stardew Valley",
-    rating: 9.5,
-    image:
-      "https://cdn.akamai.steamstatic.com/steam/apps/413150/capsule_616x353.jpg?t=1672891656",
-  },
-  {
-    name: "The Witcher 3: Wild Hunt",
-    rating: 9.9,
-    image:
-      "https://cdn.akamai.steamstatic.com/steam/apps/292030/capsule_616x353.jpg?t=1688035050",
-  },
-];
+import { useReviewsStore, Review } from "@/stores/reviews-store";
+import { useUserStore } from "@/stores/user-store";
+import { useQuery } from "@tanstack/react-query";
+import { fetchUserReviews } from "@/app/(protected-content)/dashboard/@games/utils";
 
 const UserReviews: React.FC = () => {
+  const { user } = useUserStore();
   const [currentPage, setCurrentPage] = useState(1);
   const gamesPerPage = 6;
 
-  const totalPages = Math.ceil(dummyGameData.length / gamesPerPage);
+  const { userReviews, isLoadingUserReviews, userReviewsError } =
+    useReviewsStore();
 
-  const currentGames = dummyGameData.slice(
+  useQuery({
+    queryKey: ["userReviews", user?._id],
+    queryFn: () => fetchUserReviews(user?._id || ""),
+    enabled: !!user?._id, // Only fetch if we have a user ID
+  });
+
+  const totalPages = Math.ceil(userReviews.length / gamesPerPage);
+
+  const currentReviews = userReviews.slice(
     (currentPage - 1) * gamesPerPage,
     currentPage * gamesPerPage
   );
@@ -91,37 +32,93 @@ const UserReviews: React.FC = () => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
+
+  // Loading state
+  if (isLoadingUserReviews) {
+    return (
+      <div className="flex-1 lg:basis-[70%] flex flex-col justify-center items-center gap-4">
+        <p className="text-customWhite text-xl lg:text-2xl">User Reviews</p>
+        <div className="text-center">
+          <p className="text-greyText text-lg">Loading reviews...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (userReviewsError) {
+    return (
+      <div className="flex-1 lg:basis-[70%] flex flex-col justify-center items-center gap-4">
+        <p className="text-customWhite text-xl lg:text-2xl">User Reviews</p>
+        <div className="text-center">
+          <p className="text-red-500 text-lg mb-2">Error loading reviews</p>
+          <p className="text-greyText text-sm">{userReviewsError}</p>
+        </div>
+      </div>
+    );
+  }
+
+  // If no reviews, show a message
+  if (userReviews.length === 0) {
+    return (
+      <div className="flex-1 lg:basis-[70%] flex flex-col justify-center items-center gap-4">
+        <p className="text-customWhite text-xl lg:text-2xl">User Reviews</p>
+        <div className="text-center">
+          <p className="text-greyText text-lg mb-4">
+            This user hasn&apos;t written any reviews yet.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="basis-[70%] flex flex-col justify-between">
-      <p className="text-customWhite text-2xl">My Reviews</p>
-      <div>
-        {currentGames.map((data, index) => (
+    <div className="flex-1 lg:basis-[70%] flex flex-col gap-4">
+      <p className="text-customWhite text-xl lg:text-2xl">User Reviews</p>
+      <div className="flex flex-col gap-3">
+        {currentReviews.map((review: Review) => (
           <div
-            key={index}
-            className="bg-lightGray rounded-xl p-2 flex items-center w-full cursor-pointer hover:bg-lightGrayHover"
+            key={review._id}
+            className="bg-lightGray rounded-xl p-3 flex flex-col sm:flex-row items-start sm:items-center w-full cursor-pointer hover:bg-lightGrayHover gap-3"
           >
-            <div className="flex-grow">
-              <img
-                src={data.image}
-                alt={data.name}
-                className="w-32 h-20 object-cover rounded-lg"
+            <div className="flex-shrink-0">
+              <Image
+                src={review.game.coverImageUrl}
+                alt={review.game.title}
+                width={128}
+                height={128}
+                className="w-full sm:w-32 h-32 sm:h-20 object-cover rounded-lg"
               />
             </div>
 
-            <p className="text-customWhite text-l flex-grow w-40">
-              {data.name}
-            </p>
-            <p className="text-customWhite text-sm flex-grow w-40">
-              Rating: {data.rating}/10
-            </p>
+            <div className="flex flex-col sm:flex-row flex-1 gap-2 sm:gap-4 min-w-0">
+              <div className="flex-1 min-w-0">
+                <p className="text-customWhite text-base lg:text-lg font-medium truncate">
+                  {review.game.title}
+                </p>
+                <p className="text-greyText text-xs sm:text-sm truncate">
+                  {review.game.genres.join(", ")}
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-sm">
+                <p className="text-customWhite font-medium">
+                  {review.finalScore}/10
+                </p>
+                <p className="text-greyText text-xs sm:text-sm">
+                  {new Date(review.createdAt).toLocaleDateString()}
+                </p>
+              </div>
+            </div>
           </div>
         ))}
       </div>
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-      />
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
     </div>
   );
 };

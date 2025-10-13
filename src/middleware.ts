@@ -2,12 +2,16 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 // List of protected routes
-const protectedRoutes = ['/dashboard'];
+const protectedRoutes = [
+  '/dashboard',
+  '/game',
+  '/review', 
+  '/user',
+  '/write-review'
+];
 
 export function middleware(req: NextRequest) {
   const token = req.cookies.get('auth_token');
-
-  console.log(token, "TOKEN DATA")
 
   const isProtected = protectedRoutes.some((route) =>
     req.nextUrl.pathname.startsWith(route)

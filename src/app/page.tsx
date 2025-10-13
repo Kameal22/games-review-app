@@ -1,4 +1,4 @@
-import Register from "./(auth)/register/page";
+import Login from "./(auth)/login/page";
 
 export default function Home() {
   return (
@@ -6,7 +6,7 @@ export default function Home() {
       style={{ height: "calc(100vh - 7rem)" }}
       className="flex items-center justify-center bg-darkBackground"
     >
-      <Register />
+      <Login />
     </div>
   );
 }

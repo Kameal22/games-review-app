@@ -1,50 +1,51 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
-import Cookies from "js-cookie";
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useUserStore } from "@/stores/user-store";
 
 const Header: React.FC = () => {
   const router = useRouter();
-  const pathname = usePathname();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    // Check if the auth_token exists
-    const token = Cookies.get("auth_token");
-    setIsLoggedIn(!!token);
-  }, [pathname]);
+  const { user, isAuthenticated, logout } = useUserStore();
 
   const handleLogout = () => {
-    Cookies.remove("auth_token");
+    // Use the logout function from the user store
+    logout();
+    // Redirect to home page
     router.push("/");
   };
 
   return (
-    <div className="flex justify-between bg-darkGreyBackground pl-6 pr-6 py-2 w-full relative h-28">
+    <div className="flex justify-between bg-darkGreyBackground px-4 lg:px-6 py-2 w-full relative h-20 lg:h-28">
       <div className="flex items-center">
-        <Link href={isLoggedIn ? "/dashboard" : "/"}>
+        <Link href={isAuthenticated ? "/dashboard" : "/"}>
           <Image
             src="/logo_white.png"
             alt="Logo"
             width={94}
             height={94}
+            className="w-12 h-12 lg:w-[94px] lg:h-[84px]"
             priority
           />
         </Link>
       </div>
-      <div className="flex items-center gap-4">
-        {isLoggedIn && (
-          <p
-            onClick={handleLogout}
-            className="text-customWhite underline cursor-pointer"
-          >
-            Logout
-          </p>
+      <div className="flex items-center gap-2 lg:gap-4">
+        {isAuthenticated && (
+          <>
+            {user && (
+              <p className="text-customWhite text-sm lg:text-base">
+                Welcome, {user.displayName}!
+              </p>
+            )}
+            <p
+              onClick={handleLogout}
+              className="text-customWhite underline cursor-pointer text-sm lg:text-base whitespace-nowrap"
+            >
+              Logout
+            </p>
+          </>
         )}
-        <p className="text-customWhite text-sm">
+        <p className="text-customWhite text-xs lg:text-sm text-right">
           Reviewslike - All rights reserved.
         </p>
       </div>

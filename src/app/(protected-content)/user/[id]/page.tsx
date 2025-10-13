@@ -5,10 +5,10 @@ import UserUtils from "./_components/user-utils/user-utils";
 const User: React.FC = () => {
   return (
     <div className="bg-darkGreyBackground rounded-xl p-4 w-full h-full flex flex-col gap-4">
-      <div className="bg-lightGray rounded-xl p-4 w-[90%] h-[90%] flex flex-col gap-4 m-auto">
+      <div className="bg-lightGray rounded-xl p-4 w-full h-full flex flex-col gap-4">
         <UserInfo />
 
-        <div className="flex grow">
+        <div className="flex flex-col lg:flex-row grow gap-4">
           <UserReviews />
           <UserUtils />
         </div>

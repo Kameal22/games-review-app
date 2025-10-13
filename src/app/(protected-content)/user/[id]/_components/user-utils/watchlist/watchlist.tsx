@@ -51,23 +51,25 @@ const Watchlist: React.FC = () => {
   };
   return (
     <div className="mt-4">
-      <div>
+      <div className="flex flex-col gap-3">
         {currentGames.map((data, index) => (
           <div
             key={index}
-            className="bg-lightGray rounded-xl p-2 flex items-center w-full cursor-pointer hover:bg-lightGrayHover"
+            className="bg-lightGray rounded-xl p-3 flex flex-col sm:flex-row items-start sm:items-center w-full cursor-pointer hover:bg-lightGrayHover gap-3"
           >
-            <div className="flex-grow">
+            <div className="flex-shrink-0">
               <img
                 src={data.image}
                 alt={data.name}
-                className="w-32 h-20 object-cover rounded-lg"
+                className="w-full sm:w-32 h-32 sm:h-20 object-cover rounded-lg"
               />
             </div>
 
-            <p className="text-customWhite text-l flex-grow w-40">
-              {data.name}
-            </p>
+            <div className="flex-1 min-w-0">
+              <p className="text-customWhite text-base lg:text-lg font-medium truncate">
+                {data.name}
+              </p>
+            </div>
           </div>
         ))}
       </div>

@@ -4,14 +4,14 @@ import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Cookies from "js-cookie";
 import { registerUser } from "./utils";
 import { useMutation } from "@tanstack/react-query";
+import { useUserStore } from "@/stores/user-store";
 
-//Zod scheema for validation
-const scheema = z
+//Zod schema for validation
+const schema = z
   .object({
-    name: z.string().min(3),
+    displayName: z.string().min(3),
     email: z.string().email(),
     password: z.string().min(8),
     confirm_password: z.string().min(8),
@@ -21,106 +21,125 @@ const scheema = z
     path: ["confirm_password"],
   });
 
-type FormFields = z.infer<typeof scheema>;
+type FormFields = z.infer<typeof schema>;
 
 const RegisterForm: React.FC = () => {
   const router = useRouter();
+  const { login } = useUserStore();
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>({
-    resolver: zodResolver(scheema),
+    resolver: zodResolver(schema),
   });
 
   const mutation = useMutation({
     mutationFn: registerUser,
-    onSuccess: async () => {
-      console.log("Success log");
-      // Cookies.set("auth_token", "token123", { expires: 7 });
+    onSuccess: async (data) => {
+      // Store user data and token using the user store
+      login(data.user, data.token);
+      router.push("/dashboard");
     },
-    onSettled: async () => {
-      console.log("Settled log");
-    },
-    onError: async () => {
-      console.log("Error");
+    onError: async (error: Error) => {
+      console.log("Registration error:", error.message);
+      setError("root", {
+        message: error.message || "Something went wrong, please try again.",
+      });
     },
   });
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
       await mutation.mutate(data);
-    } catch (e) {
+    } catch {
       setError("root", { message: "Something went wrong, please try again." });
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-12 w-full">
-      <h1 className="text-4xl text-customWhite">Register</h1>
+    <div className="flex flex-col items-center justify-center gap-8 w-full px-4">
+      <h1 className="text-3xl md:text-4xl text-customWhite text-center">
+        Register
+      </h1>
 
       <form
-        className="flex flex-col items-center justify-center gap-6 w-[520px]"
+        className="flex flex-col items-center justify-center gap-6 w-full max-w-md"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="w-full">
           <input
             className="p-3 rounded-xl w-full"
-            {...register("name")}
+            {...register("displayName")}
             type="text"
-            placeholder="Name *"
+            placeholder="Display Name *"
           />
-          {errors.name && <p className="text-red-500">{errors.name.message}</p>}
+          {errors.displayName && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.displayName.message}
+            </p>
+          )}
         </div>
         <div className="w-full">
           <input
             className="p-3 rounded-xl w-full"
             {...register("email")}
-            type="text"
+            type="email"
             placeholder="Email *"
           />
           {errors.email && (
-            <p className="text-red-500">{errors.email.message}</p>
+            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
           )}
         </div>
         <div className="w-full">
           <input
             className="p-3 rounded-xl w-full"
             {...register("password")}
-            type="text"
+            type="password"
             placeholder="Password *"
           />
           {errors.password && (
-            <p className="text-red-500">{errors.password.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.password.message}
+            </p>
           )}
         </div>
         <div className="w-full">
           <input
             className="p-3 rounded-xl w-full"
             {...register("confirm_password")}
-            type="text"
+            type="password"
             placeholder="Confirm Password *"
           />
           {errors.confirm_password && (
-            <p className="text-red-500">{errors.confirm_password.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.confirm_password.message}
+            </p>
           )}
         </div>
+
+        {errors.root && (
+          <p className="text-red-500 text-center text-sm">
+            {errors.root.message}
+          </p>
+        )}
+
         <button
-          className="p-2 text-darkBackground bg-customWhite rounded-xl w-full"
-          disabled={isSubmitting}
+          className="p-3 text-darkBackground bg-customWhite rounded-xl w-full font-medium"
+          disabled={isSubmitting || mutation.isPending}
           type="submit"
         >
-          {isSubmitting ? "Loading.." : "Submit"}
+          {isSubmitting || mutation.isPending ? "Loading..." : "Submit"}
         </button>
       </form>
 
-      <div>
+      <div className="text-center">
         <Link
           href="/login"
-          className="text-m text-customWhite underline cursor-pointer"
+          className="text-sm md:text-base text-customWhite underline cursor-pointer"
         >
-          Alread have an account? Sign In
+          Already have an account? Sign In
         </Link>
       </div>
     </div>

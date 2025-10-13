@@ -1,17 +1,32 @@
+"use client";
+
+import { useUserStore } from "@/stores/user-store";
+import Image from "next/image";
+
 const UserInfo: React.FC = () => {
+  const { user } = useUserStore();
+
+  console.log(user);
+
   return (
-    <div className="flex items-center w-full gap-6 p-2">
-      <div className="w-14 h-14">
-        <img
+    <div className="flex items-center w-full gap-4 p-3">
+      <div className="w-12 h-12 lg:w-14 lg:h-14 flex-shrink-0">
+        <Image
           src="https://e7.pngegg.com/pngimages/799/987/png-clipart-computer-icons-avatar-icon-design-avatar-heroes-computer-wallpaper-thumbnail.png"
           alt="User Avatar"
           className="w-full h-full rounded-full object-cover"
+          width={56}
+          height={56}
         />
       </div>
 
-      <div className="flex flex-col">
-        <span className="text-lg font-semibold text-customWhite">John Doe</span>
-        <span className="text-sm text-greyText">@johndoe</span>
+      <div className="flex flex-col min-w-0 flex-1">
+        <span className="text-base lg:text-lg font-semibold text-customWhite truncate">
+          {user?.displayName}
+        </span>
+        <span className="text-xs lg:text-sm text-greyText truncate">
+          @{user?.displayName}
+        </span>
       </div>
     </div>
   );

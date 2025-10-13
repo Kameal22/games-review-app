@@ -82,7 +82,7 @@ const Review: React.FC = () => {
                   </p>
                   {category.description && (
                     <p className="text-customWhite italic">
-                      "{category.description}"
+                      {category.description}
                     </p>
                   )}
                 </div>
