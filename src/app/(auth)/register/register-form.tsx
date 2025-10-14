@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { registerUser } from "./utils";
 import { useMutation } from "@tanstack/react-query";
 import { useUserStore } from "@/stores/user-store";
+import { useToastStore } from "@/stores/toast-store";
 
 //Zod schema for validation
 const schema = z
@@ -26,6 +27,7 @@ type FormFields = z.infer<typeof schema>;
 const RegisterForm: React.FC = () => {
   const router = useRouter();
   const { login } = useUserStore();
+  const { addToast } = useToastStore();
   const {
     register,
     handleSubmit,
@@ -40,10 +42,20 @@ const RegisterForm: React.FC = () => {
     onSuccess: async (data) => {
       // Store user data and token using the user store
       login(data.user, data.token);
+      addToast({
+        type: "success",
+        title: "Registration successful",
+        message: `Welcome to Reviewslike, ${data.user.displayName}!`,
+      });
       router.push("/dashboard");
     },
     onError: async (error: Error) => {
       console.log("Registration error:", error.message);
+      addToast({
+        type: "error",
+        title: "Registration failed",
+        message: error.message || "Something went wrong, please try again.",
+      });
       setError("root", {
         message: error.message || "Something went wrong, please try again.",
       });

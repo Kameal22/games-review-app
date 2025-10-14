@@ -3,6 +3,7 @@ import { Game } from "@/stores/games-store";
 import Image from "next/image";
 import { addToWatchlist, removeFromWatchlist } from "../utils";
 import { useWatchlistStore } from "@/stores/watchlist.store";
+import { useToastStore } from "@/stores/toast-store";
 
 interface Props {
   data: Game;
@@ -10,12 +11,35 @@ interface Props {
 
 const SingleGame: React.FC<Props> = ({ data }) => {
   const { watchlist } = useWatchlistStore();
+  const { addToast } = useToastStore();
 
-  const toggleWatchlist = () => {
-    if (watchlist.some((game) => game.game._id === data._id)) {
-      removeFromWatchlist(data._id);
-    } else {
-      addToWatchlist(data._id);
+  const toggleWatchlist = async () => {
+    const isInWatchlist = watchlist.some((game) => game.game._id === data._id);
+
+    try {
+      if (isInWatchlist) {
+        await removeFromWatchlist(data._id);
+        addToast({
+          type: "success",
+          title: "Removed from watchlist",
+          message: `${data.title} has been removed from your watchlist`,
+        });
+      } else {
+        await addToWatchlist(data._id);
+        addToast({
+          type: "success",
+          title: "Added to watchlist",
+          message: `${data.title} has been added to your watchlist`,
+        });
+      }
+    } catch (error) {
+      addToast({
+        type: "error",
+        title: "Error",
+        message: isInWatchlist
+          ? "Failed to remove from watchlist"
+          : "Failed to add to watchlist",
+      });
     }
   };
 

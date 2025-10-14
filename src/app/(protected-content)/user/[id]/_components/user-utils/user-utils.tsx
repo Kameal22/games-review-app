@@ -13,6 +13,10 @@ const UserUtils: React.FC = () => {
         <p className="text-customWhite text-xl lg:text-2xl">Profile Insights</p>
 
         <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <p className="text-customWhite text-sm lg:text-base">-</p>
+        </div>
+        {/* 
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
           <p className="text-customWhite text-sm lg:text-base">
             Reviews Written: 7
           </p>
@@ -25,18 +29,7 @@ const UserUtils: React.FC = () => {
           <p className="text-customWhite text-sm lg:text-base">
             Top Rated Game: Disco Elysium
           </p>
-        </div>
-      </div>
-      <div>
-        <p className="text-customWhite text-xl lg:text-2xl">Settings</p>
-        <div className="mt-4 flex flex-col sm:flex-row gap-4">
-          <p className="text-greyText text-sm lg:text-base cursor-not-allowed">
-            Edit Profile
-          </p>
-          <p className="text-sm lg:text-base text-greyText cursor-not-allowed">
-            Delete Account
-          </p>
-        </div>
+        </div> */}
       </div>
     </div>
   );

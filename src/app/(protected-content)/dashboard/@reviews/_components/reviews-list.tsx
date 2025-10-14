@@ -15,7 +15,6 @@ const ReviewsListDashboard: React.FC = () => {
   useQuery({
     queryKey: ["recentReviews"],
     queryFn: fetchRecentReviews,
-    enabled: reviews.length === 0, // Only fetch if we don't have reviews
   });
 
   // const handleSearchChange = (term: string) => {
@@ -68,12 +67,7 @@ const ReviewsListDashboard: React.FC = () => {
           </>
         ) : (
           <div className="flex flex-col gap-4 flex-1 justify-center items-center">
-            <p className="text-greyText text-lg text-center">
-              No reviews found for &quot;{searchTerm}&quot;
-            </p>
-            <p className="text-greyText text-sm text-center">
-              Try searching for a different game, genre, or reviewer
-            </p>
+            <p className="text-white text-xl text-center">No reviews found</p>
           </div>
         )}
       </div>

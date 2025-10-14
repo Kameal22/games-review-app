@@ -3,14 +3,21 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useUserStore } from "@/stores/user-store";
+import { useToastStore } from "@/stores/toast-store";
 
 const Header: React.FC = () => {
   const router = useRouter();
   const { user, isAuthenticated, logout } = useUserStore();
+  const { addToast } = useToastStore();
 
   const handleLogout = () => {
     // Use the logout function from the user store
     logout();
+    addToast({
+      type: "info",
+      title: "Logged out",
+      message: "You have been successfully logged out",
+    });
     // Redirect to home page
     router.push("/");
   };

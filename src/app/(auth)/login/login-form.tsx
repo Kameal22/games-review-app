@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { loginUser } from "./utils";
 import { useMutation } from "@tanstack/react-query";
 import { useUserStore } from "@/stores/user-store";
+import { useToastStore } from "@/stores/toast-store";
 
 const schema = z.object({
   email: z.string().email(),
@@ -18,6 +19,7 @@ type FormFields = z.infer<typeof schema>;
 const LoginForm: React.FC = () => {
   const router = useRouter();
   const { login } = useUserStore();
+  const { addToast } = useToastStore();
   const {
     register,
     handleSubmit,
@@ -33,10 +35,20 @@ const LoginForm: React.FC = () => {
       console.log("Login successful");
       // Store user data and token using the user store
       login(data.user, data.token);
+      addToast({
+        type: "success",
+        title: "Login successful",
+        message: `Welcome back, ${data.user.displayName}!`,
+      });
       router.push("/dashboard");
     },
     onError: async (error: Error) => {
       console.log("Login error:", error.message);
+      addToast({
+        type: "error",
+        title: "Login failed",
+        message: error.message || "Invalid credentials, please try again.",
+      });
       setError("root", {
         message: error.message || "Invalid credentials, please try again.",
       });

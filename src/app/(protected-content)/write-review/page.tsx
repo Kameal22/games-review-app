@@ -43,7 +43,6 @@ const WriteReview: React.FC = () => {
   useQuery({
     queryKey: ["games"],
     queryFn: fetchGames,
-    enabled: games.length === 0, // Only fetch if we don't have games
   });
 
   const {
