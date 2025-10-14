@@ -6,7 +6,7 @@ import Pagination from "@/app/_components/pagination";
 import { useReviewsStore, Review } from "@/stores/reviews-store";
 import { useUserStore } from "@/stores/user-store";
 import { useQuery } from "@tanstack/react-query";
-import { fetchUserReviews } from "@/app/(protected-content)/dashboard/@games/utils";
+import { fetchUserReviews } from "@/app/(protected-content)/dashboard/@reviews/utils";
 
 const UserReviews: React.FC = () => {
   const { user } = useUserStore();

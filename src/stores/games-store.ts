@@ -2,16 +2,16 @@ import { create } from 'zustand';
 
 export type Game = {
   _id: string;
-  slug: string;
-  __v: number;
+  slug?: string;
+  __v?: number;
   coverImageUrl: string;
   createdAt: string;
   genres: string[];
-  platforms: string[];
+  platforms?: string[];
   rating: number;
-  releaseDate: string;
+  releaseDate?: string;
   title: string;
-  updatedAt: string;
+  updatedAt?: string;
 };
 
 export type GamesState = {

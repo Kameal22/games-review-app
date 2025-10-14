@@ -1,15 +1,19 @@
 "use client";
+import { useDashboardStore } from "@/stores/dashboard-store";
 import { Suspense, useState } from "react";
 
 const DashboardLayout = ({
-  games,
+  reviews,
   user,
+  games,
 }: {
   children: React.ReactNode;
-  games: React.ReactNode;
+  reviews: React.ReactNode;
   user: React.ReactNode;
+  games: React.ReactNode;
 }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { activeTab } = useDashboardStore();
 
   return (
     <div
@@ -54,7 +58,12 @@ const DashboardLayout = ({
 
       {/* Main Content */}
       <Suspense fallback={<p className="text-customWhite">Loading Games..</p>}>
-        <div className="flex-grow h-auto lg:h-full">{games}</div>
+        {activeTab === "reviews" && (
+          <div className="flex-grow h-auto lg:h-full">{reviews}</div>
+        )}
+        {activeTab === "games" && (
+          <div className="flex-grow h-auto lg:h-full">{games}</div>
+        )}
       </Suspense>
     </div>
   );

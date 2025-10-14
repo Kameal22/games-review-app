@@ -2,10 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { useDashboardStore } from "@/stores/dashboard-store";
 
 const UserMenu: React.FC = () => {
   const [showReviewedGames, setShowReviewedGames] = useState(false);
   const [showViewedGames, setShowViewedGames] = useState(false);
+  const { activeTab, setActiveTab } = useDashboardStore();
   const router = useRouter();
 
   const reviewedGames = [
@@ -56,8 +58,46 @@ const UserMenu: React.FC = () => {
     <div className="w-full flex flex-col justify-between h-full">
       <div className="w-full">
         <div
+          onClick={() => {
+            setActiveTab("reviews");
+          }}
+          className={`w-full mt-6 p-3 rounded-lg cursor-pointer transition-colors duration-200 flex items-center gap-3 lg:gap-4 ${
+            activeTab === "reviews"
+              ? "bg-blue-600 hover:bg-blue-700"
+              : "bg-lightGray hover:bg-lightGrayHover"
+          }`}
+        >
+          <svg
+            className="w-4 fill-customWhite flex-shrink-0"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 512 512"
+          >
+            <path d="M40 48C26.7 48 16 58.7 16 72l0 48c0 13.3 10.7 24 24 24l48 0c13.3 0 24-10.7 24-24l0-48c0-13.3-10.7-24-24-24L40 48zM192 64c-17.7 0-32 14.3-32 32s14.3 32 32 32l288 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L192 64zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32l288 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-288 0zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32l288 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-288 0zM16 232l0 48c0 13.3 10.7 24 24 24l48 0c13.3 0 24-10.7 24-24l0-48c0-13.3-10.7-24-24-24l-48 0c-13.3 0-24 10.7-24 24zM40 368c-13.3 0-24 10.7-24 24l0 48c0 13.3 10.7 24 24 24l48 0c13.3 0 24-10.7 24-24l0-48c0-13.3-10.7-24-24-24l-48 0z" />
+          </svg>
+          <p className="text-customWhite text-sm lg:text-base">Reviews</p>
+        </div>
+        <div
+          onClick={() => {
+            setActiveTab("games");
+          }}
+          className={`w-full mt-2 p-3 rounded-lg cursor-pointer transition-colors duration-200 flex items-center gap-3 lg:gap-4 ${
+            activeTab === "games"
+              ? "bg-blue-600 hover:bg-blue-700"
+              : "bg-lightGray hover:bg-lightGrayHover"
+          }`}
+        >
+          <svg
+            className="w-4 fill-customWhite flex-shrink-0"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 640 512"
+          >
+            <path d="M448 64c106 0 192 86 192 192S554 448 448 448l-256 0C86 448 0 362 0 256S86 64 192 64l256 0zM192 176c-13.3 0-24 10.7-24 24l0 32-32 0c-13.3 0-24 10.7-24 24s10.7 24 24 24l32 0 0 32c0 13.3 10.7 24 24 24s24-10.7 24-24l0-32 32 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-32 0 0-32c0-13.3-10.7-24-24-24zm240 96a32 32 0 1 0 0 64 32 32 0 1 0 0-64zm64-96a32 32 0 1 0 0 64 32 32 0 1 0 0-64z" />
+          </svg>
+          <p className="text-customWhite text-sm lg:text-base">Games List</p>
+        </div>
+        <div
           onClick={() => router.push("/user/1")}
-          className="w-full mt-6 lg:mt-12 bg-lightGray hover:bg-lightGrayHover p-3 rounded-lg cursor-pointer transition-colors duration-200 flex items-center gap-3 lg:gap-4"
+          className="w-full mt-2 bg-lightGray hover:bg-lightGrayHover p-3 rounded-lg cursor-pointer transition-colors duration-200 flex items-center gap-3 lg:gap-4"
         >
           <svg
             className="w-4 fill-customWhite flex-shrink-0"

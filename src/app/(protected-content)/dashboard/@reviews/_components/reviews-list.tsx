@@ -1,48 +1,22 @@
 "use client";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useGamesStore, Game } from "@/stores/games-store";
-import Pagination from "./pagination";
-import SingleGame from "./single-game";
-import { fetchGames } from "../utils";
+import { useReviewsStore, Review } from "@/stores/reviews-store";
+import { fetchRecentReviews } from "../utils";
+// import GamesSearch from "./games-search";
+import SingleReview from "./single-review";
 
-const GamesListDashboard: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState(1);
+const ReviewsListDashboard: React.FC = () => {
   const [searchTerm] = useState("");
-  const gamesPerPage = 6;
-
   // Get reviews from Zustand store
-  const { games, isLoading, error } = useGamesStore();
+  const { reviews, isLoading, error } = useReviewsStore();
 
   // Fetch reviews on component mount
   useQuery({
-    queryKey: ["games"],
-    queryFn: fetchGames,
-    enabled: games.length === 0, // Only fetch if we don't have games
+    queryKey: ["recentReviews"],
+    queryFn: fetchRecentReviews,
+    enabled: reviews.length === 0, // Only fetch if we don't have reviews
   });
-
-  // Filter reviews based on search term
-  const filteredGames = games.filter(
-    (game: Game) =>
-      game.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      game.genres.some((genre) =>
-        genre.toLowerCase().includes(searchTerm.toLowerCase())
-      ) ||
-      game?.platforms?.some((platform) =>
-        platform.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-  );
-
-  const totalPages = Math.ceil(filteredGames.length / gamesPerPage);
-
-  const currentGames = filteredGames.slice(
-    (currentPage - 1) * gamesPerPage,
-    currentPage * gamesPerPage
-  );
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
 
   // const handleSearchChange = (term: string) => {
   //   setSearchTerm(term);
@@ -75,28 +49,22 @@ const GamesListDashboard: React.FC = () => {
               {error || "Something went wrong"}
             </p>
           </div>
-        ) : currentGames.length > 0 ? (
+        ) : reviews.length > 0 ? (
           <>
-            {currentGames.map((game: Game) => (
-              <SingleGame
-                key={game._id}
+            {reviews.map((review: Review) => (
+              <SingleReview
+                key={review._id}
                 data={{
-                  title: game.title,
-                  genres: game.genres,
-                  rating: game.rating,
-                  coverImageUrl: game.coverImageUrl,
-                  _id: game._id,
-                  createdAt: game.createdAt,
+                  name: review.game.title,
+                  genre: review.game.genres.join(", "),
+                  rating: review.finalScore,
+                  user: review.user.displayName,
+                  image: review.game.coverImageUrl,
+                  reviewId: review._id,
+                  createdAt: review.createdAt,
                 }}
               />
             ))}
-            {totalPages > 1 && (
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={handlePageChange}
-              />
-            )}
           </>
         ) : (
           <div className="flex flex-col gap-4 flex-1 justify-center items-center">
@@ -113,4 +81,4 @@ const GamesListDashboard: React.FC = () => {
   );
 };
 
-export default GamesListDashboard;
+export default ReviewsListDashboard;

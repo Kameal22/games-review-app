@@ -45,9 +45,6 @@ const Header: React.FC = () => {
             </p>
           </>
         )}
-        <p className="text-customWhite text-xs lg:text-sm text-right">
-          Reviewslike - All rights reserved.
-        </p>
       </div>
       {/* <Link href="/" className="text-4xl font-semibold text-customWhite">
         Reviewslike

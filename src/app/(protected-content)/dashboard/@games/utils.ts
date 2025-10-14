@@ -1,9 +1,10 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useReviewsStore } from "@/stores/reviews-store";
+import { useGamesStore } from "@/stores/games-store";
+import { useWatchlistStore } from "@/stores/watchlist.store";
 
-export const fetchRecentReviews = async () => {
-  const { setLoading, setError, setReviews } = useReviewsStore.getState();
+export const fetchGames = async () => {
+  const { setLoading, setError, setGames } = useGamesStore.getState();
   
   setLoading(true);
   setError(null);
@@ -16,7 +17,7 @@ export const fetchRecentReviews = async () => {
       throw new Error('No authentication token found');
     }
     
-    const response = await axios.get("https://games-review-api.onrender.com/api/reviews/", {
+    const response = await axios.get("https://games-review-api.onrender.com/api/game/", {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -24,11 +25,11 @@ export const fetchRecentReviews = async () => {
     });
     
     // Store the recent reviews data in Zustand
-    setReviews(response.data);
+    setGames(response.data);
     
     return response.data;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch recent reviews';
+    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch games';
     setError(errorMessage);
     throw error;
   } finally {
@@ -36,11 +37,11 @@ export const fetchRecentReviews = async () => {
   }
 };
 
-export const fetchUserReviews = async (userId: string) => {
-  const { setUserReviewsLoading, setUserReviewsError, setUserReviews } = useReviewsStore.getState();
+export const addToWatchlist = async (gameId: string) => {
+  const { setLoading, setError, addToWatchlist } = useWatchlistStore.getState();
   
-  setUserReviewsLoading(true);
-  setUserReviewsError(null);
+  setLoading(true);
+  setError(null);
   
   try {
     // Get token from cookies
@@ -50,22 +51,58 @@ export const fetchUserReviews = async (userId: string) => {
       throw new Error('No authentication token found');
     }
     
-    const response = await axios.get(`https://games-review-api.onrender.com/api/reviews/user/${userId}`, {
+    const response = await axios.post("https://games-review-api.onrender.com/api/watchlist/", {
+      gameId, status: "watching"
+    }, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
     });
     
-    // Store the user reviews data in Zustand
-    setUserReviews(response.data);
+    // Store the recent reviews data in Zustand
+    addToWatchlist(response.data);
     
     return response.data;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch user reviews';
-    setUserReviewsError(errorMessage);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to add to watchlist';
+    setError(errorMessage);
     throw error;
   } finally {
-    setUserReviewsLoading(false);
+    setLoading(false);
   }
 };
+
+export const removeFromWatchlist = async (gameId: string) => {
+  const { setLoading, setError, removeFromWatchlist } = useWatchlistStore.getState();
+  
+  setLoading(true);
+  setError(null);
+  
+  try {
+    // Get token from cookies
+    const token = Cookies.get('auth_token');
+    
+    if (!token) {
+      throw new Error('No authentication token found');
+    }
+    
+    const response = await axios.delete(`https://games-review-api.onrender.com/api/watchlist/${gameId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    
+    // Store the recent reviews data in Zustand
+    removeFromWatchlist(gameId);
+    
+    return response.data;
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to remove from watchlist';
+    setError(errorMessage);
+    throw error;
+  } finally {
+    setLoading(false);
+  }
+};  
