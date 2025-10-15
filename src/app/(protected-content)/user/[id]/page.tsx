@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import UserInfo from "./_components/user-info";
 import UserReviews from "./_components/reviews/user-reviews";
 import UserUtils from "./_components/user-utils/user-utils";
-import { fetchWatchlist } from "../utils";
+import { fetchUserReviews, fetchWatchlist } from "../utils";
 
 const User: React.FC = () => {
   const router = useRouter();
@@ -13,6 +13,11 @@ const User: React.FC = () => {
   useQuery({
     queryKey: ["watchlist"],
     queryFn: fetchWatchlist,
+  });
+
+  useQuery({
+    queryKey: ["userReviews"],
+    queryFn: fetchUserReviews,
   });
 
   const handleBackToDashboard = () => {

@@ -1,6 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useWatchlistStore } from "@/stores/watchlist.store";
+import { useReviewsStore } from "@/stores/reviews-store";
 
 export const fetchWatchlist = async () => {
   const { setLoading, setError, setWatchlist } = useWatchlistStore.getState();
@@ -25,6 +26,39 @@ export const fetchWatchlist = async () => {
     
     // Store the recent reviews data in Zustand
     setWatchlist(response.data);
+    
+    return response.data;
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch watchlist';
+    setError(errorMessage);
+    throw error;
+  } finally {
+    setLoading(false);
+  }
+};
+
+export const fetchUserReviews = async () => {
+  const { setLoading, setError, setUserReviews } = useReviewsStore.getState();
+  
+  setLoading(true);
+  setError(null);
+  
+  try {
+    // Get token from cookies
+    const token = Cookies.get('auth_token');
+    
+    if (!token) {
+      throw new Error('No authentication token found');
+    }
+    
+    const response = await axios.get("https://games-review-api.onrender.com/api/reviews/me", {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    
+    setUserReviews(response.data);
     
     return response.data;
   } catch (error) {

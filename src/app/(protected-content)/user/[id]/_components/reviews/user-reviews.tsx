@@ -4,23 +4,13 @@ import { useState } from "react";
 import Image from "next/image";
 import Pagination from "@/app/_components/pagination";
 import { useReviewsStore, Review } from "@/stores/reviews-store";
-import { useUserStore } from "@/stores/user-store";
-import { useQuery } from "@tanstack/react-query";
-import { fetchUserReviews } from "@/app/(protected-content)/dashboard/@reviews/utils";
 
 const UserReviews: React.FC = () => {
-  const { user } = useUserStore();
   const [currentPage, setCurrentPage] = useState(1);
-  const gamesPerPage = 6;
+  const gamesPerPage = 3;
 
   const { userReviews, isLoadingUserReviews, userReviewsError } =
     useReviewsStore();
-
-  useQuery({
-    queryKey: ["userReviews", user?._id],
-    queryFn: () => fetchUserReviews(user?._id || ""),
-    enabled: !!user?._id, // Only fetch if we have a user ID
-  });
 
   const totalPages = Math.ceil(userReviews.length / gamesPerPage);
 
