@@ -11,6 +11,8 @@ const ReviewsListDashboard: React.FC = () => {
   // Get reviews from Zustand store
   const { reviews, isLoading, error } = useReviewsStore();
 
+  console.log(reviews, "reviews");
+
   // Fetch reviews on component mount
   useQuery({
     queryKey: ["recentReviews"],
@@ -55,7 +57,7 @@ const ReviewsListDashboard: React.FC = () => {
                 key={review._id}
                 data={{
                   name: review.game.title,
-                  genre: review.game.genres.join(", "),
+                  genre: review.game.genres?.join(", ") || "Unknown",
                   rating: review.finalScore,
                   user: review.user.displayName,
                   image: review.game.coverImageUrl,

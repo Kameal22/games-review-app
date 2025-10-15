@@ -79,13 +79,6 @@ export type ReviewsActions = {
   // Utility functions
   getReviewsByGame: (gameId: string) => Review[];
   getReviewsByUser: (userId: string) => Review[];
-  getAverageScore: (gameId?: string) => number;
-  getReviewStats: () => {
-    totalReviews: number;
-    averageScore: number;
-    highestScore: number;
-    lowestScore: number;
-  };
   
   // Clear all data
   clearAll: () => void;
@@ -119,9 +112,14 @@ export const useReviewsStore = create<ReviewsStore>()(
       },
 
       addReview: (review: Review) => {
-        set((state) => ({
-          reviews: [review, ...state.reviews],
-        }));
+        // Only add review if it has the complete structure
+        if (review.game && review.game.genres && Array.isArray(review.game.genres)) {
+          set((state) => ({
+            reviews: [review, ...state.reviews],
+          }));
+        } else {
+          console.warn('Skipping review addition - incomplete data structure:', review);
+        }
       },
 
       // User-specific reviews
@@ -163,41 +161,6 @@ export const useReviewsStore = create<ReviewsStore>()(
       getReviewsByUser: (userId: string) => {
         const { reviews } = get();
         return reviews.filter((review) => review.user._id === userId);
-      },
-
-      getAverageScore: (gameId?: string) => {
-        const { reviews } = get();
-        const relevantReviews = gameId 
-          ? reviews.filter((review) => review.game._id === gameId)
-          : reviews;
-        
-        if (relevantReviews.length === 0) return 0;
-        
-        const totalScore = relevantReviews.reduce((sum, review) => sum + review.finalScore, 0);
-        return totalScore / relevantReviews.length;
-      },
-
-      getReviewStats: () => {
-        const { reviews } = get();
-        
-        if (reviews.length === 0) {
-          return {
-            totalReviews: 0,
-            averageScore: 0,
-            highestScore: 0,
-            lowestScore: 0,
-          };
-        }
-
-        const scores = reviews.map((review) => review.finalScore);
-        const totalScore = scores.reduce((sum, score) => sum + score, 0);
-
-        return {
-          totalReviews: reviews.length,
-          averageScore: totalScore / reviews.length,
-          highestScore: Math.max(...scores),
-          lowestScore: Math.min(...scores),
-        };
       },
 
       // Clear all data

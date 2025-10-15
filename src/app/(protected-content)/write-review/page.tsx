@@ -5,9 +5,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useGamesStore, Game } from "@/stores/games-store";
+import { useUserStore } from "@/stores/user-store";
+import { useReviewsStore } from "@/stores/reviews-store";
+import { useToastStore } from "@/stores/toast-store";
 import { useQuery } from "@tanstack/react-query";
-import { fetchGames } from "./utils";
+import { fetchGames, saveReview } from "./utils";
 
 const reviewSchema = z.object({
   selectedGame: z.object({
@@ -26,7 +30,11 @@ const reviewSchema = z.object({
   summary: z.string().min(10, "Summary must be at least 10 characters"),
   finalScore: z
     .string()
-    .regex(/^\d{1,2}\/10$/, "Final score must be in X/10 format"),
+    .regex(/^\d+$/, "Final score must be a number")
+    .refine((val) => {
+      const num = parseInt(val);
+      return num >= 1 && num <= 10;
+    }, "Final score must be between 1 and 10"),
 });
 
 const defaultCategories = ["Gameplay", "Soundtrack", "Graphics", "Story"].map(
@@ -36,9 +44,14 @@ const defaultCategories = ["Gameplay", "Soundtrack", "Graphics", "Story"].map(
 const WriteReview: React.FC = () => {
   const [showGameSelector, setShowGameSelector] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const gameSelectorRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const { games, isLoading: gamesLoading, error: gamesError } = useGamesStore();
+  const { user } = useUserStore();
+  const { addReview } = useReviewsStore();
+  const { addToast } = useToastStore();
 
   useQuery({
     queryKey: ["games"],
@@ -88,48 +101,69 @@ const WriteReview: React.FC = () => {
     setSearchTerm("");
   };
 
-  const onSubmit = (data: z.infer<typeof reviewSchema>) => {
-    // Get current user from localStorage
-    const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+  const onSubmit = async (data: z.infer<typeof reviewSchema>) => {
+    if (!user) {
+      addToast({
+        type: "error",
+        title: "Authentication Error",
+        message: "You must be logged in to submit a review",
+      });
+      return;
+    }
 
-    // Create review object
-    const review = {
-      id: Date.now().toString(),
-      game: {
-        _id: data.selectedGame._id,
-        title: data.selectedGame.title,
-        coverImageUrl: data.selectedGame.coverImageUrl,
-        genres: data.selectedGame.genres,
-      },
-      categories: data.categories,
-      summary: data.summary,
-      finalScore: data.finalScore,
-      author: {
-        id: currentUser.id || "1",
-        name: currentUser.name || "Anonymous",
-        email: currentUser.email || "anonymous@example.com",
-      },
-      createdAt: new Date().toISOString(),
-      likes: 0,
-      comments: [],
-    };
+    setIsSubmitting(true);
 
-    // Get existing reviews from localStorage
-    const existingReviews = JSON.parse(localStorage.getItem("reviews") || "[]");
+    try {
+      // Transform form data to match API expected structure
+      const reviewData = {
+        gameId: data.selectedGame._id,
+        gameplay: parseInt(
+          data.categories.find((c) => c.name === "Gameplay")?.score || "0"
+        ),
+        story: parseInt(
+          data.categories.find((c) => c.name === "Story")?.score || "0"
+        ),
+        soundtrack: parseInt(
+          data.categories.find((c) => c.name === "Soundtrack")?.score || "0"
+        ),
+        graphics: parseInt(
+          data.categories.find((c) => c.name === "Graphics")?.score || "0"
+        ),
+        optimization: 0, // Not in form, set to 0
+        worldDesign: 0, // Not in form, set to 0
+        finalScore: parseInt(data.finalScore),
+        text: data.summary,
+      };
 
-    // Add new review
-    existingReviews.push(review);
+      // Save review via API
+      const savedReview = await saveReview(reviewData);
 
-    // Save back to localStorage
-    localStorage.setItem("reviews", JSON.stringify(existingReviews));
+      // Add to local store (with safety check in the store)
+      addReview(savedReview);
 
-    console.log("Review Submitted:", review);
+      // Show success message
+      addToast({
+        type: "success",
+        title: "Review Submitted!",
+        message: "Your review has been successfully submitted and is now live.",
+      });
 
-    // You can add navigation here if needed
-    // router.push('/dashboard');
+      // Navigate to dashboard
+      router.push("/dashboard");
+    } catch (error) {
+      console.error("Error submitting review:", error);
 
-    // Show success message (you can implement a toast notification here)
-    alert("Review submitted successfully!");
+      addToast({
+        type: "error",
+        title: "Submission Failed",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Failed to submit review. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Handle click outside to close game selector
@@ -306,7 +340,7 @@ const WriteReview: React.FC = () => {
                       {errors.categories[index].score.message}
                     </p>
                   )}
-                  <textarea
+                  {/* <textarea
                     placeholder={`Describe the ${category.name.toLowerCase()}...`}
                     disabled={!isGameSelected}
                     {...register(`categories.${index}.description`)}
@@ -314,7 +348,7 @@ const WriteReview: React.FC = () => {
                     className={`p-3 rounded-lg bg-darkGreyBackground text-customWhite border border-transparent focus:border-customWhite outline-none resize-none ${
                       !isGameSelected ? "cursor-not-allowed opacity-50" : ""
                     }`}
-                  />
+                  /> */}
                 </div>
               ))}
             </div>
@@ -347,8 +381,10 @@ const WriteReview: React.FC = () => {
               Final Score
             </h2>
             <input
-              type="text"
-              placeholder="Final Score (e.g. 9/10)"
+              type="number"
+              min="1"
+              max="10"
+              placeholder="Score (1-10)"
               disabled={!isGameSelected}
               {...register("finalScore")}
               className={`w-full p-3 rounded-lg bg-lightGray text-customWhite border border-transparent focus:border-customWhite outline-none ${
@@ -365,14 +401,39 @@ const WriteReview: React.FC = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            disabled={!isGameSelected}
-            className={`font-semibold py-3 px-6 rounded-lg transition-colors duration-200 mt-auto ${
-              isGameSelected
+            disabled={!isGameSelected || isSubmitting}
+            className={`font-semibold py-3 px-6 rounded-lg transition-colors duration-200 mt-auto flex items-center justify-center gap-2 ${
+              isGameSelected && !isSubmitting
                 ? "bg-customWhite text-darkBackground hover:bg-gray-200"
                 : "bg-gray-500 text-gray-300 cursor-not-allowed"
             }`}
           >
-            Submit Review
+            {isSubmitting ? (
+              <>
+                <svg
+                  className="animate-spin h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                Submitting...
+              </>
+            ) : (
+              "Submit Review"
+            )}
           </button>
         </form>
       </div>
