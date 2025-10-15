@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 type review = {
   name: string;
   genre: string;
@@ -16,10 +18,12 @@ const SingleReview: React.FC<Props> = ({ data }) => {
   return (
     <div className="bg-lightGray rounded-xl p-3 flex flex-col sm:flex-row items-start sm:items-center w-full hover:bg-lightGrayHover gap-3">
       <div className="flex-shrink-0">
-        <img
+        <Image
           src={data.image}
           alt={data.name}
           className="w-full sm:w-32 h-32 sm:h-20 object-cover rounded-lg"
+          width={128}
+          height={128}
         />
       </div>
 

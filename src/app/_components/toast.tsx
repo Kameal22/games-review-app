@@ -1,7 +1,6 @@
 "use client";
 
 import { useToastStore } from "@/stores/toast-store";
-import { useEffect } from "react";
 
 const Toast: React.FC = () => {
   const { toasts, removeToast } = useToastStore();

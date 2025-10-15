@@ -33,6 +33,7 @@ const SingleGame: React.FC<Props> = ({ data }) => {
         });
       }
     } catch (error) {
+      console.log(error);
       addToast({
         type: "error",
         title: "Error",

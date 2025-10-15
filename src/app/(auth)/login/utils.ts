@@ -4,7 +4,7 @@ export type LoginCredentials = {
 };
 
 export type User = {
-  id: string;
+  _id: string;
   displayName: string;
   email: string;
   createdAt: string;

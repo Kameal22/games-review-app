@@ -29,6 +29,7 @@ const ForgotPasswordForm: React.FC = () => {
       console.log(data);
       router.push("/dashboard");
     } catch (e) {
+      console.log(e);
       setError("email", { message: "This email is already taken" }); //There also is a "root" field that will be displayed under the form. Not under a specific field.
     }
   };

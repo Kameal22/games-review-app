@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useDashboardStore } from "@/stores/dashboard-store";
@@ -129,7 +130,7 @@ const UserMenu: React.FC = () => {
           onClick={toggleReviewedGames}
         >
           <p className="text-customWhite text-sm lg:text-base">
-            Recently Reviewed:
+            Recently Reviewed: (DUMMY DATA)
           </p>
           <svg
             className={`w-3 fill-customWhite transition-transform flex-shrink-0 ${
@@ -149,10 +150,12 @@ const UserMenu: React.FC = () => {
                 key={index}
                 className="flex items-center p-2 w-full bg-lightGray rounded-lg mb-2 cursor-pointer hover:bg-lightGrayHover transition-colors duration-200"
               >
-                <img
+                <Image
                   src={game.image}
                   alt={game.name}
                   className="w-10 h-10 lg:w-12 lg:h-12 rounded-lg mr-2 lg:mr-3 flex-shrink-0"
+                  width={48}
+                  height={48}
                 />
                 <p className="text-customWhite text-xs lg:text-sm truncate">
                   {game.name}
@@ -167,7 +170,7 @@ const UserMenu: React.FC = () => {
           onClick={toggleViewedGames}
         >
           <p className="text-customWhite text-sm lg:text-base">
-            Recently Viewed:
+            Recently Viewed: (DUMMY DATA)
           </p>
           <svg
             className={`w-3 fill-customWhite transition-transform flex-shrink-0 ${
@@ -187,10 +190,12 @@ const UserMenu: React.FC = () => {
                 key={index}
                 className="flex items-center p-2 w-full bg-lightGray rounded-lg mb-2 cursor-pointer hover:bg-lightGrayHover transition-colors duration-200"
               >
-                <img
+                <Image
                   src={game.image}
                   alt={game.name}
                   className="w-10 h-10 lg:w-12 lg:h-12 rounded-lg mr-2 lg:mr-3 flex-shrink-0"
+                  width={48}
+                  height={48}
                 />
                 <p className="text-customWhite text-xs lg:text-sm truncate">
                   {game.name}
