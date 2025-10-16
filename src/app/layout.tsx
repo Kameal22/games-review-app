@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "./_components/header";
 import Toast from "./_components/toast";
 import Provider from "./provider";
+import { AuthInitializer } from "@/components/AuthInitializer";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -39,6 +40,7 @@ export default function RootLayout({
           }}
           className={poppins.className}
         >
+          <AuthInitializer />
           <Header />
           {children}
           <Toast />

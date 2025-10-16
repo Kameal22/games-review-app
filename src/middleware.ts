@@ -11,15 +11,37 @@ const protectedRoutes = [
 ];
 
 export function middleware(req: NextRequest) {
-  const token = req.cookies.get('auth_token');
+  const tokenData = req.cookies.get('auth_token');
 
   const isProtected = protectedRoutes.some((route) =>
     req.nextUrl.pathname.startsWith(route)
   );
 
-  if (isProtected && !token) {
-    const loginUrl = new URL('/login', req.url);
-    return NextResponse.redirect(loginUrl);
+  if (isProtected) {
+    if (!tokenData) {
+      // No token at all
+      const loginUrl = new URL('/login', req.url);
+      return NextResponse.redirect(loginUrl);
+    }
+
+    // Check if token is expired
+    try {
+      const parsed = JSON.parse(tokenData.value);
+      const tokenTimestamp = parsed.timestamp;
+      const currentTime = Date.now();
+      const tokenAge = currentTime - tokenTimestamp;
+      const twelveHoursInMs = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
+
+      if (tokenAge >= twelveHoursInMs) {
+        // Token is expired, redirect to login
+        const loginUrl = new URL('/login', req.url);
+        return NextResponse.redirect(loginUrl);
+      }
+    } catch {
+      // If parsing fails, assume token is invalid
+      const loginUrl = new URL('/login', req.url);
+      return NextResponse.redirect(loginUrl);
+    }
   }
 
   return NextResponse.next();
