@@ -47,6 +47,14 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'upload.wikimedia.org',
       },
+      {
+        protocol: 'https',
+        hostname: 'gamemusic.pl',
+      },
+      {
+        protocol: 'https',
+        hostname: 'static.posters.cz',
+      },
     ],
   },
 };

@@ -4,55 +4,16 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useDashboardStore } from "@/stores/dashboard-store";
+import { Review, useReviewsStore } from "@/stores/reviews-store";
 
 const UserMenu: React.FC = () => {
   const [showReviewedGames, setShowReviewedGames] = useState(false);
-  const [showViewedGames, setShowViewedGames] = useState(false);
-  const { activeTab, setActiveTab } = useDashboardStore();
+  const { activeTab, setActiveTab, setSidebarOpen } = useDashboardStore();
+  const { userReviews } = useReviewsStore();
   const router = useRouter();
-
-  const reviewedGames = [
-    {
-      name: "The Legend of Zelda",
-      image:
-        "https://gamemusic.pl/wp-content/uploads/2019/06/The-Legend-of-Zelda-Breath-of-the-Wild1.jpg",
-    },
-    {
-      name: "God of War",
-      image:
-        "https://static.posters.cz/image/1300/plakaty/god-of-war-ragnarok-key-art-i218003.jpg",
-    },
-    {
-      name: "Red Dead Redemption 2",
-      image:
-        "https://cdn1.epicgames.com/b30b6d1b4dfd4dcc93b5490be5e094e5/offer/RDR2476298253_Epic_Games_Wishlist_RDR2_2560x1440_V01-2560x1440-2a9ebe1f7ee202102555be202d5632ec.jpg",
-    },
-  ];
-
-  const viewedGames = [
-    {
-      name: "Elden Ring",
-      image:
-        "https://cdn.akamai.steamstatic.com/steam/apps/1245620/capsule_616x353.jpg?t=1687999451",
-    },
-    {
-      name: "Cyberpunk 2077",
-      image:
-        "https://www.cyberpunk.net/build/images/pre-order/buy-b/keyart-standard-pl-0b37d851.jpg",
-    },
-    {
-      name: "Horizon Zero Dawn",
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVTBJ3mmMR_vBw8zCwWouT-AZKX9xyT0VI8Q&s",
-    },
-  ];
 
   const toggleReviewedGames = () => {
     setShowReviewedGames((prev) => !prev);
-  };
-
-  const toggleViewedGames = () => {
-    setShowViewedGames((prev) => !prev);
   };
 
   return (
@@ -61,6 +22,7 @@ const UserMenu: React.FC = () => {
         <div
           onClick={() => {
             setActiveTab("reviews");
+            setSidebarOpen(false);
           }}
           className={`w-full mt-6 p-3 rounded-lg cursor-pointer transition-colors duration-200 flex items-center gap-3 lg:gap-4 ${
             activeTab === "reviews"
@@ -80,6 +42,7 @@ const UserMenu: React.FC = () => {
         <div
           onClick={() => {
             setActiveTab("games");
+            setSidebarOpen(false);
           }}
           className={`w-full mt-2 p-3 rounded-lg cursor-pointer transition-colors duration-200 flex items-center gap-3 lg:gap-4 ${
             activeTab === "games"
@@ -130,7 +93,7 @@ const UserMenu: React.FC = () => {
           onClick={toggleReviewedGames}
         >
           <p className="text-customWhite text-sm lg:text-base">
-            Recently Reviewed: (DUMMY DATA)
+            Recently Reviewed
           </p>
           <svg
             className={`w-3 fill-customWhite transition-transform flex-shrink-0 ${
@@ -145,60 +108,20 @@ const UserMenu: React.FC = () => {
 
         {showReviewedGames && (
           <div className="mt-2 w-full">
-            {reviewedGames.map((game, index) => (
+            {userReviews.slice(0, 3).map((review: Review, index: number) => (
               <div
                 key={index}
                 className="flex items-center p-2 w-full bg-lightGray rounded-lg mb-2 cursor-pointer hover:bg-lightGrayHover transition-colors duration-200"
               >
                 <Image
-                  src={game.image}
-                  alt={game.name}
+                  src={review.game.coverImageUrl}
+                  alt={review.game.title}
                   className="w-10 h-10 lg:w-12 lg:h-12 rounded-lg mr-2 lg:mr-3 flex-shrink-0"
                   width={48}
                   height={48}
                 />
                 <p className="text-customWhite text-xs lg:text-sm truncate">
-                  {game.name}
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
-
-        <div
-          className="w-full mt-4 lg:mt-6 p-3 cursor-pointer flex justify-between items-center"
-          onClick={toggleViewedGames}
-        >
-          <p className="text-customWhite text-sm lg:text-base">
-            Recently Viewed: (DUMMY DATA)
-          </p>
-          <svg
-            className={`w-3 fill-customWhite transition-transform flex-shrink-0 ${
-              showViewedGames ? "rotate-180" : "rotate-0"
-            }`}
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 320 512"
-          >
-            <path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" />
-          </svg>
-        </div>
-
-        {showViewedGames && (
-          <div className="mt-2 w-full">
-            {viewedGames.map((game, index) => (
-              <div
-                key={index}
-                className="flex items-center p-2 w-full bg-lightGray rounded-lg mb-2 cursor-pointer hover:bg-lightGrayHover transition-colors duration-200"
-              >
-                <Image
-                  src={game.image}
-                  alt={game.name}
-                  className="w-10 h-10 lg:w-12 lg:h-12 rounded-lg mr-2 lg:mr-3 flex-shrink-0"
-                  width={48}
-                  height={48}
-                />
-                <p className="text-customWhite text-xs lg:text-sm truncate">
-                  {game.name}
+                  {review.game.title}
                 </p>
               </div>
             ))}

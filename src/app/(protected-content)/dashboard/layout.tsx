@@ -1,6 +1,6 @@
 "use client";
 import { useDashboardStore } from "@/stores/dashboard-store";
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
 
 const DashboardLayout = ({
   reviews,
@@ -12,8 +12,7 @@ const DashboardLayout = ({
   user: React.ReactNode;
   games: React.ReactNode;
 }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { activeTab } = useDashboardStore();
+  const { activeTab, sidebarOpen, setSidebarOpen } = useDashboardStore();
 
   return (
     <div
@@ -24,7 +23,7 @@ const DashboardLayout = ({
       <div className="lg:hidden flex justify-between items-center p-4 bg-darkGreyBackground rounded-xl">
         <h1 className="text-customWhite text-xl font-semibold">Dashboard</h1>
         <button
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          onClick={() => setSidebarOpen(!sidebarOpen)}
           className="p-2 bg-lightGray rounded-lg"
         >
           <svg
@@ -41,7 +40,7 @@ const DashboardLayout = ({
       <Suspense fallback={<p className="text-customWhite">Loading User..</p>}>
         <div
           className={`
-            ${isSidebarOpen ? "block" : "hidden"} 
+            ${sidebarOpen ? "block" : "hidden"} 
             lg:block 
             lg:flex-none 
             h-auto lg:h-full 
