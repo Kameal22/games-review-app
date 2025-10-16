@@ -24,13 +24,15 @@ export type UserActions = {
   clearError: () => void;
   login: (user: User, token: string) => void;
   logout: () => void;
+  checkTokenExpiry: () => boolean;
+  validateAndCleanupToken: () => void;
 };
 
 export type UserStore = UserState & UserActions;
 
 export const useUserStore = create<UserStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       // Initial state
       user: null,
       isAuthenticated: false,
@@ -59,8 +61,12 @@ export const useUserStore = create<UserStore>()(
       },
 
       login: (user: User, token: string) => {
-        // Store token in cookie
-        Cookies.set("auth_token", token, { expires: 7 });
+        // Store token in cookie with timestamp
+        const tokenData = {
+          token,
+          timestamp: Date.now()
+        };
+        Cookies.set("auth_token", JSON.stringify(tokenData), { expires: 0.5 }); // 12 hours (0.5 days)
         // Store user in state
         set({ user, isAuthenticated: true, error: null });
       },
@@ -70,6 +76,32 @@ export const useUserStore = create<UserStore>()(
         Cookies.remove("auth_token");
         // Clear user from state
         set({ user: null, isAuthenticated: false, error: null });
+      },
+
+      checkTokenExpiry: () => {
+        const tokenData = Cookies.get("auth_token");
+        if (!tokenData) return false;
+
+        try {
+          const parsed = JSON.parse(tokenData);
+          const tokenTimestamp = parsed.timestamp;
+          const currentTime = Date.now();
+          const tokenAge = currentTime - tokenTimestamp;
+          const twelveHoursInMs = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
+
+          return tokenAge < twelveHoursInMs;
+        } catch {
+          // If parsing fails, assume token is invalid
+          return false;
+        }
+      },
+
+      validateAndCleanupToken: () => {
+        const isTokenValid = get().checkTokenExpiry();
+        if (!isTokenValid) {
+          // Token is expired, clean up
+          get().logout();
+        }
       },
     }),
     {
