@@ -55,6 +55,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'static.posters.cz',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.igdb.com',
+      },
     ],
   },
 };

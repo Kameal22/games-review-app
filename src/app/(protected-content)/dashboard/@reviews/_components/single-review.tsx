@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 type review = {
   name: string;
@@ -15,8 +16,12 @@ interface Props {
 }
 
 const SingleReview: React.FC<Props> = ({ data }) => {
+  const router = useRouter();
   return (
-    <div className="bg-lightGray rounded-xl p-3 flex flex-col sm:flex-row items-start sm:items-center w-full hover:bg-lightGrayHover gap-3">
+    <div
+      className="bg-lightGray rounded-xl p-3 flex flex-col sm:flex-row items-start sm:items-center w-full hover:bg-lightGrayHover gap-3 cursor-pointer"
+      onClick={() => router.push(`/review/${data.reviewId}`)}
+    >
       <div className="flex-shrink-0">
         <Image
           src={data.image}
