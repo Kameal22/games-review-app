@@ -116,6 +116,10 @@ const UserMenu: React.FC = () => {
           <div className="mt-2 w-full">
             {userReviews.slice(0, 3).map((review: Review, index: number) => (
               <div
+                onClick={() => {
+                  router.push(`/review/${review._id}`);
+                  setSidebarOpen(false);
+                }}
                 key={index}
                 className="flex items-center p-2 w-full bg-lightGray rounded-lg mb-2 cursor-pointer hover:bg-lightGrayHover transition-colors duration-200"
               >

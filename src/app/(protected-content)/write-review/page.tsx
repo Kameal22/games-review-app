@@ -50,7 +50,11 @@ const WriteReview: React.FC = () => {
 
   const { games, isLoading: gamesLoading, error: gamesError } = useGamesStore();
   const { user } = useUserStore();
-  const { addReview } = useReviewsStore();
+  const {
+    addReview,
+    selectedGameFromDashboard,
+    clearSelectedGameFromDashboard,
+  } = useReviewsStore();
   const { addToast } = useToastStore();
 
   useQuery({
@@ -80,6 +84,33 @@ const WriteReview: React.FC = () => {
 
   const selectedGame = watch("selectedGame");
   const isGameSelected = selectedGame.title !== "";
+
+  // Auto-populate game selection if coming from dashboard
+  useEffect(() => {
+    if (selectedGameFromDashboard && !isGameSelected) {
+      setValue("selectedGame", {
+        _id: selectedGameFromDashboard._id,
+        title: selectedGameFromDashboard.title,
+        coverImageUrl: selectedGameFromDashboard.coverImageUrl,
+        genres: selectedGameFromDashboard.genres,
+      });
+    }
+
+    return () => {
+      clearSelectedGameFromDashboard();
+    };
+  }, [
+    selectedGameFromDashboard,
+    isGameSelected,
+    setValue,
+    clearSelectedGameFromDashboard,
+  ]);
+
+  useEffect(() => {
+    return () => {
+      clearSelectedGameFromDashboard();
+    };
+  }, [clearSelectedGameFromDashboard]);
 
   const filteredGames = games.filter(
     (game: Game) =>

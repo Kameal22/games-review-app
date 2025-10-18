@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { Game } from './games-store';
 
 export type ReviewUser = {
   _id: string;
@@ -43,6 +44,8 @@ export type ReviewsState = {
   // Error states
   error: string | null;
   userReviewsError: string | null;
+
+  selectedGameFromDashboard: Game | null
   // Filters
   filters: {
     gameId?: string;
@@ -64,7 +67,8 @@ export type ReviewsActions = {
   // Basic CRUD operations
   setReviews: (reviews: Review[]) => void;
   addReview: (review: Review) => void;
-  
+  setSelectedGameFromDashboard: (game: Game) => void;
+  clearSelectedGameFromDashboard: () => void;
   // User-specific reviews
   setUserReviews: (reviews: Review[]) => void;
   
@@ -79,6 +83,7 @@ export type ReviewsActions = {
   // Utility functions
   getReviewsByGame: (gameId: string) => Review[];
   getReviewsByUser: (userId: string) => Review[];
+
   
   // Clear all data
   clearAll: () => void;
@@ -96,6 +101,7 @@ export const useReviewsStore = create<ReviewsStore>()(
       isLoadingUserReviews: false,
       error: null,
       userReviewsError: null,
+      selectedGameFromDashboard: null,
       filters: {
         sortBy: 'newest',
       },
@@ -120,6 +126,14 @@ export const useReviewsStore = create<ReviewsStore>()(
         } else {
           console.warn('Skipping review addition - incomplete data structure:', review);
         }
+      },
+
+      setSelectedGameFromDashboard: (game: Game) => {
+        set({ selectedGameFromDashboard: game });
+      },
+
+      clearSelectedGameFromDashboard: () => {
+        set({ selectedGameFromDashboard: null });
       },
 
       // User-specific reviews
@@ -172,6 +186,7 @@ export const useReviewsStore = create<ReviewsStore>()(
           isLoadingUserReviews: false,
           error: null,
           userReviewsError: null,
+          selectedGameFromDashboard: null,
           filters: {
             sortBy: 'newest',
           },
@@ -189,6 +204,7 @@ export const useReviewsStore = create<ReviewsStore>()(
       partialize: (state) => ({ 
         reviews: state.reviews,
         userReviews: state.userReviews,
+        selectedGameFromDashboard: state.selectedGameFromDashboard,
         filters: state.filters,
         pagination: state.pagination,
       }),
