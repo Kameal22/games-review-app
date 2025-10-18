@@ -31,7 +31,7 @@ const Register: React.FC = () => {
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
             <div className="bg-darkGreyBackground/50 p-4 rounded-xl">
-              <h3 className="text-customWhite font-semibold mb-2">
+              <h3 className="text-customWhite text-lg font-semibold mb-2">
                 📝 Write Reviews
               </h3>
               <p className="text-sm text-customWhite/80">
@@ -39,7 +39,7 @@ const Register: React.FC = () => {
               </p>
             </div>
             <div className="bg-darkGreyBackground/50 p-4 rounded-xl">
-              <h3 className="text-customWhite font-semibold mb-2">
+              <h3 className="text-customWhite font-semibold mb-2 text-lg">
                 ❤️ Wishlist Games
               </h3>
               <p className="text-sm text-customWhite/80">
@@ -47,7 +47,7 @@ const Register: React.FC = () => {
               </p>
             </div>
             <div className="bg-darkGreyBackground/50 p-4 rounded-xl">
-              <h3 className="text-customWhite font-semibold mb-2">
+              <h3 className="text-customWhite font-semibold mb-2 text-lg">
                 🎮 Discover
               </h3>
               <p className="text-sm text-customWhite/80">

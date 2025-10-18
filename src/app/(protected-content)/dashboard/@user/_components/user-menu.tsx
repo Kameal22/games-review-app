@@ -60,7 +60,10 @@ const UserMenu: React.FC = () => {
           <p className="text-customWhite text-sm lg:text-base">Games List</p>
         </div>
         <div
-          onClick={() => router.push("/user/1")}
+          onClick={() => {
+            router.push("/user/1");
+            setSidebarOpen(false);
+          }}
           className="w-full mt-2 bg-lightGray hover:bg-lightGrayHover p-3 rounded-lg cursor-pointer transition-colors duration-200 flex items-center gap-3 lg:gap-4"
         >
           <svg
@@ -73,8 +76,11 @@ const UserMenu: React.FC = () => {
           <p className="text-customWhite text-sm lg:text-base">My Profile</p>
         </div>
         <div
-          onClick={() => router.push("/write-review")}
           className="w-full mt-2 bg-lightGray hover:bg-lightGrayHover p-3 rounded-lg cursor-pointer transition-colors duration-200 flex items-center gap-3 lg:gap-4"
+          onClick={() => {
+            router.push("/write-review");
+            setSidebarOpen(false);
+          }}
         >
           <svg
             className="w-4 fill-customWhite flex-shrink-0"
