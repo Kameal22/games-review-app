@@ -11,7 +11,7 @@ const UserData: React.FC = () => {
     queryFn: fetchUserReviews,
   });
   return (
-    <div className="flex flex-col justify-center items-center w-full h-full pb-12">
+    <div className="flex flex-col justify-center items-center w-full h-full">
       <UserInfo />
       <UserMenu />
     </div>
