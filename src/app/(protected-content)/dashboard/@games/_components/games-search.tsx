@@ -10,7 +10,7 @@ const GamesSearch: React.FC<GamesSearchProps> = ({
   return (
     <div className="flex flex-col gap-4 items-center justify-center w-full">
       <p className="text-center text-customWhite text-xl lg:text-2xl">
-        Search Reviews
+        Search Games
       </p>
       <input
         type="text"

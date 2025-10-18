@@ -19,10 +19,6 @@ const ReviewPage: React.FC = () => {
     enabled: !!params.id, // Only run query if we have an ID
   });
 
-  console.log(review, "review");
-  console.log(isLoading, "isLoading");
-  console.log(error, "error");
-
   // Show loading state
   if (isLoading) {
     return (
@@ -200,8 +196,6 @@ const ReviewPage: React.FC = () => {
                 { label: "Story", score: review.story },
                 { label: "Soundtrack", score: review.soundtrack },
                 { label: "Graphics", score: review.graphics },
-                { label: "Optimization", score: review.optimization },
-                { label: "World Design", score: review.worldDesign },
               ].map(({ label, score }) => (
                 <div
                   key={label}

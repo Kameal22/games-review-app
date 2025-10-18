@@ -11,7 +11,7 @@ import { useUserStore } from "@/stores/user-store";
 import { useReviewsStore } from "@/stores/reviews-store";
 import { useToastStore } from "@/stores/toast-store";
 import { useQuery } from "@tanstack/react-query";
-import { fetchGames, saveReview } from "./utils";
+import { fetchGames, saveReview, checkIfGameIsReviewed } from "./utils";
 
 const reviewSchema = z.object({
   selectedGame: z.object({
@@ -57,7 +57,6 @@ const WriteReview: React.FC = () => {
     queryKey: ["games"],
     queryFn: fetchGames,
   });
-
   const {
     register,
     handleSubmit,
@@ -187,6 +186,18 @@ const WriteReview: React.FC = () => {
     };
   }, [showGameSelector]);
 
+  const { data: reviewCheckData, isLoading: isCheckingReview } = useQuery({
+    queryKey: ["checkIfGameIsReviewed", selectedGame._id],
+    queryFn: () => checkIfGameIsReviewed(selectedGame._id),
+    enabled: !!selectedGame._id,
+  });
+
+  console.log(reviewCheckData);
+
+  // Check if the user has already reviewed this game
+  const hasAlreadyReviewed =
+    reviewCheckData?.message === "You already reviewed this game";
+
   return (
     <div className="bg-darkGreyBackground rounded-xl p-4 w-full h-full flex flex-col gap-4">
       <div className="bg-lightGray rounded-xl p-4 w-full h-full flex flex-col gap-6">
@@ -301,6 +312,34 @@ const WriteReview: React.FC = () => {
                 {errors.selectedGame.message}
               </p>
             )}
+
+            {/* Already Reviewed Warning */}
+            {isGameSelected && !isCheckingReview && hasAlreadyReviewed && (
+              <div className="mt-4 p-4 bg-yellow-900/20 border border-yellow-500/30 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <svg
+                    className="w-5 h-5 text-yellow-500 flex-shrink-0"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <div>
+                    <p className="text-yellow-500 font-medium">
+                      You&apos;ve already reviewed this game
+                    </p>
+                    <p className="text-yellow-400/80 text-sm mt-1">
+                      You can only write one review per game. Please select a
+                      different game or edit your existing review.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Review Categories */}
@@ -313,12 +352,18 @@ const WriteReview: React.FC = () => {
                 Please select a game first to enable review inputs
               </p>
             )}
+            {isGameSelected && hasAlreadyReviewed && (
+              <p className="text-yellow-500 text-sm mb-4">
+                You cannot review this game as you have already submitted a
+                review for it
+              </p>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {defaultCategories.map((category, index) => (
                 <div
                   key={category.name}
                   className={`flex flex-col gap-3 bg-lightGray p-4 rounded-lg ${
-                    !isGameSelected ? "opacity-50" : ""
+                    !isGameSelected || hasAlreadyReviewed ? "opacity-50" : ""
                   }`}
                 >
                   <p className="text-lg font-medium text-customWhite">
@@ -329,10 +374,12 @@ const WriteReview: React.FC = () => {
                     min="1"
                     max="10"
                     placeholder="Score (1-10)"
-                    disabled={!isGameSelected}
+                    disabled={!isGameSelected || hasAlreadyReviewed}
                     {...register(`categories.${index}.score`)}
                     className={`p-3 rounded-lg bg-darkGreyBackground text-customWhite border border-transparent focus:border-customWhite outline-none ${
-                      !isGameSelected ? "cursor-not-allowed opacity-50" : ""
+                      !isGameSelected || hasAlreadyReviewed
+                        ? "cursor-not-allowed opacity-50"
+                        : ""
                     }`}
                   />
                   {errors.categories?.[index]?.score && (
@@ -361,11 +408,13 @@ const WriteReview: React.FC = () => {
             </h2>
             <textarea
               placeholder="Write a comprehensive summary of your review..."
-              disabled={!isGameSelected}
+              disabled={!isGameSelected || hasAlreadyReviewed}
               {...register("summary")}
               rows={6}
               className={`w-full p-3 rounded-lg bg-lightGray text-customWhite border border-transparent focus:border-customWhite outline-none resize-none ${
-                !isGameSelected ? "cursor-not-allowed opacity-50" : ""
+                !isGameSelected || hasAlreadyReviewed
+                  ? "cursor-not-allowed opacity-50"
+                  : ""
               }`}
             />
             {errors.summary && (
@@ -385,10 +434,12 @@ const WriteReview: React.FC = () => {
               min="1"
               max="10"
               placeholder="Score (1-10)"
-              disabled={!isGameSelected}
+              disabled={!isGameSelected || hasAlreadyReviewed}
               {...register("finalScore")}
               className={`w-full p-3 rounded-lg bg-lightGray text-customWhite border border-transparent focus:border-customWhite outline-none ${
-                !isGameSelected ? "cursor-not-allowed opacity-50" : ""
+                !isGameSelected || hasAlreadyReviewed
+                  ? "cursor-not-allowed opacity-50"
+                  : ""
               }`}
             />
             {errors.finalScore && (
@@ -401,9 +452,9 @@ const WriteReview: React.FC = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            disabled={!isGameSelected || isSubmitting}
+            disabled={!isGameSelected || isSubmitting || hasAlreadyReviewed}
             className={`font-semibold py-3 px-6 rounded-lg transition-colors duration-200 mt-auto flex items-center justify-center gap-2 ${
-              isGameSelected && !isSubmitting
+              isGameSelected && !isSubmitting && !hasAlreadyReviewed
                 ? "bg-customWhite text-darkBackground hover:bg-gray-200"
                 : "bg-gray-500 text-gray-300 cursor-not-allowed"
             }`}
@@ -431,6 +482,8 @@ const WriteReview: React.FC = () => {
                 </svg>
                 Submitting...
               </>
+            ) : hasAlreadyReviewed ? (
+              "Already Reviewed"
             ) : (
               "Submit Review"
             )}

@@ -115,3 +115,33 @@ export const saveReview = async (review: CreateReviewData) => {
     setLoading(false);
   }
 };
+
+export const checkIfGameIsReviewed = async (gameId: string) => {
+  const { setLoading, setError } = useReviewsStore.getState();
+
+  setLoading(true);
+  setError(null);
+  
+  try {
+    const token = getTokenFromCookie();
+
+    if (!token) {
+      throw new Error('No authentication token found');
+    }
+
+    const response = await axios.get(`https://games-review-api.onrender.com/api/reviews/check-exists/${gameId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to check if game is reviewed';
+    setError(errorMessage);
+    throw error;
+  } finally {
+    setLoading(false);
+  }
+};

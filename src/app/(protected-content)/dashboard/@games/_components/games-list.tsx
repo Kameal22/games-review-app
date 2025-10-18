@@ -6,10 +6,11 @@ import { useWatchlistStore } from "@/stores/watchlist.store";
 import Pagination from "./pagination";
 import SingleGame from "./single-game";
 import { fetchGames } from "../utils";
+import GamesSearch from "./games-search";
 
 const GamesListDashboard: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const gamesPerPage = 6;
 
   // Get games and watchlist from Zustand stores
@@ -67,10 +68,13 @@ const GamesListDashboard: React.FC = () => {
 
   return (
     <div className="bg-darkGreyBackground rounded-xl p-4 w-full h-full flex flex-col gap-4">
-      {/* <GamesSearch
+      <GamesSearch
         searchTerm={searchTerm}
-        onSearchChange={handleSearchChange}
-      /> */}
+        onSearchChange={(term: string) => {
+          setSearchTerm(term);
+          setCurrentPage(1); // Reset to first page when searching
+        }}
+      />
       <p className="text-customWhite text-lg lg:text-xl">
         {searchTerm ? `Search Results for "${searchTerm}"` : "Latest Games"}
       </p>
