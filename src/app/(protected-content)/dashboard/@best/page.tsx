@@ -20,7 +20,7 @@ const BestReviewsList: React.FC = () => {
   return (
     <div className="bg-darkGreyBackground rounded-xl p-4 w-full h-full flex flex-col gap-4">
       <p className="text-customWhite text-lg lg:text-xl">
-        {"Highest Rated Reviews"}
+        {"Highest Rated Games"}
       </p>
       <div className="flex flex-col gap-4 flex-1">
         {isLoading ? (
