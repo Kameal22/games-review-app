@@ -4,15 +4,19 @@ import { Suspense } from "react";
 
 const DashboardLayout = ({
   reviews,
+  best,
   user,
   games,
 }: {
   children: React.ReactNode;
   reviews: React.ReactNode;
+  best: React.ReactNode;
   user: React.ReactNode;
   games: React.ReactNode;
 }) => {
   const { activeTab, sidebarOpen, setSidebarOpen } = useDashboardStore();
+
+  console.log(activeTab === "best-reviews");
 
   return (
     <div
@@ -59,6 +63,9 @@ const DashboardLayout = ({
       <Suspense fallback={<p className="text-customWhite">Loading Games..</p>}>
         {activeTab === "reviews" && (
           <div className="flex-grow h-auto lg:h-full">{reviews}</div>
+        )}
+        {activeTab === "best-reviews" && (
+          <div className="flex-grow h-auto lg:h-full">{best}</div>
         )}
         {activeTab === "games" && (
           <div className="flex-grow h-auto lg:h-full">{games}</div>

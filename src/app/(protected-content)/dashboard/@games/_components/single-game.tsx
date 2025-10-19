@@ -1,5 +1,5 @@
 "use client";
-import { Game } from "@/stores/games-store";
+import { Game } from "@/app/types/game";
 import Image from "next/image";
 import { addToWatchlist, removeFromWatchlist } from "../utils";
 import { useWatchlistStore } from "@/stores/watchlist.store";
