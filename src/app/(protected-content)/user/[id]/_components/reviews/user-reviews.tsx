@@ -12,6 +12,13 @@ const UserReviews: React.FC = () => {
   const { userReviews, isLoadingUserReviews, userReviewsError } =
     useReviewsStore();
 
+  const getScoreColor = (score: number) => {
+    if (score >= 7) return "text-green-400";
+    if (score >= 4) return "text-yellow-400";
+    if (score >= 2) return "text-orange-400";
+    return "text-red-400";
+  };
+
   const totalPages = Math.ceil(userReviews.length / gamesPerPage);
 
   const currentReviews = userReviews.slice(
@@ -83,18 +90,25 @@ const UserReviews: React.FC = () => {
 
             <div className="flex flex-col sm:flex-row flex-1 gap-2 sm:gap-4 min-w-0">
               <div className="flex-1 min-w-0">
-                <p className="text-customWhite text-base lg:text-lg font-medium truncate">
+                <p className="text-customWhite text-lg lg:text-xl font-medium truncate">
                   {review.game.title}
                 </p>
-                <p className="text-greyText text-xs sm:text-sm truncate">
+                <p className="text-greyText text-sm sm:text-base truncate">
                   {review.game.genres.join(", ")}
                 </p>
               </div>
-              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-sm">
-                <p className="text-customWhite font-medium">
-                  {review.finalScore}/10
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-base">
+                <p className="text-customWhite">
+                  Rating:{" "}
+                  <span
+                    className={`font-bold text-lg ${getScoreColor(
+                      review.finalScore
+                    )}`}
+                  >
+                    {review.finalScore}/10
+                  </span>
                 </p>
-                <p className="text-greyText text-xs sm:text-sm">
+                <p className="text-greyText text-sm sm:text-base">
                   {new Date(review.createdAt).toLocaleDateString()}
                 </p>
               </div>

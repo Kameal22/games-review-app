@@ -17,6 +17,14 @@ interface Props {
 
 const SingleReview: React.FC<Props> = ({ data }) => {
   const router = useRouter();
+
+  const getScoreColor = (score: number) => {
+    if (score >= 7) return "text-green-400";
+    if (score >= 4) return "text-yellow-400";
+    if (score >= 2) return "text-orange-400";
+    return "text-red-400";
+  };
+
   return (
     <div
       className="bg-lightGray rounded-xl p-3 flex flex-col sm:flex-row items-start sm:items-center w-full hover:bg-lightGrayHover gap-3 cursor-pointer"
@@ -34,18 +42,25 @@ const SingleReview: React.FC<Props> = ({ data }) => {
 
       <div className="flex flex-col sm:flex-row flex-1 gap-2 sm:gap-4 min-w-0">
         <div className="flex-1 min-w-0">
-          <p className="text-customWhite text-base lg:text-lg font-medium truncate">
+          <p className="text-customWhite text-lg lg:text-xl font-medium truncate">
             {data.name}
           </p>
-          <p className="text-greyText text-sm hidden sm:block">{data.genre}</p>
+          <p className="text-greyText text-base hidden sm:block">
+            {data.genre}
+          </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-sm">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-base">
           <p className="text-customWhite">
             <span className="sm:hidden">Genre: </span>
             {data.genre}
           </p>
-          <p className="text-customWhite">Rating: {data.rating}/10</p>
+          <p className="text-customWhite">
+            Rating:{" "}
+            <span className={`font-bold text-lg ${getScoreColor(data.rating)}`}>
+              {data.rating}/10
+            </span>
+          </p>
           <p className="text-customWhite truncate">
             <span className="sm:hidden">By: </span>
             <span className="hidden sm:inline">Reviewed by: </span>

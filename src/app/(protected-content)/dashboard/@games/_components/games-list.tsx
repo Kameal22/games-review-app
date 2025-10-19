@@ -76,7 +76,7 @@ const GamesListDashboard: React.FC = () => {
         }}
       />
       <p className="text-customWhite text-lg lg:text-xl">
-        {searchTerm ? `Search Results for "${searchTerm}"` : "Games List"}
+        {searchTerm ? `Search Results for "${searchTerm}"` : ""}
       </p>
 
       <div className="flex flex-col gap-4 flex-1">

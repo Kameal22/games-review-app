@@ -12,6 +12,13 @@ const UserMenu: React.FC = () => {
   const { userReviews } = useReviewsStore();
   const router = useRouter();
 
+  const getScoreColor = (score: number) => {
+    if (score >= 7) return "text-green-400";
+    if (score >= 4) return "text-yellow-400";
+    if (score >= 2) return "text-orange-400";
+    return "text-red-400";
+  };
+
   const toggleReviewedGames = () => {
     setShowReviewedGames((prev) => !prev);
   };
@@ -37,7 +44,9 @@ const UserMenu: React.FC = () => {
           >
             <path d="M40 48C26.7 48 16 58.7 16 72l0 48c0 13.3 10.7 24 24 24l48 0c13.3 0 24-10.7 24-24l0-48c0-13.3-10.7-24-24-24L40 48zM192 64c-17.7 0-32 14.3-32 32s14.3 32 32 32l288 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L192 64zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32l288 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-288 0zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32l288 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-288 0zM16 232l0 48c0 13.3 10.7 24 24 24l48 0c13.3 0 24-10.7 24-24l0-48c0-13.3-10.7-24-24-24l-48 0c-13.3 0-24 10.7-24 24zM40 368c-13.3 0-24 10.7-24 24l0 48c0 13.3 10.7 24 24 24l48 0c13.3 0 24-10.7 24-24l0-48c0-13.3-10.7-24-24-24l-48 0z" />
           </svg>
-          <p className="text-customWhite text-sm lg:text-base">Reviews</p>
+          <p className="text-customWhite text-sm lg:text-base">
+            Check Latest Reviews
+          </p>
         </div>
         <div
           onClick={() => {
@@ -57,7 +66,7 @@ const UserMenu: React.FC = () => {
           >
             <path d="M448 64c106 0 192 86 192 192S554 448 448 448l-256 0C86 448 0 362 0 256S86 64 192 64l256 0zM192 176c-13.3 0-24 10.7-24 24l0 32-32 0c-13.3 0-24 10.7-24 24s10.7 24 24 24l32 0 0 32c0 13.3 10.7 24 24 24s24-10.7 24-24l0-32 32 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-32 0 0-32c0-13.3-10.7-24-24-24zm240 96a32 32 0 1 0 0 64 32 32 0 1 0 0-64zm64-96a32 32 0 1 0 0 64 32 32 0 1 0 0-64z" />
           </svg>
-          <p className="text-customWhite text-sm lg:text-base">Games List</p>
+          <p className="text-customWhite text-sm lg:text-base">Browse Games</p>
         </div>
         <div
           onClick={() => {
@@ -130,9 +139,21 @@ const UserMenu: React.FC = () => {
                   width={48}
                   height={48}
                 />
-                <p className="text-customWhite text-xs lg:text-sm truncate">
-                  {review.game.title}
-                </p>
+                <div className="flex-1 min-w-0">
+                  <p className="text-customWhite text-sm lg:text-base truncate">
+                    {review.game.title}
+                  </p>
+                  <p className="text-customWhite text-xs lg:text-sm">
+                    Rating:{" "}
+                    <span
+                      className={`font-bold ${getScoreColor(
+                        review.finalScore
+                      )}`}
+                    >
+                      {review.finalScore}/10
+                    </span>
+                  </p>
+                </div>
               </div>
             ))}
           </div>
