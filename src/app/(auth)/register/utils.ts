@@ -1,15 +1,10 @@
+import { User } from "@/app/types/user";
+
 export type RegisterCredentials = {
   displayName: string;
   email: string;
   password: string;
   confirm_password: string;
-};
-
-export type User = {
-  _id: string;
-  displayName: string;
-  email: string;
-  createdAt: string;
 };
 
 export type RegisterResponse = {

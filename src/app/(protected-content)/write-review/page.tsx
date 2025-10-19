@@ -6,12 +6,13 @@ import { z } from "zod";
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useGamesStore, Game } from "@/stores/games-store";
 import { useUserStore } from "@/stores/user-store";
 import { useReviewsStore } from "@/stores/reviews-store";
 import { useToastStore } from "@/stores/toast-store";
 import { useQuery } from "@tanstack/react-query";
-import { fetchGames, saveReview, checkIfGameIsReviewed } from "./utils";
+import { fetchGames } from "@/app/(protected-content)/dashboard/@games/utils";
+import { saveReview, checkIfGameIsReviewed } from "./utils";
+import { Game } from "@/app/types/game";
 
 const reviewSchema = z.object({
   selectedGame: z.object({
@@ -48,7 +49,6 @@ const WriteReview: React.FC = () => {
   const gameSelectorRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  const { games, isLoading: gamesLoading, error: gamesError } = useGamesStore();
   const { user } = useUserStore();
   const {
     addReview,
@@ -57,10 +57,15 @@ const WriteReview: React.FC = () => {
   } = useReviewsStore();
   const { addToast } = useToastStore();
 
-  useQuery({
+  const {
+    data: games,
+    isLoading: gamesLoading,
+    error: gamesError,
+  } = useQuery({
     queryKey: ["games"],
     queryFn: fetchGames,
   });
+
   const {
     register,
     handleSubmit,
@@ -112,10 +117,10 @@ const WriteReview: React.FC = () => {
     };
   }, [clearSelectedGameFromDashboard]);
 
-  const filteredGames = games.filter(
+  const filteredGames = (games || []).filter(
     (game: Game) =>
       game.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      game.genres.some((genre) =>
+      game.genres.some((genre: string) =>
         genre.toLowerCase().includes(searchTerm.toLowerCase())
       )
   );
@@ -223,8 +228,6 @@ const WriteReview: React.FC = () => {
     enabled: !!selectedGame._id,
   });
 
-  console.log(reviewCheckData);
-
   // Check if the user has already reviewed this game
   const hasAlreadyReviewed =
     reviewCheckData?.message === "You already reviewed this game";
@@ -302,7 +305,7 @@ const WriteReview: React.FC = () => {
                       </div>
                     ) : gamesError ? (
                       <div className="p-3 text-red-500 text-center">
-                        Error loading games: {gamesError}
+                        Error loading games: {gamesError?.message}
                       </div>
                     ) : filteredGames.length > 0 ? (
                       filteredGames.map((game: Game) => (

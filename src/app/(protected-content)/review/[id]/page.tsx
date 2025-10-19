@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { fetchReview } from "../utils";
 import { useQuery } from "@tanstack/react-query";
+import { getScoreColor } from "@/app/global-utils/get-score-color";
+import { getScoreBackground } from "@/app/global-utils/get-score-background";
 
 const ReviewPage: React.FC = () => {
   const router = useRouter();
@@ -86,20 +88,6 @@ const ReviewPage: React.FC = () => {
       month: "long",
       day: "numeric",
     });
-  };
-
-  const getScoreColor = (score: number) => {
-    if (score >= 7) return "text-green-400";
-    if (score >= 4) return "text-yellow-400";
-    if (score >= 2) return "text-orange-400";
-    return "text-red-400";
-  };
-
-  const getScoreBackground = (score: number) => {
-    if (score >= 7) return "bg-green-500/20 border-green-500/30";
-    if (score >= 4) return "bg-yellow-500/20 border-yellow-500/30";
-    if (score >= 2) return "bg-orange-500/20 border-orange-500/30";
-    return "bg-red-500/20 border-red-500/30";
   };
 
   return (

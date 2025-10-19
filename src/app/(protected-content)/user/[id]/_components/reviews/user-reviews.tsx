@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Pagination from "@/app/_components/pagination";
 import { useReviewsStore, Review } from "@/stores/reviews-store";
+import { getScoreColor } from "@/app/global-utils/get-score-color";
 
 const UserReviews: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -11,13 +12,6 @@ const UserReviews: React.FC = () => {
 
   const { userReviews, isLoadingUserReviews, userReviewsError } =
     useReviewsStore();
-
-  const getScoreColor = (score: number) => {
-    if (score >= 7) return "text-green-400";
-    if (score >= 4) return "text-yellow-400";
-    if (score >= 2) return "text-orange-400";
-    return "text-red-400";
-  };
 
   const totalPages = Math.ceil(userReviews.length / gamesPerPage);
 

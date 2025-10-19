@@ -4,7 +4,7 @@ import "./globals.css";
 import Header from "./_components/header";
 import Toast from "./_components/toast";
 import Provider from "./provider";
-import { AuthInitializer } from "@/components/AuthInitializer";
+import { AuthInitializer } from "@/app/global-utils/AuthInitializer";
 
 const poppins = Poppins({
   subsets: ["latin"],

@@ -1,25 +1,6 @@
 import axios from "axios";
-import Cookies from "js-cookie";
-import { useGamesStore } from "@/stores/games-store";
 import { useReviewsStore } from "@/stores/reviews-store";
-
-// Helper function to extract token from cookie
-const getTokenFromCookie = (): string | null => {
-  const tokenData = Cookies.get('auth_token');
-  
-  if (!tokenData) {
-    return null;
-  }
-
-  try {
-    const parsed = JSON.parse(tokenData);
-    return parsed.token;
-  } catch (error) {
-    console.error(error);
-    // Fallback for old token format (just the token string)
-    return tokenData;
-  }
-};
+import { getTokenFromCookie } from "@/app/global-utils/get-token-from-cookies";
 
 type CreateReviewData = {
   gameId: string;
@@ -31,40 +12,6 @@ type CreateReviewData = {
   worldDesign: number;
   finalScore: number;
   text: string;
-};
-
-export const fetchGames = async () => {
-  const { setLoading, setError, setGames } = useGamesStore.getState();
-  
-  setLoading(true);
-  setError(null);
-  
-  try {
-    // Get token from cookies
-    const token = getTokenFromCookie();
-    
-    if (!token) {
-      throw new Error('No authentication token found');
-    }
-    
-    const response = await axios.get("https://games-review-api.onrender.com/api/game", {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-    
-    // Store the recent reviews data in Zustand
-    setGames(response.data);
-    
-    return response.data;
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch games';
-    setError(errorMessage);
-    throw error;
-  } finally {
-    setLoading(false);
-  }
 };
 
 export const saveReview = async (review: CreateReviewData) => {

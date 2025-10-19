@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { getScoreColor } from "@/app/global-utils/get-score-color";
 
 type review = {
   name: string;
@@ -17,13 +18,6 @@ interface Props {
 
 const SingleReview: React.FC<Props> = ({ data }) => {
   const router = useRouter();
-
-  const getScoreColor = (score: number) => {
-    if (score >= 7) return "text-green-400";
-    if (score >= 4) return "text-yellow-400";
-    if (score >= 2) return "text-orange-400";
-    return "text-red-400";
-  };
 
   return (
     <div

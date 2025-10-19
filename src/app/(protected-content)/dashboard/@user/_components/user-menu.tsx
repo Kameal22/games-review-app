@@ -5,19 +5,13 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useDashboardStore } from "@/stores/dashboard-store";
 import { Review, useReviewsStore } from "@/stores/reviews-store";
+import { getScoreColor } from "@/app/global-utils/get-score-color";
 
 const UserMenu: React.FC = () => {
   const [showReviewedGames, setShowReviewedGames] = useState(false);
   const { activeTab, setActiveTab, setSidebarOpen } = useDashboardStore();
   const { userReviews } = useReviewsStore();
   const router = useRouter();
-
-  const getScoreColor = (score: number) => {
-    if (score >= 7) return "text-green-400";
-    if (score >= 4) return "text-yellow-400";
-    if (score >= 2) return "text-orange-400";
-    return "text-red-400";
-  };
 
   const toggleReviewedGames = () => {
     setShowReviewedGames((prev) => !prev);

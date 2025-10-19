@@ -1,13 +1,8 @@
+import { User } from "@/app/types/user";
+
 export type LoginCredentials = {
   email: string;
   password: string;
-};
-
-export type User = {
-  _id: string;
-  displayName: string;
-  email: string;
-  createdAt: string;
 };
 
 export type LoginResponse = {

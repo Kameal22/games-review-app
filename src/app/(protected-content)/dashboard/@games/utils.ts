@@ -1,32 +1,8 @@
 import axios from "axios";
-import Cookies from "js-cookie";
-import { useGamesStore } from "@/stores/games-store";
 import { useWatchlistStore } from "@/stores/watchlist.store";
-
-// Helper function to extract token from cookie
-const getTokenFromCookie = (): string | null => {
-  const tokenData = Cookies.get('auth_token');
-  
-  if (!tokenData) {
-    return null;
-  }
-
-  try {
-    const parsed = JSON.parse(tokenData);
-    return parsed.token;
-  } catch (error) {
-    console.error(error);
-    // Fallback for old token format (just the token string)
-    return tokenData;
-  }
-};
+import { getTokenFromCookie } from "@/app/global-utils/get-token-from-cookies";
 
 export const fetchGames = async () => {
-  const { setLoading, setError, setGames } = useGamesStore.getState();
-  
-  setLoading(true);
-  setError(null);
-  
   try {
     // Get token from cookies
     const token = getTokenFromCookie();
@@ -42,16 +18,10 @@ export const fetchGames = async () => {
       },
     });
     
-    // Store the recent reviews data in Zustand
-    setGames(response.data);
-    
     return response.data;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Failed to fetch games';
-    setError(errorMessage);
-    throw error;
-  } finally {
-    setLoading(false);
+    throw new Error(errorMessage);
   }
 };
 
