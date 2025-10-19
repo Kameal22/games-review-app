@@ -1,21 +1,24 @@
 "use client";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useReviewsStore, Review } from "@/stores/reviews-store";
 import { fetchRecentReviews } from "./utils";
 // import GamesSearch from "./games-search";
 import SingleReview from "./_components/single-review";
+import { Review } from "@/app/types/review";
 
 const ReviewsList: React.FC = () => {
   const [searchTerm] = useState("");
-  // Get reviews from Zustand store
-  const { reviews, isLoading, error } = useReviewsStore();
 
   // Fetch reviews on component mount
-  useQuery({
+  const {
+    data: reviews,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["recentReviews"],
     queryFn: fetchRecentReviews,
   });
+
   return (
     <div className="bg-darkGreyBackground rounded-xl p-4 w-full h-full flex flex-col gap-4">
       <p className="text-customWhite text-lg lg:text-xl">
@@ -35,12 +38,12 @@ const ReviewsList: React.FC = () => {
               Error loading reviews
             </p>
             <p className="text-greyText text-sm text-center">
-              {error || "Something went wrong"}
+              {error instanceof Error ? error.message : "Something went wrong"}
             </p>
           </div>
         ) : reviews.length > 0 ? (
           <>
-            {reviews.map((review: Review) => (
+            {reviews?.map((review: Review) => (
               <SingleReview
                 key={review._id}
                 data={{

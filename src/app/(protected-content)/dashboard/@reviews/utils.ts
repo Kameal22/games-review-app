@@ -1,12 +1,7 @@
 import axios from "axios";
-import { useReviewsStore } from "@/stores/reviews-store";
 import { getTokenFromCookie } from "@/app/global-utils/get-token-from-cookies";
 
 export const fetchRecentReviews = async () => {
-  const { setLoading, setError, setReviews } = useReviewsStore.getState();
-  
-  setLoading(true);
-  setError(null);
   
   try {
     // Get token from cookies
@@ -23,25 +18,14 @@ export const fetchRecentReviews = async () => {
       },
     });
     
-    // Store the recent reviews data in Zustand
-    setReviews(response.data);
-    
     return response.data;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Failed to fetch recent reviews';
-    setError(errorMessage);
-    throw error;
-  } finally {
-    setLoading(false);
+    throw new Error(errorMessage);
   }
 };
 
 export const fetchUserReviews = async (userId: string) => {
-  const { setUserReviewsLoading, setUserReviewsError, setUserReviews } = useReviewsStore.getState();
-  
-  setUserReviewsLoading(true);
-  setUserReviewsError(null);
-  
   try {
     // Get token from cookies
     const token = getTokenFromCookie();
@@ -57,15 +41,9 @@ export const fetchUserReviews = async (userId: string) => {
       },
     });
     
-    // Store the user reviews data in Zustand
-    setUserReviews(response.data);
-    
     return response.data;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Failed to fetch user reviews';
-    setUserReviewsError(errorMessage);
-    throw error;
-  } finally {
-    setUserReviewsLoading(false);
+    throw new Error(errorMessage);
   }
 };

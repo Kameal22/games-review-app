@@ -1,7 +1,5 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useWatchlistStore } from "@/stores/watchlist.store";
-import { useReviewsStore } from "@/stores/reviews-store";
 
 // Helper function to extract token from cookie
 const getTokenFromCookie = (): string | null => {
@@ -22,11 +20,7 @@ const getTokenFromCookie = (): string | null => {
 };
 
 export const fetchWatchlist = async () => {
-  const { setLoading, setError, setWatchlist } = useWatchlistStore.getState();
-  
-  setLoading(true);
-  setError(null);
-  
+
   try {
     // Get token from cookies
     const token = getTokenFromCookie();
@@ -42,24 +36,14 @@ export const fetchWatchlist = async () => {
       },
     });
     
-    // Store the recent reviews data in Zustand
-    setWatchlist(response.data);
-    
     return response.data;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Failed to fetch watchlist';
-    setError(errorMessage);
-    throw error;
-  } finally {
-    setLoading(false);
+    throw new Error(errorMessage);
   }
 };
 
 export const fetchUserReviews = async () => {
-  const { setLoading, setError, setUserReviews } = useReviewsStore.getState();
-  
-  setLoading(true);
-  setError(null);
   
   try {
     // Get token from cookies
@@ -76,14 +60,9 @@ export const fetchUserReviews = async () => {
       },
     });
     
-    setUserReviews(response.data);
-    
     return response.data;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch watchlist';
-    setError(errorMessage);
-    throw error;
-  } finally {
-    setLoading(false);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch user reviews';
+    throw new Error(errorMessage);
   }
 };

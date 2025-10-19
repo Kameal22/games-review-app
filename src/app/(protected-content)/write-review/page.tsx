@@ -50,11 +50,8 @@ const WriteReview: React.FC = () => {
   const router = useRouter();
 
   const { user } = useUserStore();
-  const {
-    addReview,
-    selectedGameFromDashboard,
-    clearSelectedGameFromDashboard,
-  } = useReviewsStore();
+  const { selectedGameFromDashboard, clearSelectedGameFromDashboard } =
+    useReviewsStore();
   const { addToast } = useToastStore();
 
   const {
@@ -171,10 +168,7 @@ const WriteReview: React.FC = () => {
       };
 
       // Save review via API
-      const savedReview = await saveReview(reviewData);
-
-      // Add to local store (with safety check in the store)
-      addReview(savedReview);
+      await saveReview(reviewData);
 
       // Show success message
       addToast({

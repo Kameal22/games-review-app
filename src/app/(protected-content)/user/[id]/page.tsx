@@ -1,24 +1,11 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
 import UserInfo from "./_components/user-info";
 import UserReviews from "./_components/reviews/user-reviews";
 import UserUtils from "./_components/user-utils/user-utils";
-import { fetchUserReviews, fetchWatchlist } from "../utils";
 
 const User: React.FC = () => {
   const router = useRouter();
-
-  // Fetch watchlist data on component mount
-  useQuery({
-    queryKey: ["watchlist"],
-    queryFn: fetchWatchlist,
-  });
-
-  useQuery({
-    queryKey: ["userReviews"],
-    queryFn: fetchUserReviews,
-  });
 
   const handleBackToDashboard = () => {
     router.push("/dashboard");

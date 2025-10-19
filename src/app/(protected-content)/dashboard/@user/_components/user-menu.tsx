@@ -4,13 +4,18 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useDashboardStore } from "@/stores/dashboard-store";
-import { Review, useReviewsStore } from "@/stores/reviews-store";
+import { useQuery } from "@tanstack/react-query";
+import { fetchUserReviews } from "../../../user/utils";
+import { Review } from "@/app/types/review";
 import { getScoreColor } from "@/app/global-utils/get-score-color";
 
 const UserMenu: React.FC = () => {
   const [showReviewedGames, setShowReviewedGames] = useState(false);
   const { activeTab, setActiveTab, setSidebarOpen } = useDashboardStore();
-  const { userReviews } = useReviewsStore();
+  const { data: userReviews = [] } = useQuery<Review[]>({
+    queryKey: ["userReviews"],
+    queryFn: fetchUserReviews,
+  });
   const router = useRouter();
 
   const toggleReviewedGames = () => {

@@ -2,16 +2,24 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useQuery } from "@tanstack/react-query";
 import Pagination from "@/app/_components/pagination";
-import { useReviewsStore, Review } from "@/stores/reviews-store";
+import { fetchUserReviews } from "../../../utils";
+import { Review } from "@/app/types/review";
 import { getScoreColor } from "@/app/global-utils/get-score-color";
 
 const UserReviews: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const gamesPerPage = 3;
 
-  const { userReviews, isLoadingUserReviews, userReviewsError } =
-    useReviewsStore();
+  const {
+    data: userReviews = [],
+    isLoading: isLoadingUserReviews,
+    error: userReviewsError,
+  } = useQuery<Review[]>({
+    queryKey: ["userReviews"],
+    queryFn: fetchUserReviews,
+  });
 
   const totalPages = Math.ceil(userReviews.length / gamesPerPage);
 
@@ -43,7 +51,9 @@ const UserReviews: React.FC = () => {
         <p className="text-customWhite text-xl lg:text-2xl">User Reviews</p>
         <div className="text-center">
           <p className="text-red-500 text-lg mb-2">Error loading reviews</p>
-          <p className="text-greyText text-sm">{userReviewsError}</p>
+          <p className="text-greyText text-sm">
+            {userReviewsError.message || "An error occurred"}
+          </p>
         </div>
       </div>
     );
