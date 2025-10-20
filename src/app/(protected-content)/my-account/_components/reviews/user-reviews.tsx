@@ -7,8 +7,10 @@ import Pagination from "@/app/_components/pagination";
 import { fetchUserReviews } from "../../utils";
 import { Review } from "@/app/types/review";
 import { getScoreColor } from "@/app/global-utils/get-score-color";
+import { useRouter } from "next/navigation";
 
 const UserReviews: React.FC = () => {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const gamesPerPage = 3;
 
@@ -79,6 +81,7 @@ const UserReviews: React.FC = () => {
       <div className="flex flex-col gap-3">
         {currentReviews.map((review: Review) => (
           <div
+            onClick={() => router.push(`/review/${review._id}`)}
             key={review._id}
             className="bg-lightGray rounded-xl p-3 flex flex-col sm:flex-row items-start sm:items-center w-full cursor-pointer hover:bg-lightGrayHover gap-3"
           >
