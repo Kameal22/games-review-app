@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useDashboardStore } from "@/stores/dashboard-store";
 import { useQuery } from "@tanstack/react-query";
-import { fetchUserReviews } from "../../../user/utils";
+import { fetchUserReviews } from "@/app/(protected-content)/my-account/utils";
 import { Review } from "@/app/types/review";
 import { getScoreColor } from "@/app/global-utils/get-score-color";
 
@@ -91,7 +91,7 @@ const UserMenu: React.FC = () => {
         </div>
         <div
           onClick={() => {
-            router.push("/user/1");
+            router.push("/my-account");
             setSidebarOpen(false);
           }}
           className="w-full mt-2 bg-lightGray hover:bg-lightGrayHover p-3 rounded-lg cursor-pointer transition-colors duration-200 flex items-center gap-3 lg:gap-4"

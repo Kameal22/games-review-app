@@ -19,31 +19,7 @@ const getTokenFromCookie = (): string | null => {
   }
 };
 
-export const fetchWatchlist = async () => {
-
-  try {
-    // Get token from cookies
-    const token = getTokenFromCookie();
-    
-    if (!token) {
-      throw new Error('No authentication token found');
-    }
-    
-    const response = await axios.get("https://games-review-api.onrender.com/api/watchlist/me", {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-    
-    return response.data;
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch watchlist';
-    throw new Error(errorMessage);
-  }
-};
-
-export const fetchUserReviews = async () => {
+export const fetchUserData = async (userId: string) => {
   
   try {
     // Get token from cookies
@@ -53,7 +29,7 @@ export const fetchUserReviews = async () => {
       throw new Error('No authentication token found');
     }
     
-    const response = await axios.get("https://games-review-api.onrender.com/api/reviews/me", {
+    const response = await axios.get(`https://games-review-api.onrender.com/api/profile/${userId}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -62,7 +38,7 @@ export const fetchUserReviews = async () => {
     
     return response.data;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch user reviews';
+    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch user data';
     throw new Error(errorMessage);
   }
 };

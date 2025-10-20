@@ -7,6 +7,7 @@ type review = {
   genre: string;
   rating: number;
   user: string;
+  userId: string;
   image: string;
   reviewId?: string;
   createdAt?: string;
@@ -18,6 +19,8 @@ interface Props {
 
 const SingleReview: React.FC<Props> = ({ data }) => {
   const router = useRouter();
+
+  console.log(data);
 
   return (
     <div
@@ -55,10 +58,16 @@ const SingleReview: React.FC<Props> = ({ data }) => {
               {data.rating}/10
             </span>
           </p>
-          <p className="text-customWhite truncate">
+          <p
+            onClick={(e) => {
+              e.stopPropagation();
+              router.push(`/user/${data.userId}`);
+            }}
+            className="text-blue-400 truncate hover:text-blue-300 transition-colors duration-200 cursor-pointer underline decoration-blue-400 hover:decoration-blue-300"
+          >
             <span className="sm:hidden">By: </span>
             <span className="hidden sm:inline">Reviewed by: </span>
-            {data.user}
+            <span className="font-medium">{data.user}</span>
           </p>
         </div>
       </div>
