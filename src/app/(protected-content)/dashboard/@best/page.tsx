@@ -40,7 +40,7 @@ const BestReviewsList: React.FC = () => {
           </div>
         ) : bestReviews.length > 0 ? (
           <>
-            {bestReviews.map((review: BestReview) => (
+            {bestReviews.slice(0, 7).map((review: BestReview) => (
               <SingleBestReview key={review._id} data={review} />
             ))}
           </>

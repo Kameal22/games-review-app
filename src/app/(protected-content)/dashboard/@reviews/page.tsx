@@ -43,7 +43,7 @@ const ReviewsList: React.FC = () => {
           </div>
         ) : reviews.length > 0 ? (
           <>
-            {reviews?.map((review: Review) => (
+            {reviews?.slice(0, 7)?.map((review: Review) => (
               <SingleReview
                 key={review._id}
                 data={{

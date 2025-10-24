@@ -1,3 +1,4 @@
+import axios from "axios";
 import { User } from "@/app/types/user";
 
 export type LoginCredentials = {
@@ -12,22 +13,22 @@ export type LoginResponse = {
 
 // API function for user login
 export const loginUser = async (credentials: LoginCredentials): Promise<LoginResponse> => {
-  const response = await fetch('https://games-review-api.onrender.com/api/auth/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
+  try {
+    const response = await axios.post('https://games-review-api.onrender.com/api/auth/login', {
       email: credentials.email,
       password: credentials.password,
-    }),
-  });
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || `Login failed with status ${response.status}`);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || error.message || 'Login failed';
+      throw new Error(errorMessage);
+    }
+    throw new Error('An unexpected error occurred during login');
   }
-
-  const data: LoginResponse = await response.json();
-  return data;
 };

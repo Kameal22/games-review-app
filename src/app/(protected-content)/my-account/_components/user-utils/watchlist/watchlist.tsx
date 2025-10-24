@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 import Pagination from "@/app/_components/pagination";
-import { useWatchlistStore } from "@/stores/watchlist.store";
+import { Watchlist as WatchlistType } from "@/app/types/watchlist";
 import Image from "next/image";
 
-const Watchlist: React.FC = () => {
-  const { watchlist, isLoading, error } = useWatchlistStore();
+const Watchlist: React.FC<{ watchlist: WatchlistType[] }> = ({ watchlist }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const gamesPerPage = 3;
 
@@ -20,33 +19,6 @@ const Watchlist: React.FC = () => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-
-  // Loading state
-  if (isLoading) {
-    return (
-      <div className="mt-4">
-        <div className="flex flex-col gap-4 flex-1 justify-center items-center">
-          <p className="text-greyText text-lg text-center">
-            Loading watchlist...
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  // Error state
-  if (error) {
-    return (
-      <div className="mt-4">
-        <div className="flex flex-col gap-4 flex-1 justify-center items-center">
-          <p className="text-red-500 text-lg text-center">
-            Error loading watchlist
-          </p>
-          <p className="text-greyText text-sm text-center">{error}</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="mt-4">

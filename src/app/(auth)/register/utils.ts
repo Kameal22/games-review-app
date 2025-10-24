@@ -1,3 +1,4 @@
+import axios from "axios";
 import { User } from "@/app/types/user";
 
 export type RegisterCredentials = {
@@ -14,23 +15,23 @@ export type RegisterResponse = {
 
 // API function for user registration
 export const registerUser = async (credentials: RegisterCredentials): Promise<RegisterResponse> => {
-  const response = await fetch('https://games-review-api.onrender.com/api/auth/register', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
+  try {
+    const response = await axios.post('https://games-review-api.onrender.com/api/auth/register', {
       email: credentials.email,
       password: credentials.password,
       displayName: credentials.displayName,
-    }),
-  });
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || `Registration failed with status ${response.status}`);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || error.message || 'Registration failed';
+      throw new Error(errorMessage);
+    }
+    throw new Error('An unexpected error occurred during registration');
   }
-
-  const data: RegisterResponse = await response.json();
-  return data;
 };

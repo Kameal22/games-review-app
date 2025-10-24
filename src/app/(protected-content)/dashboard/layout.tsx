@@ -60,7 +60,7 @@ const DashboardLayout = ({
       </Suspense>
 
       {/* Main Content */}
-      <Suspense fallback={<p className="text-customWhite">Loading Games..</p>}>
+      <Suspense fallback={<p className="text-customWhite">Loading..</p>}>
         {activeTab === "reviews" && (
           <div className="flex-grow h-auto lg:h-full">{reviews}</div>
         )}

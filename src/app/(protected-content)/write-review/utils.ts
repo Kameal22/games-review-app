@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useReviewsStore } from "@/stores/reviews-store";
 import { getTokenFromCookie } from "@/app/global-utils/get-token-from-cookies";
 
 type CreateReviewData = {
@@ -15,10 +14,6 @@ type CreateReviewData = {
 };
 
 export const saveReview = async (review: CreateReviewData) => {
-  const { setLoading, setError } = useReviewsStore.getState();
-  
-  setLoading(true);
-  setError(null);
   
   try {
     // Get token from cookies
@@ -56,18 +51,11 @@ export const saveReview = async (review: CreateReviewData) => {
       errorMessage = error.message;
     }
     
-    setError(errorMessage);
     throw new Error(errorMessage);
-  } finally {
-    setLoading(false);
   }
 };
 
 export const checkIfGameIsReviewed = async (gameId: string) => {
-  const { setLoading, setError } = useReviewsStore.getState();
-
-  setLoading(true);
-  setError(null);
   
   try {
     const token = getTokenFromCookie();
@@ -86,9 +74,6 @@ export const checkIfGameIsReviewed = async (gameId: string) => {
     return response.data;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Failed to check if game is reviewed';
-    setError(errorMessage);
-    throw error;
-  } finally {
-    setLoading(false);
+    throw new Error(errorMessage);
   }
 };

@@ -34,7 +34,6 @@ const LoginForm: React.FC = () => {
   const mutation = useMutation({
     mutationFn: loginUser,
     onSuccess: async (data) => {
-      console.log("Login successful");
       // Store user data and token using the user store
       login(data.user, data.token);
       addToast({
@@ -45,12 +44,6 @@ const LoginForm: React.FC = () => {
       router.push("/dashboard");
     },
     onError: async (error: Error) => {
-      console.log("Login error:", error.message);
-      addToast({
-        type: "error",
-        title: "Login failed",
-        message: error.message || "Invalid credentials, please try again.",
-      });
       setError("root", {
         message: error.message || "Invalid credentials, please try again.",
       });
@@ -163,12 +156,6 @@ const LoginForm: React.FC = () => {
         >
           New to Reviewslike? Sign up here
         </Link>
-        {/* <Link
-          href="/forgot-password"
-          className="text-sm md:text-base text-customWhite underline cursor-pointer"
-        >
-          Forgot Password?
-        </Link> */}
       </div>
     </div>
   );
