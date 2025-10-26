@@ -8,7 +8,7 @@ const UserInfo: React.FC<{ data: User }> = ({ data }) => {
     <div className="flex flex-col items-center justify-center w-full gap-4 p-2">
       <div className="w-20 h-20 lg:w-24 lg:h-24">
         <Image
-          src="https://e7.pngegg.com/pngimages/799/987/png-clipart-computer-icons-avatar-icon-design-avatar-heroes-computer-wallpaper-thumbnail.png"
+          src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
           alt="User Avatar"
           className="w-full h-full rounded-full object-cover"
           width={96}

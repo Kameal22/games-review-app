@@ -10,7 +10,7 @@ const UserInfo: React.FC = () => {
     <div className="flex items-center w-full gap-4 p-3">
       <div className="w-12 h-12 lg:w-14 lg:h-14 flex-shrink-0">
         <Image
-          src="https://e7.pngegg.com/pngimages/799/987/png-clipart-computer-icons-avatar-icon-design-avatar-heroes-computer-wallpaper-thumbnail.png"
+          src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
           alt="User Avatar"
           className="w-full h-full rounded-full object-cover"
           width={56}
