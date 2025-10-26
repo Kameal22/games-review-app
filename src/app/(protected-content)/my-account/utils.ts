@@ -48,3 +48,25 @@ export const fetchMyUserData = async () => {
     throw new Error(errorMessage);
   }
 };
+
+export const handleUpdateBio = async (bio: string) => {
+  try {
+    const token = getTokenFromCookie();
+    if (!token) {
+      throw new Error('No authentication token found');
+    }
+
+    const response = await axios.put(`https://games-review-api.onrender.com/api/profile/bio`, {
+      bio,
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to update bio';
+    throw new Error(errorMessage);
+  }
+};
