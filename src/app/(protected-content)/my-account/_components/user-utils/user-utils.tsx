@@ -6,7 +6,7 @@ import { getScoreBackground } from "@/app/global-utils/get-score-background";
 
 const UserUtils: React.FC<{
   watchlist: WatchlistType[];
-  insights: { averageFinalScore: number; reviewCount: number };
+  insights: { averageFinalScore: number | null; reviewCount: number };
 }> = ({ watchlist, insights }) => {
   return (
     <div className="flex-1 lg:basis-[30%] flex flex-col justify-between gap-6">
@@ -22,11 +22,13 @@ const UserUtils: React.FC<{
         <div className="space-y-4">
           <div
             className={`${getScoreBackground(
-              insights.averageFinalScore
+              insights.averageFinalScore || 0
             )} rounded-lg p-4 text-center`}
           >
             <div className="text-2xl font-bold text-customWhite mb-1">
-              {insights.averageFinalScore.toFixed(1)}
+              {insights.averageFinalScore
+                ? insights.averageFinalScore.toFixed(1)
+                : "N/A"}
             </div>
             <div className="text-sm text-greyText">Average Score</div>
           </div>
