@@ -6,6 +6,7 @@ import Image from "next/image";
 import { getScoreColor } from "@/app/global-utils/get-score-color";
 import { getScoreBackground as getScoreBg } from "@/app/global-utils/get-score-background";
 import { Review } from "@/app/types/review";
+import Watchlist from "./_components/user-utils/watchlist/watchlist";
 
 interface UserData {
   user: {
@@ -324,39 +325,7 @@ const User: React.FC = () => {
             <h2 className="text-xl font-bold text-customWhite mb-4">
               Watchlist
             </h2>
-
-            {watchlist.length === 0 ? (
-              <div className="text-center py-4">
-                <p className="text-greyText text-sm">No games in watchlist</p>
-              </div>
-            ) : (
-              <div className="space-y-3">
-                {watchlist.slice(0, 5).map((item) => (
-                  <div
-                    key={item._id}
-                    onClick={() => handleGameClick(item.game.slug)}
-                    className="bg-darkGreyBackground rounded-lg p-3 cursor-pointer hover:bg-darkGreyBackground/80 transition-colors duration-200"
-                  >
-                    <div className="flex gap-3">
-                      <div className="flex-shrink-0">
-                        <Image
-                          src={item.game.coverImageUrl}
-                          alt={item.game.title}
-                          width={48}
-                          height={48}
-                          className="w-12 h-12 object-cover rounded"
-                        />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-customWhite text-sm font-medium truncate">
-                          {item.game.title}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+            <Watchlist watchlist={watchlist} onGameClick={handleGameClick} />
           </div>
 
           {/* Insights Section */}

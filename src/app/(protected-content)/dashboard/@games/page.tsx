@@ -2,19 +2,21 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Game } from "@/app/types/game";
-import { useWatchlistStore } from "@/stores/watchlist.store";
 import Pagination from "./_components/pagination";
 import SingleGame from "./_components/single-game";
-import { fetchGames } from "./utils";
+import { fetchGames, fetchWatchlist } from "./utils";
 import GamesSearch from "./_components/games-search";
+import { Watchlist } from "@/app/types/watchlist";
 
 const GamesList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const gamesPerPage = 6;
 
-  // Get games and watchlist from Zustand stores
-  const { watchlist } = useWatchlistStore();
+  const { data: watchlist } = useQuery({
+    queryKey: ["watchlist"],
+    queryFn: fetchWatchlist,
+  });
 
   // Fetch reviews on component mount
   const {
@@ -27,7 +29,9 @@ const GamesList: React.FC = () => {
   });
 
   // Create a set of watchlisted game IDs for efficient lookup
-  const watchlistedGameIds = new Set(watchlist.map((item) => item.game._id));
+  const watchlistedGameIds = new Set(
+    watchlist?.map((item: Watchlist) => item.game._id)
+  );
 
   // Filter and sort games: watchlisted games first, then others
   const filteredGames = (games || [])
@@ -106,6 +110,7 @@ const GamesList: React.FC = () => {
                   _id: game._id,
                   createdAt: game.createdAt,
                 }}
+                watchlist={watchlist}
               />
             ))}
             {totalPages > 1 && (

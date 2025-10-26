@@ -16,8 +16,6 @@ const DashboardLayout = ({
 }) => {
   const { activeTab, sidebarOpen, setSidebarOpen } = useDashboardStore();
 
-  console.log(activeTab === "best-reviews");
-
   return (
     <div
       style={{ minHeight: "calc(100vh - 7rem)" }}

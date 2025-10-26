@@ -2,22 +2,25 @@
 import { Game } from "@/app/types/game";
 import Image from "next/image";
 import { addToWatchlist, removeFromWatchlist } from "../utils";
-import { useWatchlistStore } from "@/stores/watchlist.store";
 import { useToastStore } from "@/stores/toast-store";
 import { useReviewsStore } from "@/stores/reviews-store";
 import { useRouter } from "next/navigation";
+import { Watchlist } from "@/app/types/watchlist";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
   data: Game;
+  watchlist: Watchlist[];
 }
 
-const SingleGame: React.FC<Props> = ({ data }) => {
-  const { watchlist } = useWatchlistStore();
+const SingleGame: React.FC<Props> = ({ data, watchlist }) => {
   const { addToast } = useToastStore();
   const { setSelectedGameFromDashboard } = useReviewsStore();
   const router = useRouter();
+  const queryClient = useQueryClient();
+
   const toggleWatchlist = async () => {
-    const isInWatchlist = watchlist.some((game) => game.game._id === data._id);
+    const isInWatchlist = watchlist?.some((game) => game.game._id === data._id);
 
     try {
       if (isInWatchlist) {
@@ -35,6 +38,9 @@ const SingleGame: React.FC<Props> = ({ data }) => {
           message: `${data.title} has been added to your watchlist`,
         });
       }
+
+      // Invalidate and refetch the watchlist query to update the UI
+      await queryClient.invalidateQueries({ queryKey: ["watchlist"] });
     } catch (error) {
       console.log(error);
       addToast({
@@ -85,14 +91,14 @@ const SingleGame: React.FC<Props> = ({ data }) => {
             onClick={toggleWatchlist}
             className="flex-shrink-0 p-2 rounded-lg hover:bg-gray-600 transition-colors duration-200"
             title={
-              watchlist.some((game) => game.game._id === data._id)
+              watchlist?.some((game) => game.game._id === data._id)
                 ? "Remove from watchlist"
                 : "Add to watchlist"
             }
           >
             <svg
               className={`w-5 h-5 transition-colors duration-200 ${
-                watchlist.some((game) => game.game._id === data._id)
+                watchlist?.some((game) => game.game._id === data._id)
                   ? "fill-red-500 text-red-500"
                   : "fill-gray-400 text-gray-400 hover:fill-red-400 hover:text-red-400"
               }`}

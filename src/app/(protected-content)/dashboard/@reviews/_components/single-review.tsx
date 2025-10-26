@@ -20,8 +20,6 @@ interface Props {
 const SingleReview: React.FC<Props> = ({ data }) => {
   const router = useRouter();
 
-  console.log(data);
-
   return (
     <div
       className="bg-lightGray rounded-xl p-3 flex flex-col sm:flex-row items-start sm:items-center w-full hover:bg-lightGrayHover gap-3 cursor-pointer"

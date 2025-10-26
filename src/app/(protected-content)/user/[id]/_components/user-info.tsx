@@ -6,8 +6,6 @@ import Image from "next/image";
 const UserInfo: React.FC = () => {
   const { user } = useUserStore();
 
-  console.log(user, "user info from zustand");
-
   return (
     <div className="flex flex-col items-center justify-center w-full gap-4 p-2">
       <div className="w-20 h-20 lg:w-24 lg:h-24">
