@@ -70,6 +70,17 @@ const GamesList: React.FC = () => {
 
   return (
     <div className="bg-darkGreyBackground rounded-xl p-4 w-full h-full flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
+        <h2 className="text-customWhite text-xl lg:text-2xl font-semibold">
+          {searchTerm ? `Search Results for "${searchTerm}"` : "Browse Games"}
+        </h2>
+        <p className="text-greyText text-base lg:text-lg leading-relaxed">
+          {searchTerm
+            ? "Discover games matching your search criteria"
+            : "Explore our extensive collection of games across all genres and platforms. Find your next favorite title and add games to your watchlist."}
+        </p>
+      </div>
+
       <GamesSearch
         searchTerm={searchTerm}
         onSearchChange={(term: string) => {
@@ -77,9 +88,6 @@ const GamesList: React.FC = () => {
           setCurrentPage(1); // Reset to first page when searching
         }}
       />
-      <p className="text-customWhite text-lg lg:text-xl">
-        {searchTerm ? `Search Results for "${searchTerm}"` : ""}
-      </p>
 
       <div className="flex flex-col gap-4 flex-1">
         {isLoading ? (

@@ -21,9 +21,16 @@ const ReviewsList: React.FC = () => {
 
   return (
     <div className="bg-darkGreyBackground rounded-xl p-4 w-full h-full flex flex-col gap-4">
-      <p className="text-customWhite text-lg lg:text-xl">
-        {searchTerm ? `Search Results for "${searchTerm}"` : "Latest Reviews"}
-      </p>
+      <div className="flex flex-col gap-2">
+        <h2 className="text-customWhite text-xl lg:text-2xl font-semibold">
+          {searchTerm ? `Search Results for "${searchTerm}"` : "Latest Reviews"}
+        </h2>
+        <p className="text-greyText text-base lg:text-lg leading-relaxed">
+          {searchTerm
+            ? "Discover reviews matching your search criteria"
+            : "Stay up-to-date with the newest game reviews from our community. Discover fresh perspectives on the latest releases and hidden gems."}
+        </p>
+      </div>
 
       <div className="flex flex-col gap-4 flex-1">
         {isLoading ? (

@@ -45,10 +45,17 @@ const SingleBestReview: React.FC<Props> = ({ data }) => {
               {data.finalScore}/10
             </span>
           </p>
-          <p className="text-customWhite truncate">
+
+          <p
+            onClick={(e) => {
+              e.stopPropagation();
+              router.push(`/user/${data.user._id}`);
+            }}
+            className="text-blue-400 truncate hover:text-blue-300 transition-colors duration-200 cursor-pointer underline decoration-blue-400 hover:decoration-blue-300"
+          >
             <span className="sm:hidden">By: </span>
             <span className="hidden sm:inline">Reviewed by: </span>
-            {data.user.displayName}
+            <span className="font-medium">{data.user.displayName}</span>
           </p>
         </div>
       </div>

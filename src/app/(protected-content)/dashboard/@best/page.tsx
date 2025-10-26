@@ -28,31 +28,41 @@ const BestReviewsList: React.FC = () => {
 
   return (
     <div className="bg-darkGreyBackground rounded-xl p-4 w-full h-full flex flex-col gap-4">
-      <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-        <p className="text-customWhite text-lg lg:text-xl">
-          {categories.find((category) => category.value === selectedCategory)
-            ?.label || "Best Reviews"}
-        </p>
+      <div className="flex flex-col gap-2">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+          <h2 className="text-customWhite text-xl lg:text-2xl font-semibold">
+            {categories.find((category) => category.value === selectedCategory)
+              ?.label || "Best Reviews"}
+          </h2>
 
-        <label htmlFor="category-select" className="text-greyText text-m ml-8">
-          Sort by:
-        </label>
-        <select
-          id="category-select"
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          className="bg-lightGray border border-gray-600 rounded-lg px-3 py-2 text-customWhite text-sm focus:outline-none focus:border-blue-500 hover:border-gray-500 transition-colors duration-200"
-        >
-          {categories.map((category) => (
-            <option
-              key={category.value}
-              value={category.value}
-              className="bg-lightGray text-customWhite"
-            >
-              {category.name}
-            </option>
-          ))}
-        </select>
+          <label
+            htmlFor="category-select"
+            className="text-greyText text-base ml-8"
+          >
+            Sort by:
+          </label>
+          <select
+            id="category-select"
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className="bg-lightGray border border-gray-600 rounded-lg px-3 py-2 text-customWhite text-sm focus:outline-none focus:border-blue-500 hover:border-gray-500 transition-colors duration-200"
+          >
+            {categories.map((category) => (
+              <option
+                key={category.value}
+                value={category.value}
+                className="bg-lightGray text-customWhite"
+              >
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <p className="text-greyText text-base lg:text-lg leading-relaxed">
+          Discover the highest-rated games across different categories. Explore
+          top-rated titles based on gameplay, graphics, story, and more from our
+          community&apos;s reviews.
+        </p>
       </div>
       <div className="flex flex-col gap-4 flex-1">
         {isLoading ? (

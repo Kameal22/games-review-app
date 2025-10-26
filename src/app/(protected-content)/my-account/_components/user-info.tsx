@@ -77,7 +77,7 @@ const UserInfo: React.FC<{ data: User }> = ({ data }) => {
                 onBlur={handleBioBlur}
                 placeholder="Tell us about yourself..."
                 className="w-full p-3 bg-darkGreyBackground border border-gray-600 rounded-lg text-customWhite placeholder-gray-400 focus:outline-none focus:border-blue-500 resize-none"
-                rows={3}
+                rows={2}
                 autoFocus
               />
               <div className="flex gap-2 justify-end">
@@ -98,17 +98,30 @@ const UserInfo: React.FC<{ data: User }> = ({ data }) => {
           ) : (
             <div
               onClick={handleBioClick}
-              className="w-full p-3 bg-darkGreyBackground border border-gray-600 rounded-lg cursor-pointer hover:border-gray-500 transition-colors duration-200 min-h-[80px] flex items-center justify-center"
+              className="w-full p-3 bg-darkGreyBackground border border-gray-600 rounded-lg cursor-pointer hover:border-blue-500 hover:bg-gray-800 transition-all duration-200 min-h-[60px] flex items-center justify-center group relative"
             >
               {bio ? (
-                <p className="text-sm lg:text-base text-customWhite text-center">
-                  {bio}
-                </p>
+                <p className="text-sm text-customWhite text-center">{bio}</p>
               ) : (
-                <p className="text-sm lg:text-base text-gray-400 text-center">
+                <p className="text-sm text-gray-400 text-center">
                   Click here to add your bio
                 </p>
               )}
+              <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <svg
+                  className="w-4 h-4 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  />
+                </svg>
+              </div>
             </div>
           )}
         </div>
