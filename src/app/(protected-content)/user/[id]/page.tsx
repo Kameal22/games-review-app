@@ -215,10 +215,7 @@ const User: React.FC = () => {
         <div className="flex-shrink-0">
           <div className="w-24 h-24 lg:w-32 lg:h-32 relative">
             <Image
-              src={
-                user.avatarUrl ||
-                "https://e7.pngegg.com/pngimages/799/987/png-clipart-computer-icons-avatar-icon-design-avatar-heroes-computer-wallpaper-thumbnail.png"
-              }
+              src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
               alt={`${user.displayName}'s avatar`}
               className="w-full h-full rounded-full object-cover border-2 border-blue-400/30"
               width={128}
