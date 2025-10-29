@@ -75,10 +75,6 @@ const RegisterForm: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center gap-8 w-full px-4">
-      <h1 className="text-3xl md:text-4xl text-customWhite text-center">
-        Register
-      </h1>
-
       <form
         className="flex flex-col items-center justify-center gap-6 w-full max-w-md"
         onSubmit={handleSubmit(onSubmit)}
