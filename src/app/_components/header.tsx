@@ -5,11 +5,137 @@ import Image from "next/image";
 import { useUserStore } from "@/stores/user-store";
 import { useToastStore } from "@/stores/toast-store";
 import Notifications from "./notifications";
+import { getTokenFromCookie } from "../global-utils/get-token-from-cookies";
+import axios from "axios";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const Header: React.FC = () => {
   const router = useRouter();
   const { user, isAuthenticated, logout } = useUserStore();
   const { addToast } = useToastStore();
+  const queryClient = useQueryClient();
+
+  const fetchNotifications = async () => {
+    try {
+      // Get token from cookies
+      const token = getTokenFromCookie();
+
+      if (!token) {
+        throw new Error("No authentication token found");
+      }
+
+      const response = await axios.get(
+        `https://games-review-api.onrender.com/api/notifications/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to fetch user data";
+      throw new Error(errorMessage);
+    }
+  };
+
+  const fetchUnreadNotificationsCount = async () => {
+    try {
+      // Get token from cookies
+      const token = getTokenFromCookie();
+
+      if (!token) {
+        throw new Error("No authentication token found");
+      }
+
+      const response = await axios.get(
+        `https://games-review-api.onrender.com/api/notifications/unread-count`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to fetch user data";
+      throw new Error(errorMessage);
+    }
+  };
+
+  const markAllAsRead = async () => {
+    try {
+      const token = getTokenFromCookie();
+
+      if (!token) {
+        throw new Error("No authentication token found");
+      }
+
+      const response = await axios.patch(
+        `https://games-review-api.onrender.com/api/notifications/read-all`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const errorMessage =
+          error.response?.data?.message ||
+          error.message ||
+          "Failed to mark all as read";
+        throw new Error(errorMessage);
+      }
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to mark all as read";
+      throw new Error(errorMessage);
+    }
+  };
+
+  const markAllAsReadMutation = useMutation({
+    mutationFn: markAllAsRead,
+    onSuccess: async () => {
+      // Invalidate and refetch notifications and unread count
+      await queryClient.invalidateQueries({ queryKey: ["notifications"] });
+      await queryClient.invalidateQueries({
+        queryKey: ["unreadNotificationsCount"],
+      });
+      addToast({
+        type: "success",
+        title: "Success",
+        message: "All notifications have been marked as read",
+      });
+    },
+    onError: (error: Error) => {
+      addToast({
+        type: "error",
+        title: "Error",
+        message: error.message || "Failed to mark all as read",
+      });
+    },
+  });
+
+  const { data: notifications } = useQuery({
+    queryKey: ["notifications"],
+    queryFn: fetchNotifications,
+    enabled: isAuthenticated,
+  });
+
+  const { data: unreadNotificationsCount } = useQuery({
+    queryKey: ["unreadNotificationsCount"],
+    queryFn: fetchUnreadNotificationsCount,
+    enabled: isAuthenticated,
+  });
 
   const handleLogout = () => {
     // Use the logout function from the user store
@@ -45,7 +171,11 @@ const Header: React.FC = () => {
                 Welcome, {user.displayName}!
               </p>
             )}
-            <Notifications notifications={[]} unreadCount={0} />
+            <Notifications
+              notifications={notifications?.notifications}
+              unreadCount={unreadNotificationsCount?.unreadCount}
+              markAllAsRead={() => markAllAsReadMutation.mutate()}
+            />
             <p
               onClick={handleLogout}
               className="text-customWhite underline cursor-pointer text-sm lg:text-base whitespace-nowrap"
@@ -55,9 +185,6 @@ const Header: React.FC = () => {
           </>
         )}
       </div>
-      {/* <Link href="/" className="text-4xl font-semibold text-customWhite">
-        Reviewslike
-      </Link> */}
     </div>
   );
 };
