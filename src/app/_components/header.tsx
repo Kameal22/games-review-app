@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useUserStore } from "@/stores/user-store";
 import { useToastStore } from "@/stores/toast-store";
+import Notifications from "./notifications";
 
 const Header: React.FC = () => {
   const router = useRouter();
@@ -44,6 +45,7 @@ const Header: React.FC = () => {
                 Welcome, {user.displayName}!
               </p>
             )}
+            <Notifications notifications={[]} unreadCount={0} />
             <p
               onClick={handleLogout}
               className="text-customWhite underline cursor-pointer text-sm lg:text-base whitespace-nowrap"

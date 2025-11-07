@@ -21,7 +21,10 @@ const Watchlist: React.FC<{ watchlist: WatchlistType[] }> = ({ watchlist }) => {
   };
 
   return (
-    <div className="mt-4">
+    <div className="mt-4 flex-1 lg:basis-[40%]">
+      <p className="text-customWhite text-xl lg:text-2xl font-semibold mb-2">
+        Watchlist
+      </p>
       <div className="flex flex-col gap-3">
         {watchlistGames.length > 0 ? (
           watchlistGames.map((data, index) => (

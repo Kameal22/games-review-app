@@ -26,8 +26,10 @@ const UserReviews: React.FC<{ reviews: Review[] }> = ({ reviews }) => {
   // If no reviews, show a message
   if (reviews.length === 0) {
     return (
-      <div className="flex-1 lg:basis-[70%] flex flex-col justify-center items-center gap-4">
-        <p className="text-customWhite text-xl lg:text-2xl">User Reviews</p>
+      <div className="flex-1 lg:basis-[60%] flex flex-col justify-center items-center gap-4">
+        <p className="text-customWhite text-xl lg:text-2xl font-semibold">
+          Reviews
+        </p>
         <div className="text-center">
           <p className="text-greyText text-lg mb-4">
             This user hasn&apos;t written any reviews yet.
@@ -38,8 +40,10 @@ const UserReviews: React.FC<{ reviews: Review[] }> = ({ reviews }) => {
   }
 
   return (
-    <div className="flex-1 lg:basis-[70%] flex flex-col gap-4">
-      <p className="text-customWhite text-xl lg:text-2xl">User Reviews</p>
+    <div className="flex-1 lg:basis-[60%] flex flex-col gap-4">
+      <p className="text-customWhite text-xl lg:text-2xl font-semibold">
+        Reviews
+      </p>
       <div className="flex flex-col gap-3">
         {currentReviews.map((review: Review) => (
           <div

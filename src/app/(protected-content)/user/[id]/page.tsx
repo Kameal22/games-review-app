@@ -1,12 +1,18 @@
 "use client";
 import { useRouter, useParams } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
-import { fetchUserData } from "../utils";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  checkFollowStatus,
+  fetchUserData,
+  followUser,
+  unfollowUser,
+} from "../utils";
 import Image from "next/image";
 import { getScoreColor } from "@/app/global-utils/get-score-color";
 import { getScoreBackground as getScoreBg } from "@/app/global-utils/get-score-background";
 import { Review } from "@/app/types/review";
 import Watchlist from "./_components/user-utils/watchlist/watchlist";
+import { useToastStore } from "@/stores/toast-store";
 
 interface UserData {
   user: {
@@ -37,6 +43,8 @@ const User: React.FC = () => {
   const router = useRouter();
   const params = useParams();
   const userId = params.id as string;
+  const queryClient = useQueryClient();
+  const { addToast } = useToastStore();
 
   const {
     data: userData,
@@ -46,6 +54,52 @@ const User: React.FC = () => {
     queryKey: ["userData", userId],
     queryFn: () => fetchUserData(userId),
     enabled: !!userId,
+  });
+
+  const { data: followStatus } = useQuery<{ isFollowing: boolean }>({
+    queryKey: ["followStatus", userId],
+    queryFn: () => checkFollowStatus(userId),
+    enabled: !!userId,
+  });
+
+  const followMutation = useMutation({
+    mutationFn: (userId: string) => followUser(userId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["userFollowing"] });
+      queryClient.invalidateQueries({ queryKey: ["followStatus", userId] });
+      addToast({
+        type: "success",
+        title: "Success",
+        message: "You are now following this user",
+      });
+    },
+    onError: (error: Error) => {
+      addToast({
+        type: "error",
+        title: "Error",
+        message: error.message || "Failed to follow user",
+      });
+    },
+  });
+
+  const unfollowMutation = useMutation({
+    mutationFn: (userId: string) => unfollowUser(userId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["userFollowing"] });
+      queryClient.invalidateQueries({ queryKey: ["followStatus", userId] });
+      addToast({
+        type: "success",
+        title: "Success",
+        message: "You have unfollowed this user",
+      });
+    },
+    onError: (error: Error) => {
+      addToast({
+        type: "error",
+        title: "Error",
+        message: error.message || "Failed to unfollow user",
+      });
+    },
   });
 
   const handleBackToDashboard = () => {
@@ -58,6 +112,16 @@ const User: React.FC = () => {
 
   const handleGameClick = (gameSlug: string) => {
     router.push(`/game/${gameSlug}`);
+  };
+
+  const handleFollow = () => {
+    if (userId) {
+      if (followStatus?.isFollowing) {
+        unfollowMutation.mutate(userId);
+      } else {
+        followMutation.mutate(userId);
+      }
+    }
   };
 
   // Loading state
@@ -240,11 +304,28 @@ const User: React.FC = () => {
               day: "numeric",
             })}
           </p>
-          <div className="bg-darkGreyBackground rounded-lg p-4">
+          <div className="bg-darkGreyBackground rounded-lg p-4 mb-4">
             <p className="text-customWhite text-sm lg:text-base">
               {user.bio || "This user hasn't added a bio yet."}
             </p>
           </div>
+          <button
+            onClick={handleFollow}
+            disabled={followMutation.isPending || unfollowMutation.isPending}
+            className={`${
+              followStatus?.isFollowing
+                ? "bg-red-600 hover:bg-red-700"
+                : "bg-blue-600 hover:bg-blue-700"
+            } disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 self-start`}
+          >
+            {unfollowMutation.isPending
+              ? "Unfollowing..."
+              : followMutation.isPending
+              ? "Following..."
+              : followStatus?.isFollowing
+              ? "Unfollow"
+              : "Follow"}
+          </button>
         </div>
       </div>
 
