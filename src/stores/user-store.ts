@@ -110,6 +110,34 @@ export const useUserStore = create<UserStore>()(
         user: state.user, 
         isAuthenticated: state.isAuthenticated 
       }), // only persist user and isAuthenticated
+      onRehydrateStorage: () => (state) => {
+        // When state is restored from localStorage, validate the token
+        // If token is expired, clear the state
+        if (state) {
+          const tokenData = Cookies.get("auth_token");
+          if (!tokenData) {
+            // No token, clear state
+            state.logout();
+            return;
+          }
+
+          try {
+            const parsed = JSON.parse(tokenData);
+            const tokenTimestamp = parsed.timestamp;
+            const currentTime = Date.now();
+            const tokenAge = currentTime - tokenTimestamp;
+            const twelveHoursInMs = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
+
+            if (tokenAge >= twelveHoursInMs) {
+              // Token is expired, clear state
+              state.logout();
+            }
+          } catch {
+            // If parsing fails, assume token is invalid, clear state
+            state.logout();
+          }
+        }
+      },
     }
   )
 );
