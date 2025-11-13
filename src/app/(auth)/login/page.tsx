@@ -1,11 +1,11 @@
-import { Metadata } from "next";
+// import { Metadata } from "next";
 import LoginForm from "./login-form";
 
-export const metadata: Metadata = {
-  title: "Sign In - Reviewslike",
-  description:
-    "Sign in to Reviewslike to review games, manage your wishlist, and discover new gaming experiences.",
-};
+// export const metadata: Metadata = {
+//   title: "Sign In - Reviewslike",
+//   description:
+//     "Sign in to Reviewslike to review games, manage your wishlist, and discover new gaming experiences.",
+// };
 
 const Login: React.FC = () => {
   return (
