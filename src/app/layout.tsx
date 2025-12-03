@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import Header from "./_components/header";
+import Footer from "./_components/footer";
 import Toast from "./_components/toast";
 import Provider from "./provider";
 import { AuthInitializer } from "@/app/global-utils/AuthInitializer";
@@ -43,6 +44,7 @@ export default function RootLayout({
           <AuthInitializer />
           <Header />
           {children}
+          <Footer />
           <Toast />
         </body>
       </Provider>
