@@ -59,7 +59,7 @@ const SingleReview: React.FC<Props> = ({ data }) => {
           <p
             onClick={(e) => {
               e.stopPropagation();
-              router.push(`/user/${data.userId}`);
+              router.push(`/user/${data.user}`);
             }}
             className="text-blue-400 truncate hover:text-blue-300 transition-colors duration-200 cursor-pointer underline decoration-blue-400 hover:decoration-blue-300"
           >

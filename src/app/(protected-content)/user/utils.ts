@@ -19,7 +19,7 @@ const getTokenFromCookie = (): string | null => {
   }
 };
 
-export const fetchUserData = async (userId: string) => {
+export const fetchUserData = async (userName: string) => {
   
   try {
     // Get token from cookies
@@ -29,7 +29,7 @@ export const fetchUserData = async (userId: string) => {
       throw new Error('No authentication token found');
     }
     
-    const response = await axios.get(`https://games-review-api.onrender.com/api/profile/${userId}`, {
+    const response = await axios.get(`https://games-review-api.onrender.com/api/profile/${userName}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export const fetchUserData = async (userId: string) => {
   }
 };
 
-export const followUser = async (userId: string) => {
+export const followUser = async (userName: string) => {
   try {
     // Get token from cookies
     const token = getTokenFromCookie();
@@ -53,7 +53,7 @@ export const followUser = async (userId: string) => {
     }
     
     const response = await axios.post(
-      `https://games-review-api.onrender.com/api/follow/${userId}`,
+      `https://games-review-api.onrender.com/api/follow/${userName}`,
       {},
       {
         headers: {
@@ -74,7 +74,7 @@ export const followUser = async (userId: string) => {
   }
 };
 
-export const checkFollowStatus = async (userId: string) => {
+export const checkFollowStatus = async (userName: string) => {
   
   try {
     // Get token from cookies
@@ -84,7 +84,7 @@ export const checkFollowStatus = async (userId: string) => {
       throw new Error('No authentication token found');
     }
     
-    const response = await axios.get(`https://games-review-api.onrender.com/api/follow/${userId}/status`, {
+    const response = await axios.get(`https://games-review-api.onrender.com/api/follow/${userName}/status`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -93,12 +93,12 @@ export const checkFollowStatus = async (userId: string) => {
     
     return response.data;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch user data';
+    const errorMessage = error instanceof Error ? error.message : 'Failed to check follow status';
     throw new Error(errorMessage);
   }
 };
 
-export const unfollowUser = async (userId: string) => {
+export const unfollowUser = async (userName: string) => {
   try {
     // Get token from cookies
     const token = getTokenFromCookie();
@@ -108,7 +108,7 @@ export const unfollowUser = async (userId: string) => {
     }
     
     const response = await axios.delete(
-      `https://games-review-api.onrender.com/api/follow/${userId}`,
+      `https://games-review-api.onrender.com/api/follow/${userName}`,
       {
         headers: {
           'Authorization': `Bearer ${token}`,

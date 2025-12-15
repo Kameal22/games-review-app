@@ -42,7 +42,7 @@ interface UserData {
 const User: React.FC = () => {
   const router = useRouter();
   const params = useParams();
-  const userId = params.id as string;
+  const userName = params.id as string;
   const queryClient = useQueryClient();
   const { addToast } = useToastStore();
 
@@ -51,22 +51,22 @@ const User: React.FC = () => {
     isLoading,
     error,
   } = useQuery<UserData>({
-    queryKey: ["userData", userId],
-    queryFn: () => fetchUserData(userId),
-    enabled: !!userId,
+    queryKey: ["userData", userName],
+    queryFn: () => fetchUserData(userName),
+    enabled: !!userName,
   });
 
   const { data: followStatus } = useQuery<{ isFollowing: boolean }>({
-    queryKey: ["followStatus", userId],
-    queryFn: () => checkFollowStatus(userId),
-    enabled: !!userId,
+    queryKey: ["followStatus", userName],
+    queryFn: () => checkFollowStatus(userName),
+    enabled: !!userName,
   });
 
   const followMutation = useMutation({
-    mutationFn: (userId: string) => followUser(userId),
+    mutationFn: (userName: string) => followUser(userName),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["userFollowing"] });
-      queryClient.invalidateQueries({ queryKey: ["followStatus", userId] });
+      queryClient.invalidateQueries({ queryKey: ["followStatus", userName] });
       addToast({
         type: "success",
         title: "Success",
@@ -83,10 +83,10 @@ const User: React.FC = () => {
   });
 
   const unfollowMutation = useMutation({
-    mutationFn: (userId: string) => unfollowUser(userId),
+    mutationFn: (userName: string) => unfollowUser(userName),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["userFollowing"] });
-      queryClient.invalidateQueries({ queryKey: ["followStatus", userId] });
+      queryClient.invalidateQueries({ queryKey: ["followStatus", userName] });
       addToast({
         type: "success",
         title: "Success",
@@ -115,11 +115,11 @@ const User: React.FC = () => {
   };
 
   const handleFollow = () => {
-    if (userId) {
+    if (userName) {
       if (followStatus?.isFollowing) {
-        unfollowMutation.mutate(userId);
+        unfollowMutation.mutate(userName);
       } else {
-        followMutation.mutate(userId);
+        followMutation.mutate(userName);
       }
     }
   };
