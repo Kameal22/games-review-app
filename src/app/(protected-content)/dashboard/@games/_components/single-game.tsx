@@ -7,6 +7,7 @@ import { useReviewsStore } from "@/stores/reviews-store";
 import { useRouter } from "next/navigation";
 import { Watchlist } from "@/app/types/watchlist";
 import { useQueryClient } from "@tanstack/react-query";
+import { useMemo, memo } from "react";
 
 interface Props {
   data: Game;
@@ -19,9 +20,13 @@ const SingleGame: React.FC<Props> = ({ data, watchlist }) => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const toggleWatchlist = async () => {
-    const isInWatchlist = watchlist?.some((game) => game.game._id === data._id);
+  // Memoize the watchlist check to avoid recalculating on every render
+  const isInWatchlist = useMemo(
+    () => watchlist?.some((game) => game.game._id === data._id) ?? false,
+    [watchlist, data._id]
+  );
 
+  const toggleWatchlist = async () => {
     try {
       if (isInWatchlist) {
         await removeFromWatchlist(data._id);
@@ -54,7 +59,7 @@ const SingleGame: React.FC<Props> = ({ data, watchlist }) => {
   };
 
   return (
-    <div className="bg-lightGray rounded-xl p-3 flex flex-col sm:flex-row items-start sm:items-center w-full hover:bg-lightGrayHover gap-3">
+    <div className="bg-lightGray rounded-xl p-3 flex flex-col sm:flex-row items-start sm:items-center w-full hover:bg-lightGrayHover transition-colors duration-200 gap-3">
       <div className="flex-shrink-0">
         <Image
           src={data.coverImageUrl}
@@ -90,15 +95,11 @@ const SingleGame: React.FC<Props> = ({ data, watchlist }) => {
           <button
             onClick={toggleWatchlist}
             className="flex-shrink-0 p-2 rounded-lg hover:bg-gray-600 transition-colors duration-200"
-            title={
-              watchlist?.some((game) => game.game._id === data._id)
-                ? "Remove from watchlist"
-                : "Add to watchlist"
-            }
+            title={isInWatchlist ? "Remove from watchlist" : "Add to watchlist"}
           >
             <svg
               className={`w-5 h-5 transition-colors duration-200 ${
-                watchlist?.some((game) => game.game._id === data._id)
+                isInWatchlist
                   ? "fill-red-500 text-red-500"
                   : "fill-gray-400 text-gray-400 hover:fill-red-400 hover:text-red-400"
               }`}
@@ -114,4 +115,4 @@ const SingleGame: React.FC<Props> = ({ data, watchlist }) => {
   );
 };
 
-export default SingleGame;
+export default memo(SingleGame);

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useMemo, memo } from "react";
 import { useDashboardStore } from "@/stores/dashboard-store";
 import { useQuery } from "@tanstack/react-query";
 import { fetchUserReviews } from "@/app/(protected-content)/my-account/utils";
@@ -21,6 +21,9 @@ const UserMenu: React.FC = () => {
   const toggleReviewedGames = () => {
     setShowReviewedGames((prev) => !prev);
   };
+
+  // Memoize the recent reviews to avoid recalculating on every render
+  const recentReviews = useMemo(() => userReviews.slice(0, 3), [userReviews]);
 
   return (
     <div className="w-full flex flex-col justify-between h-full">
@@ -144,7 +147,7 @@ const UserMenu: React.FC = () => {
 
         {showReviewedGames && (
           <div className="mt-2 w-full">
-            {userReviews.slice(0, 3).map((review: Review, index: number) => (
+            {recentReviews.map((review: Review, index: number) => (
               <div
                 onClick={() => {
                   router.push(`/review/${review._id}`);
@@ -184,4 +187,4 @@ const UserMenu: React.FC = () => {
   );
 };
 
-export default UserMenu;
+export default memo(UserMenu);
