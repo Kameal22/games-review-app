@@ -141,7 +141,7 @@ const ReviewPage: React.FC = () => {
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <button
-                onClick={() => router.back()}
+                onClick={() => router.push("/dashboard")}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2"
               >
                 <svg
@@ -158,7 +158,7 @@ const ReviewPage: React.FC = () => {
                     d="M10 19l-7-7m0 0l7-7m-7 7h18"
                   />
                 </svg>
-                Back
+                Home
               </button>
               <h1 className="text-customWhite text-lg lg:text-xl">
                 Review Details
