@@ -27,4 +27,6 @@ export type Review = {
     createdAt: string;
     updatedAt: string;
     __v: number;
+    likes?: number;
+    dislikes?: number;
   };

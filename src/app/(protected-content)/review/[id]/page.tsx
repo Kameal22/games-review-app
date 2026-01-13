@@ -13,6 +13,7 @@ import {
 } from "@/app/(protected-content)/my-account/utils";
 import { useToastStore } from "@/stores/toast-store";
 import ConfirmModal from "@/app/_components/confirm-modal";
+import LikeDislike from "@/app/_components/like-dislike";
 import { useState, useRef, useEffect } from "react";
 
 const ReviewPage: React.FC = () => {
@@ -442,6 +443,19 @@ const ReviewPage: React.FC = () => {
                 </p>
               </div>
             )}
+          </div>
+
+          {/* Like/Dislike Section */}
+          <div className="bg-darkGreyBackground rounded-xl p-4">
+            <h3 className="text-customWhite text-lg font-bold mb-3">
+              Community Feedback
+            </h3>
+            <LikeDislike
+              reviewId={review._id}
+              initialLikes={review.likes || 0}
+              initialDislikes={review.dislikes || 0}
+              compact={false}
+            />
           </div>
 
           {/* Author Information */}

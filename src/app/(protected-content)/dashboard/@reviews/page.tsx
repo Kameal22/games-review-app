@@ -62,6 +62,8 @@ const ReviewsList: React.FC = () => {
                   image: review.game.coverImageUrl,
                   reviewId: review._id,
                   createdAt: review.createdAt,
+                  likes: review.likes || 0,
+                  dislikes: review.dislikes || 0,
                 }}
               />
             ))}

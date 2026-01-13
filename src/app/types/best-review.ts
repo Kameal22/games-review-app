@@ -8,4 +8,6 @@ export type BestReview = {
       displayName: string;
     };
     game: Game;
+    likes?: number;
+    dislikes?: number;
   };
