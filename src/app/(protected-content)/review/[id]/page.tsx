@@ -7,10 +7,13 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getScoreColor } from "@/app/global-utils/get-score-color";
 import { getScoreBackground } from "@/app/global-utils/get-score-background";
 import { useUserStore } from "@/stores/user-store";
-import { deleteReview } from "@/app/(protected-content)/my-account/utils";
+import {
+  deleteReview,
+  updateReviewText,
+} from "@/app/(protected-content)/my-account/utils";
 import { useToastStore } from "@/stores/toast-store";
 import ConfirmModal from "@/app/_components/confirm-modal";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const ReviewPage: React.FC = () => {
   const router = useRouter();
@@ -19,6 +22,9 @@ const ReviewPage: React.FC = () => {
   const { addToast } = useToastStore();
   const queryClient = useQueryClient();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedText, setEditedText] = useState("");
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const {
     data: review,
@@ -56,6 +62,69 @@ const ReviewPage: React.FC = () => {
       setShowDeleteModal(false);
     },
   });
+
+  const updateMutation = useMutation({
+    mutationFn: ({ reviewId, text }: { reviewId: string; text: string }) =>
+      updateReviewText(reviewId, text),
+    onSuccess: () => {
+      // Invalidate queries to refresh the review
+      queryClient.invalidateQueries({ queryKey: ["review", params.id] });
+      queryClient.invalidateQueries({ queryKey: ["userData"] });
+      queryClient.invalidateQueries({ queryKey: ["userReviews"] });
+      queryClient.invalidateQueries({ queryKey: ["reviews"] });
+      addToast({
+        type: "success",
+        title: "Success",
+        message: "Review updated successfully",
+      });
+      setIsEditing(false);
+    },
+    onError: (error: Error) => {
+      addToast({
+        type: "error",
+        title: "Error",
+        message: error.message || "Failed to update review",
+      });
+    },
+  });
+
+  // Initialize edited text when review loads or edit mode is enabled
+  useEffect(() => {
+    if (review && isEditing) {
+      setEditedText(review.text);
+      // Focus textarea after a short delay to ensure it's rendered
+      setTimeout(() => {
+        textareaRef.current?.focus();
+        // Move cursor to end
+        if (textareaRef.current) {
+          textareaRef.current.setSelectionRange(
+            textareaRef.current.value.length,
+            textareaRef.current.value.length
+          );
+        }
+      }, 0);
+    }
+  }, [review, isEditing]);
+
+  const handleEditClick = () => {
+    if (review) {
+      setIsEditing(true);
+      setEditedText(review.text);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditedText("");
+  };
+
+  const handleSaveEdit = () => {
+    if (review && editedText.trim() !== review.text.trim()) {
+      updateMutation.mutate({ reviewId: review._id, text: editedText.trim() });
+    } else {
+      setIsEditing(false);
+    }
+  };
 
   // Check if current user owns this review
   const isOwner =
@@ -164,29 +233,52 @@ const ReviewPage: React.FC = () => {
                 Review Details
               </h1>
             </div>
-            {isOwner && (
-              <button
-                onClick={() => setShowDeleteModal(true)}
-                disabled={deleteMutation.isPending}
-                className="bg-red-600 hover:bg-red-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2"
-                title="Delete review"
-              >
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
+            {isOwner && !isEditing && (
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleEditClick}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2"
+                  title="Edit review"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                  />
-                </svg>
-                Delete
-              </button>
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                    />
+                  </svg>
+                  Edit
+                </button>
+                <button
+                  onClick={() => setShowDeleteModal(true)}
+                  disabled={deleteMutation.isPending}
+                  className="bg-red-600 hover:bg-red-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2"
+                  title="Delete review"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    />
+                  </svg>
+                  Delete
+                </button>
+              </div>
             )}
           </div>
 
@@ -268,12 +360,88 @@ const ReviewPage: React.FC = () => {
 
           {/* Review Text */}
           <div className="bg-darkGreyBackground rounded-xl p-4">
-            <h3 className="text-customWhite text-lg font-bold mb-3">Review</h3>
-            <div className="prose prose-invert max-w-none">
-              <p className="text-customWhite whitespace-pre-line leading-relaxed">
-                {review.text}
-              </p>
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-customWhite text-lg font-bold">Review</h3>
+              {isOwner && isEditing && (
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleCancelEdit}
+                    disabled={updateMutation.isPending}
+                    className="px-3 py-1.5 bg-lightGray hover:bg-lightGrayHover disabled:bg-gray-600 disabled:cursor-not-allowed text-customWhite rounded-lg transition-colors duration-200 text-sm"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleSaveEdit}
+                    disabled={
+                      updateMutation.isPending ||
+                      editedText.trim() === review.text.trim()
+                    }
+                    className="px-3 py-1.5 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-lg transition-colors duration-200 text-sm flex items-center gap-2"
+                  >
+                    {updateMutation.isPending ? (
+                      <>
+                        <svg
+                          className="animate-spin h-4 w-4"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                        Saving...
+                      </>
+                    ) : (
+                      <>
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                        Save
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
             </div>
+            {isEditing && isOwner ? (
+              <textarea
+                ref={textareaRef}
+                value={editedText}
+                onChange={(e) => setEditedText(e.target.value)}
+                className="w-full bg-darkGreyBackground border border-lightGray rounded-lg p-4 text-customWhite placeholder-greyText focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none min-h-[200px] leading-relaxed"
+                placeholder="Write your review here..."
+                disabled={updateMutation.isPending}
+              />
+            ) : (
+              <div className="prose prose-invert max-w-none">
+                <p className="text-customWhite whitespace-pre-line leading-relaxed">
+                  {review.text}
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Author Information */}

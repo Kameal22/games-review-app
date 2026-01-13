@@ -154,3 +154,34 @@ export const deleteReview = async (reviewId: string) => {
     throw new Error(errorMessage);
   }
 };
+
+export const updateReviewText = async (reviewId: string, text: string) => {
+  try {
+    // Get token from cookies
+    const token = getTokenFromCookie();
+    
+    if (!token) {
+      throw new Error('No authentication token found');
+    }
+    
+    const response = await axios.patch(
+      `https://games-review-api.onrender.com/api/reviews/${reviewId}`,
+      { text },
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || error.message || 'Failed to update review';
+      throw new Error(errorMessage);
+    }
+    const errorMessage = error instanceof Error ? error.message : 'Failed to update review';
+    throw new Error(errorMessage);
+  }
+};
