@@ -483,7 +483,7 @@ const ReviewPage: React.FC = () => {
           {/* Action Buttons */}
           {/* <div className="flex flex-col sm:flex-row gap-3">
             <button
-              onClick={() => router.push(`/user/${review.user._id}`)}
+              onClick={() => router.push(`/user/${review.user.displayName}`)}
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
             >
               View Reviewer&apos;s Profile

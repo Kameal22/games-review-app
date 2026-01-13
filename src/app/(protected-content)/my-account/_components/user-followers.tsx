@@ -16,7 +16,7 @@ const UserFollowers: React.FC<{ following?: Following }> = ({ following }) => {
   const itemsPerPage = 3;
 
   const unfollowMutation = useMutation({
-    mutationFn: (userId: string) => unfollowUser(userId),
+    mutationFn: (userName: string) => unfollowUser(userName),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["userFollowing"] });
       addToast({
@@ -34,13 +34,13 @@ const UserFollowers: React.FC<{ following?: Following }> = ({ following }) => {
     },
   });
 
-  const handleUserClick = (userId: string) => {
-    router.push(`/user/${userId}`);
+  const handleUserClick = (userName: string) => {
+    router.push(`/user/${userName}`);
   };
 
-  const handleUnfollow = (e: React.MouseEvent, userId: string) => {
+  const handleUnfollow = (e: React.MouseEvent, userName: string) => {
     e.stopPropagation();
-    unfollowMutation.mutate(userId);
+    unfollowMutation.mutate(userName);
   };
 
   const hasFollowing =
@@ -50,7 +50,8 @@ const UserFollowers: React.FC<{ following?: Following }> = ({ following }) => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentPageItems = following?.following?.slice(startIndex, endIndex) || [];
+  const currentPageItems =
+    following?.following?.slice(startIndex, endIndex) || [];
 
   // Reset to page 1 if current page is beyond total pages (e.g., after unfollowing)
   useEffect(() => {
@@ -74,7 +75,7 @@ const UserFollowers: React.FC<{ following?: Following }> = ({ following }) => {
             {currentPageItems.map((user) => (
               <div
                 key={user?.following?._id}
-                onClick={() => handleUserClick(user?.following?._id)}
+                onClick={() => handleUserClick(user?.following?.displayName)}
                 className="bg-lightGray rounded-xl p-3 flex items-center gap-3 w-full cursor-pointer hover:bg-lightGrayHover transition-colors"
               >
                 <div className="flex-shrink-0">
@@ -94,7 +95,9 @@ const UserFollowers: React.FC<{ following?: Following }> = ({ following }) => {
                   </p>
                 </div>
                 <button
-                  onClick={(e) => handleUnfollow(e, user?.following?._id)}
+                  onClick={(e) =>
+                    handleUnfollow(e, user?.following?.displayName)
+                  }
                   disabled={unfollowMutation.isPending}
                   className="bg-red-600 hover:bg-red-700 disabled:bg-red-800 disabled:cursor-not-allowed text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors duration-200 flex-shrink-0"
                 >

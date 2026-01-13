@@ -58,7 +58,7 @@ const ReviewsList: React.FC = () => {
                   genre: review.game.genres?.join(", ") || "Unknown",
                   rating: review.finalScore,
                   user: review.user.displayName,
-                  userId: review.user._id,
+                  userName: review.user.displayName,
                   image: review.game.coverImageUrl,
                   reviewId: review._id,
                   createdAt: review.createdAt,
