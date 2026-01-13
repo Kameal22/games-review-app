@@ -45,6 +45,7 @@ export const fetchWatchlist = async () => {
     
     return response.data;
   } catch (error) {
+    console.error(error);
     // If error (e.g., 401), return empty array
     return [];
   }
