@@ -1,13 +1,10 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-// List of protected routes
+// List of protected routes (only write actions require authentication)
 const protectedRoutes = [
-  '/dashboard',
-  '/game',
-  '/review', 
-  '/user',
-  '/write-review'
+  '/write-review',
+  '/my-account' // User's own account page should be protected
 ];
 
 export function middleware(req: NextRequest) {

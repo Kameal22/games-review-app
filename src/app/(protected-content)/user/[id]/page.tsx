@@ -13,6 +13,7 @@ import { getScoreBackground as getScoreBg } from "@/app/global-utils/get-score-b
 import { Review } from "@/app/types/review";
 import Watchlist from "./_components/user-utils/watchlist/watchlist";
 import { useToastStore } from "@/stores/toast-store";
+import { useUserStore } from "@/stores/user-store";
 
 interface UserData {
   user: {
@@ -45,6 +46,7 @@ const User: React.FC = () => {
   const userName = params.id as string;
   const queryClient = useQueryClient();
   const { addToast } = useToastStore();
+  const { isAuthenticated } = useUserStore();
 
   const {
     data: userData,
@@ -59,7 +61,7 @@ const User: React.FC = () => {
   const { data: followStatus } = useQuery<{ isFollowing: boolean }>({
     queryKey: ["followStatus", userName],
     queryFn: () => checkFollowStatus(userName),
-    enabled: !!userName,
+    enabled: !!userName && isAuthenticated, // Only check follow status if authenticated
   });
 
   const followMutation = useMutation({
@@ -115,6 +117,16 @@ const User: React.FC = () => {
   };
 
   const handleFollow = () => {
+    if (!isAuthenticated) {
+      router.push("/login");
+      addToast({
+        type: "info",
+        title: "Login Required",
+        message: "Please log in to follow users",
+      });
+      return;
+    }
+
     if (userName) {
       if (followStatus?.isFollowing) {
         unfollowMutation.mutate(userName);
@@ -309,23 +321,25 @@ const User: React.FC = () => {
               {user.bio || "This user hasn't added a bio yet."}
             </p>
           </div>
-          <button
-            onClick={handleFollow}
-            disabled={followMutation.isPending || unfollowMutation.isPending}
-            className={`${
-              followStatus?.isFollowing
-                ? "bg-red-600 hover:bg-red-700"
-                : "bg-blue-600 hover:bg-blue-700"
-            } disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 self-start`}
-          >
-            {unfollowMutation.isPending
-              ? "Unfollowing..."
-              : followMutation.isPending
-              ? "Following..."
-              : followStatus?.isFollowing
-              ? "Unfollow"
-              : "Follow"}
-          </button>
+          {isAuthenticated && (
+            <button
+              onClick={handleFollow}
+              disabled={followMutation.isPending || unfollowMutation.isPending}
+              className={`${
+                followStatus?.isFollowing
+                  ? "bg-red-600 hover:bg-red-700"
+                  : "bg-blue-600 hover:bg-blue-700"
+              } disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 self-start`}
+            >
+              {unfollowMutation.isPending
+                ? "Unfollowing..."
+                : followMutation.isPending
+                ? "Following..."
+                : followStatus?.isFollowing
+                ? "Unfollow"
+                : "Follow"}
+            </button>
+          )}
         </div>
       </div>
 

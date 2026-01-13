@@ -22,18 +22,20 @@ const getTokenFromCookie = (): string | null => {
 export const fetchUserData = async (userName: string) => {
   
   try {
-    // Get token from cookies
+    // Get token from cookies (optional for viewing)
     const token = getTokenFromCookie();
     
-    if (!token) {
-      throw new Error('No authentication token found');
+    // Build headers - include Authorization only if token exists
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+    
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
     }
     
     const response = await axios.get(`https://games-review-api.onrender.com/api/profile/${userName}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
+      headers,
     });
     
     return response.data;
@@ -77,11 +79,12 @@ export const followUser = async (userName: string) => {
 export const checkFollowStatus = async (userName: string) => {
   
   try {
-    // Get token from cookies
+    // Get token from cookies (required for checking follow status)
     const token = getTokenFromCookie();
     
+    // If no token, return null (user is not authenticated, so no follow status)
     if (!token) {
-      throw new Error('No authentication token found');
+      return { isFollowing: false };
     }
     
     const response = await axios.get(`https://games-review-api.onrender.com/api/follow/${userName}/status`, {
@@ -93,8 +96,9 @@ export const checkFollowStatus = async (userName: string) => {
     
     return response.data;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to check follow status';
-    throw new Error(errorMessage);
+    console.error(error);
+    // If error (e.g., 401), return not following
+    return { isFollowing: false };
   }
 };
 

@@ -3,18 +3,20 @@ import { getTokenFromCookie } from "@/app/global-utils/get-token-from-cookies";
 
 export const fetchGames = async () => {
   try {
-    // Get token from cookies
+    // Get token from cookies (optional for viewing)
     const token = getTokenFromCookie();
     
-    if (!token) {
-      throw new Error('No authentication token found');
+    // Build headers - include Authorization only if token exists
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+    
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
     }
     
     const response = await axios.get("https://games-review-api.onrender.com/api/game/", {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
+      headers,
     });
     
     return response.data;
@@ -26,11 +28,12 @@ export const fetchGames = async () => {
 
 export const fetchWatchlist = async () => {
   try {
-    // Get token from cookies
+    // Get token from cookies (required for watchlist)
     const token = getTokenFromCookie();
     
+    // If no token, return empty array (user is not authenticated)
     if (!token) {
-      throw new Error('No authentication token found');
+      return [];
     }
     
     const response = await axios.get("https://games-review-api.onrender.com/api/watchlist/me", {
@@ -42,8 +45,8 @@ export const fetchWatchlist = async () => {
     
     return response.data;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch games';
-    throw new Error(errorMessage);
+    // If error (e.g., 401), return empty array
+    return [];
   }
 };
 

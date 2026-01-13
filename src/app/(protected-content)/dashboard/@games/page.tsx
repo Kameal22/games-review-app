@@ -7,15 +7,18 @@ import SingleGame from "./_components/single-game";
 import { fetchGames, fetchWatchlist } from "./utils";
 import GamesSearch from "./_components/games-search";
 import { Watchlist } from "@/app/types/watchlist";
+import { useUserStore } from "@/stores/user-store";
 
 const GamesList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const gamesPerPage = 6;
+  const { isAuthenticated } = useUserStore();
 
   const { data: watchlist } = useQuery({
     queryKey: ["watchlist"],
     queryFn: fetchWatchlist,
+    enabled: isAuthenticated, // Only fetch watchlist if authenticated
   });
 
   // Fetch reviews on component mount
