@@ -1,4 +1,5 @@
 // import { Metadata } from "next";
+import { Suspense } from "react";
 import LoginForm from "./login-form";
 
 // export const metadata: Metadata = {
@@ -33,7 +34,9 @@ const Login: React.FC = () => {
         </div>
       </div>
 
-      <LoginForm />
+      <Suspense fallback={<div className="text-customWhite">Loading...</div>}>
+        <LoginForm />
+      </Suspense>
     </div>
   );
 };
