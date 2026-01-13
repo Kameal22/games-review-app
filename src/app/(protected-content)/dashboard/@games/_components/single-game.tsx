@@ -96,17 +96,17 @@ const SingleGame: React.FC<Props> = ({ data, watchlist }) => {
         />
       </div>
 
-      <div className="flex flex-col sm:flex-row flex-1 gap-2 sm:gap-4 min-w-0">
-        <div className="flex-1 min-w-0">
-          <p className="text-customWhite text-base lg:text-lg font-medium truncate">
+      <div className="flex flex-col sm:flex-row flex-1 gap-2 sm:gap-4 min-w-0 w-full">
+        <div className="flex-1 min-w-0 max-w-full">
+          <p className="text-customWhite text-base lg:text-lg font-medium truncate max-w-full">
             {data.title}
           </p>
-          <p className="text-greyText text-sm hidden sm:block">
+          <p className="text-greyText text-sm hidden sm:block truncate">
             {data.genres.join(", ")}
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-shrink-0">
           <button
             onClick={handleWriteReview}
             className="flex-shrink-0 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 text-sm font-medium"

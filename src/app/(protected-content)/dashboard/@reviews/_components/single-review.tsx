@@ -39,15 +39,15 @@ const SingleReview: React.FC<Props> = ({ data }) => {
         />
       </div>
 
-      <div className="flex flex-col sm:flex-row flex-1 gap-2 sm:gap-4 min-w-0">
+      <div className="flex flex-col sm:flex-row flex-1 gap-2 sm:gap-4 min-w-0 w-full">
         <div
-          className="flex-1 min-w-0 cursor-pointer"
+          className="flex-1 min-w-0 max-w-full cursor-pointer"
           onClick={() => router.push(`/review/${data.reviewId}`)}
         >
-          <p className="text-customWhite text-lg lg:text-xl font-medium truncate">
+          <p className="text-customWhite text-lg lg:text-xl font-medium truncate max-w-full">
             {data.name}
           </p>
-          <p className="text-greyText text-base hidden sm:block">
+          <p className="text-greyText text-base hidden sm:block truncate">
             {data.genre}
           </p>
         </div>

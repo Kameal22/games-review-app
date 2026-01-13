@@ -27,15 +27,15 @@ const SingleBestReview: React.FC<Props> = ({ data }) => {
         />
       </div>
 
-      <div className="flex flex-col sm:flex-row flex-1 gap-2 sm:gap-4 min-w-0">
+      <div className="flex flex-col sm:flex-row flex-1 gap-2 sm:gap-4 min-w-0 w-full">
         <div
-          className="flex-1 min-w-0 cursor-pointer"
+          className="flex-1 min-w-0 max-w-full cursor-pointer"
           onClick={() => router.push(`/review/${data._id}`)}
         >
-          <p className="text-customWhite text-base lg:text-lg font-medium truncate">
+          <p className="text-customWhite text-base lg:text-lg font-medium truncate max-w-full">
             {data.game.title}
           </p>
-          <p className="text-greyText text-sm hidden sm:block">
+          <p className="text-greyText text-sm hidden sm:block truncate">
             {data.game.genres.join(", ")}
           </p>
         </div>
