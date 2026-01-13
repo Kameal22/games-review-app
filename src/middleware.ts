@@ -19,8 +19,9 @@ export function middleware(req: NextRequest) {
 
   if (isProtected) {
     if (!tokenData) {
-      // No token at all
+      // No token at all - preserve the original URL for redirect after login
       const loginUrl = new URL('/login', req.url);
+      loginUrl.searchParams.set('callbackUrl', req.nextUrl.pathname);
       return NextResponse.redirect(loginUrl);
     }
 
@@ -33,13 +34,15 @@ export function middleware(req: NextRequest) {
       const twelveHoursInMs = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
 
       if (tokenAge >= twelveHoursInMs) {
-        // Token is expired, redirect to login
+        // Token is expired, redirect to login - preserve the original URL
         const loginUrl = new URL('/login', req.url);
+        loginUrl.searchParams.set('callbackUrl', req.nextUrl.pathname);
         return NextResponse.redirect(loginUrl);
       }
     } catch {
-      // If parsing fails, assume token is invalid
+      // If parsing fails, assume token is invalid - preserve the original URL
       const loginUrl = new URL('/login', req.url);
+      loginUrl.searchParams.set('callbackUrl', req.nextUrl.pathname);
       return NextResponse.redirect(loginUrl);
     }
   }

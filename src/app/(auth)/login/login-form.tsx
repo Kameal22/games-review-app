@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { loginUser } from "./utils";
 import { useMutation } from "@tanstack/react-query";
@@ -19,6 +19,7 @@ type FormFields = z.infer<typeof schema>;
 
 const LoginForm: React.FC = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { login } = useUserStore();
   const { addToast } = useToastStore();
   const [showPassword, setShowPassword] = useState(false);
@@ -41,7 +42,9 @@ const LoginForm: React.FC = () => {
         title: "Login successful",
         message: `Welcome back, ${data.user.displayName}!`,
       });
-      router.push("/dashboard");
+      // Redirect to the original destination or default to dashboard
+      const callbackUrl = searchParams.get("callbackUrl");
+      router.push(callbackUrl || "/dashboard");
     },
     onError: async (error: Error) => {
       setError("root", {
