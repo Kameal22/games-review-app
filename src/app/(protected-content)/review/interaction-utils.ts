@@ -115,6 +115,7 @@ export const checkInteractionStatus = async (reviewId: string): Promise<Interact
     
     return response.data;
   } catch (error) {
+    console.error(error);
     // If error (e.g., 401 or no interaction), return null
     return { type: null };
   }
