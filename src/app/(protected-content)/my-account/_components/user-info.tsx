@@ -52,8 +52,8 @@ const UserInfo: React.FC<{ data: User }> = ({ data }) => {
 
   console.log(data);
   return (
-    <div className="flex flex-col items-center justify-center w-full gap-4 p-2">
-      <div className="w-20 h-20 lg:w-24 lg:h-24">
+    <div className="flex flex-col items-center justify-center w-full gap-4 p-2 min-w-0 max-w-full">
+      <div className="w-20 h-20 lg:w-24 lg:h-24 flex-shrink-0">
         <Image
           src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
           alt="User Avatar"
@@ -63,12 +63,12 @@ const UserInfo: React.FC<{ data: User }> = ({ data }) => {
         />
       </div>
 
-      <div className="flex flex-col items-center gap-2 text-center w-full max-w-md">
-        <p className="text-xl lg:text-2xl font-semibold text-customWhite">
+      <div className="flex flex-col items-center gap-2 text-center w-full max-w-md min-w-0">
+        <p className="text-xl lg:text-2xl font-semibold text-customWhite truncate w-full px-2">
           {data?.displayName}
         </p>
 
-        <div className="w-full">
+        <div className="w-full min-w-0">
           {isEditing ? (
             <div className="space-y-3">
               <textarea
@@ -76,7 +76,7 @@ const UserInfo: React.FC<{ data: User }> = ({ data }) => {
                 onChange={handleBioChange}
                 onBlur={handleBioBlur}
                 placeholder="Tell us about yourself..."
-                className="w-full p-3 bg-darkGreyBackground border border-gray-600 rounded-lg text-customWhite placeholder-gray-400 focus:outline-none focus:border-blue-500 resize-none"
+                className="w-full max-w-full p-3 bg-darkGreyBackground border border-gray-600 rounded-lg text-customWhite placeholder-gray-400 focus:outline-none focus:border-blue-500 resize-none"
                 rows={2}
                 autoFocus
               />

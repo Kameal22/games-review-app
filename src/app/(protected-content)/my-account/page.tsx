@@ -38,12 +38,12 @@ const User: React.FC = () => {
 
   console.log(userFollowing, "userFollowing");
   return (
-    <div className="bg-darkGreyBackground rounded-xl p-4 w-full h-full flex flex-col gap-4">
+    <div className="bg-darkGreyBackground rounded-xl p-2 sm:p-4 w-full h-full flex flex-col gap-4 min-w-0 max-w-full overflow-x-hidden">
       {/* Header with back button */}
-      <div className="flex items-center gap-4 mb-6">
+      <div className="flex items-center gap-2 sm:gap-4 mb-4 sm:mb-6 min-w-0">
         <button
           onClick={handleBackToDashboard}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-lg transition-colors duration-200 flex items-center gap-2"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-2 sm:px-4 py-2 rounded-lg shadow-lg transition-colors duration-200 flex items-center gap-2 text-sm sm:text-base flex-shrink-0"
         >
           <svg
             className="w-4 h-4"
@@ -59,21 +59,22 @@ const User: React.FC = () => {
               d="M10 19l-7-7m0 0l7-7m-7 7h18"
             />
           </svg>
-          <span>Back to Dashboard</span>
+          <span className="hidden sm:inline">Back to Dashboard</span>
+          <span className="sm:hidden">Back</span>
         </button>
       </div>
 
-      <div className="bg-lightGray rounded-xl p-4 w-full flex-1 flex flex-col gap-4">
+      <div className="bg-lightGray rounded-xl p-2 sm:p-4 w-full flex-1 flex flex-col gap-4 min-w-0 max-w-full overflow-x-hidden">
         {userData && <UserInfo data={userData.user} />}
 
-        <div className="flex flex-col lg:flex-row grow gap-4">
+        <div className="flex flex-col lg:flex-row grow gap-4 min-w-0">
           {userData && userData?.reviews.length > 0 && (
             <UserReviews reviews={userData.reviews} />
           )}
           {userData && <WatchlistSection watchlist={userData.watchlist} />}
         </div>
 
-        <div className="flex flex-col lg:flex-row grow gap-6 mt-8">
+        <div className="flex flex-col lg:flex-row grow gap-4 sm:gap-6 mt-4 sm:mt-8 min-w-0">
           {userData && <InsightsSection insights={userData.insights} />}
           <UserFollowers following={userFollowing} />
         </div>
