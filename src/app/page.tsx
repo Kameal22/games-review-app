@@ -19,7 +19,7 @@ export default function Home() {
       style={{ height: "calc(100vh - 7rem)" }}
       className="flex items-center justify-center bg-darkBackground"
     >
-      <p className="text-customWhite">Redirecting to dashboard...</p>
+      <p className="text-customWhite">Przekierowywanie do panelu...</p>
     </div>
   );
 }

@@ -6,11 +6,19 @@ import SingleBestReview from "./_components/single-best-review";
 import { useState } from "react";
 
 const categories = [
-  { name: "Final Score", value: "finalScore", label: "Highest Final Score" },
-  { name: "Gameplay", value: "gameplay", label: "Best Gameplay" },
-  { name: "Graphics", value: "graphics", label: "Best Graphics" },
-  { name: "Story", value: "story", label: "Best Story" },
-  { name: "Soundtrack", value: "soundtrack", label: "Best Soundtrack" },
+  {
+    name: "Ocena końcowa",
+    value: "finalScore",
+    label: "Najwyższa ocena końcowa",
+  },
+  { name: "Rozgrywka", value: "gameplay", label: "Najlepsza rozgrywka" },
+  { name: "Grafika", value: "graphics", label: "Najlepsza grafika" },
+  { name: "Fabuła", value: "story", label: "Najlepsza fabuła" },
+  {
+    name: "Ścieżka dźwiękowa",
+    value: "soundtrack",
+    label: "Najlepsza ścieżka dźwiękowa",
+  },
 ];
 
 const BestReviewsList: React.FC = () => {
@@ -32,14 +40,14 @@ const BestReviewsList: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
           <h2 className="text-customWhite text-xl lg:text-2xl font-semibold">
             {categories.find((category) => category.value === selectedCategory)
-              ?.label || "Best Reviews"}
+              ?.label || "Najlepsze recenzje"}
           </h2>
 
           <label
             htmlFor="category-select"
             className="text-greyText text-base ml-8"
           >
-            Sort by:
+            Sortuj według:
           </label>
           <select
             id="category-select"
@@ -59,25 +67,25 @@ const BestReviewsList: React.FC = () => {
           </select>
         </div>
         <p className="text-greyText text-base lg:text-lg leading-relaxed">
-          Discover the highest-rated games across different categories. Explore
-          top-rated titles based on gameplay, graphics, story, and more from our
-          community&apos;s reviews.
+          Odkryj najlepiej oceniane gry w różnych kategoriach. Przeglądaj tytuły
+          na podstawie rozgrywki, grafiki, fabuły i innych aspektów z recenzji
+          naszej społeczności.
         </p>
       </div>
       <div className="flex flex-col gap-4 flex-1">
         {isLoading ? (
           <div className="flex flex-col gap-4 flex-1 justify-center items-center">
             <p className="text-customWhite text-lg text-center">
-              Loading best reviews...
+              Ładowanie najlepszych recenzji...
             </p>
           </div>
         ) : error ? (
           <div className="flex flex-col gap-4 flex-1 justify-center items-center">
             <p className="text-red-500 text-lg text-center">
-              Error loading best reviews
+              Błąd ładowania najlepszych recenzji
             </p>
             <p className="text-greyText text-sm text-center">
-              {error?.message || "Something went wrong"}
+              {error?.message || "Coś poszło nie tak"}
             </p>
           </div>
         ) : bestReviews.length > 0 ? (
@@ -89,7 +97,7 @@ const BestReviewsList: React.FC = () => {
         ) : (
           <div className="flex flex-col gap-4 flex-1 justify-center items-center">
             <p className="text-greyText text-lg text-center">
-              No reviews found
+              Nie znaleziono recenzji
             </p>
           </div>
         )}

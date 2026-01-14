@@ -32,7 +32,7 @@ const Header: React.FC = () => {
       const token = getTokenFromCookie();
 
       if (!token) {
-        throw new Error("No authentication token found");
+        throw new Error("Nie znaleziono tokenu uwierzytelniającego");
       }
 
       const response = await axios.get(
@@ -48,7 +48,9 @@ const Header: React.FC = () => {
       return response.data;
     } catch (error) {
       const errorMessage =
-        error instanceof Error ? error.message : "Failed to fetch user data";
+        error instanceof Error
+          ? error.message
+          : "Nie udało się pobrać danych użytkownika";
       throw new Error(errorMessage);
     }
   };
@@ -59,7 +61,7 @@ const Header: React.FC = () => {
       const token = getTokenFromCookie();
 
       if (!token) {
-        throw new Error("No authentication token found");
+        throw new Error("Nie znaleziono tokenu uwierzytelniającego");
       }
 
       const response = await axios.get(
@@ -75,7 +77,9 @@ const Header: React.FC = () => {
       return response.data;
     } catch (error) {
       const errorMessage =
-        error instanceof Error ? error.message : "Failed to fetch user data";
+        error instanceof Error
+          ? error.message
+          : "Nie udało się pobrać danych użytkownika";
       throw new Error(errorMessage);
     }
   };
@@ -85,7 +89,7 @@ const Header: React.FC = () => {
       const token = getTokenFromCookie();
 
       if (!token) {
-        throw new Error("No authentication token found");
+        throw new Error("Nie znaleziono tokenu uwierzytelniającego");
       }
 
       const response = await axios.patch(
@@ -104,11 +108,13 @@ const Header: React.FC = () => {
         const errorMessage =
           error.response?.data?.message ||
           error.message ||
-          "Failed to mark all as read";
+          "Nie udało się oznaczyć wszystkich jako przeczytane";
         throw new Error(errorMessage);
       }
       const errorMessage =
-        error instanceof Error ? error.message : "Failed to mark all as read";
+        error instanceof Error
+          ? error.message
+          : "Nie udało się oznaczyć wszystkich jako przeczytane";
       throw new Error(errorMessage);
     }
   };
@@ -123,15 +129,16 @@ const Header: React.FC = () => {
       });
       addToast({
         type: "success",
-        title: "Success",
-        message: "All notifications have been marked as read",
+        title: "Sukces",
+        message: "Wszystkie powiadomienia zostały oznaczone jako przeczytane",
       });
     },
     onError: (error: Error) => {
       addToast({
         type: "error",
-        title: "Error",
-        message: error.message || "Failed to mark all as read",
+        title: "Błąd",
+        message:
+          error.message || "Nie udało się oznaczyć wszystkich jako przeczytane",
       });
     },
   });
@@ -153,8 +160,8 @@ const Header: React.FC = () => {
     logout();
     addToast({
       type: "info",
-      title: "Logged out",
-      message: "You have been successfully logged out",
+      title: "Wylogowano",
+      message: "Zostałeś pomyślnie wylogowany",
     });
     // Redirect to home page
     router.push("/");
@@ -179,7 +186,7 @@ const Header: React.FC = () => {
           <>
             {user && (
               <p className="text-customWhite text-sm lg:text-base">
-                Welcome, {user.displayName}!
+                Witaj, {user.displayName}!
               </p>
             )}
             <Notifications
@@ -191,7 +198,7 @@ const Header: React.FC = () => {
               onClick={handleLogout}
               className="text-customWhite underline cursor-pointer text-sm lg:text-base whitespace-nowrap"
             >
-              Logout
+              Wyloguj się
             </p>
           </>
         )}

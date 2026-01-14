@@ -71,15 +71,15 @@ const User: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ["followStatus", userName] });
       addToast({
         type: "success",
-        title: "Success",
-        message: "You are now following this user",
+        title: "Sukces",
+        message: "Zacząłeś obserwować tego użytkownika",
       });
     },
     onError: (error: Error) => {
       addToast({
         type: "error",
-        title: "Error",
-        message: error.message || "Failed to follow user",
+        title: "Błąd",
+        message: error.message || "Nie udało się obserwować użytkownika",
       });
     },
   });
@@ -91,15 +91,16 @@ const User: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ["followStatus", userName] });
       addToast({
         type: "success",
-        title: "Success",
-        message: "You have unfollowed this user",
+        title: "Sukces",
+        message: "Przestałeś obserwować tego użytkownika",
       });
     },
     onError: (error: Error) => {
       addToast({
         type: "error",
-        title: "Error",
-        message: error.message || "Failed to unfollow user",
+        title: "Błąd",
+        message:
+          error.message || "Nie udało się przestać obserwować użytkownika",
       });
     },
   });
@@ -121,8 +122,8 @@ const User: React.FC = () => {
       router.push("/login");
       addToast({
         type: "info",
-        title: "Login Required",
-        message: "Please log in to follow users",
+        title: "Wymagane logowanie",
+        message: "Zaloguj się, aby obserwować użytkowników",
       });
       return;
     }
@@ -159,7 +160,7 @@ const User: React.FC = () => {
                 d="M10 19l-7-7m0 0l7-7m-7 7h18"
               />
             </svg>
-            <span>Back to Dashboard</span>
+            <span>Powrót do panelu</span>
           </button>
         </div>
 
@@ -209,17 +210,17 @@ const User: React.FC = () => {
                 d="M10 19l-7-7m0 0l7-7m-7 7h18"
               />
             </svg>
-            <span>Back to Dashboard</span>
+            <span>Powrót do panelu</span>
           </button>
         </div>
 
         <div className="flex flex-col items-center justify-center gap-4 py-12">
           <div className="text-red-500 text-xl mb-2">
-            Error loading user data
+            Błąd ładowania danych użytkownika
           </div>
           <div className="text-greyText text-center">
             {error.message ||
-              "An error occurred while loading the user profile"}
+              "Wystąpił błąd podczas ładowania profilu użytkownika"}
           </div>
         </div>
       </div>
@@ -248,12 +249,12 @@ const User: React.FC = () => {
                 d="M10 19l-7-7m0 0l7-7m-7 7h18"
               />
             </svg>
-            <span>Back to Dashboard</span>
+            <span>Powrót do panelu</span>
           </button>
         </div>
 
         <div className="flex flex-col items-center justify-center gap-4 py-12">
-          <div className="text-greyText text-xl">No user data available</div>
+          <div className="text-greyText text-xl">Brak danych użytkownika</div>
         </div>
       </div>
     );
@@ -293,7 +294,7 @@ const User: React.FC = () => {
           <div className="w-24 h-24 lg:w-32 lg:h-32 relative">
             <Image
               src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
-              alt={`${user.displayName}'s avatar`}
+              alt={`Avatar użytkownika ${user.displayName}`}
               className="w-full h-full rounded-full object-cover border-2 border-blue-400/30"
               width={128}
               height={128}
@@ -309,8 +310,8 @@ const User: React.FC = () => {
             {user.email}
           </p>
           <p className="text-greyText text-xs lg:text-sm mb-4">
-            Member since{" "}
-            {new Date(user.createdAt).toLocaleDateString("en-US", {
+            Członek od{" "}
+            {new Date(user.createdAt).toLocaleDateString("pl-PL", {
               year: "numeric",
               month: "long",
               day: "numeric",
@@ -318,7 +319,7 @@ const User: React.FC = () => {
           </p>
           <div className="bg-darkGreyBackground rounded-lg p-4 mb-4">
             <p className="text-customWhite text-sm lg:text-base">
-              {user.bio || "This user hasn't added a bio yet."}
+              {user.bio || "Ten użytkownik nie dodał jeszcze biografii."}
             </p>
           </div>
           {isAuthenticated && (
@@ -332,12 +333,12 @@ const User: React.FC = () => {
               } disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 self-start`}
             >
               {unfollowMutation.isPending
-                ? "Unfollowing..."
+                ? "Przestawanie obserwowania..."
                 : followMutation.isPending
-                ? "Following..."
+                ? "Obserwowanie..."
                 : followStatus?.isFollowing
-                ? "Unfollow"
-                : "Follow"}
+                ? "Przestań obserwować"
+                : "Obserwuj"}
             </button>
           )}
         </div>
@@ -349,13 +350,13 @@ const User: React.FC = () => {
         <div className="lg:col-span-2">
           <div className="bg-lightGray rounded-xl p-6">
             <h2 className="text-xl lg:text-2xl font-bold text-customWhite mb-4">
-              Recent Reviews
+              Ostatnie recenzje
             </h2>
 
             {reviews.length === 0 ? (
               <div className="text-center py-8">
                 <p className="text-greyText text-lg">
-                  This user hasn&apos;t written any reviews yet.
+                  Ten użytkownik nie napisał jeszcze żadnych recenzji.
                 </p>
               </div>
             ) : (
@@ -386,7 +387,7 @@ const User: React.FC = () => {
                         </p>
                         <div className="flex items-center gap-4">
                           <span className="text-customWhite text-sm">
-                            Score:{" "}
+                            Ocena:{" "}
                             <span
                               className={`font-bold ${getScoreColor(
                                 review.finalScore
@@ -396,7 +397,9 @@ const User: React.FC = () => {
                             </span>
                           </span>
                           <span className="text-greyText text-sm">
-                            {new Date(review.createdAt).toLocaleDateString()}
+                            {new Date(review.createdAt).toLocaleDateString(
+                              "pl-PL"
+                            )}
                           </span>
                         </div>
                         {review.text && (
@@ -418,7 +421,7 @@ const User: React.FC = () => {
           {/* Watchlist Section */}
           <div className="bg-lightGray rounded-xl p-6">
             <h2 className="text-xl font-bold text-customWhite mb-4">
-              Watchlist
+              Lista życzeń
             </h2>
             <Watchlist watchlist={watchlist} onGameClick={handleGameClick} />
           </div>
@@ -426,7 +429,7 @@ const User: React.FC = () => {
           {/* Insights Section */}
           <div className="bg-lightGray rounded-xl p-6">
             <h3 className="text-lg font-bold text-customWhite mb-4">
-              Insights
+              Statystyki
             </h3>
             <div className="space-y-4">
               <div
@@ -437,14 +440,14 @@ const User: React.FC = () => {
                 <div className="text-2xl font-bold text-customWhite mb-1">
                   {insights.averageFinalScore.toFixed(1)}
                 </div>
-                <div className="text-sm text-greyText">Average Score</div>
+                <div className="text-sm text-greyText">Średnia ocena</div>
               </div>
 
               <div className="bg-blue-500/20 border border-blue-500/30 rounded-lg p-4 text-center">
                 <div className="text-2xl font-bold text-customWhite mb-1">
                   {insights.reviewCount}
                 </div>
-                <div className="text-sm text-greyText">Total Reviews</div>
+                <div className="text-sm text-greyText">Łącznie recenzji</div>
               </div>
             </div>
           </div>

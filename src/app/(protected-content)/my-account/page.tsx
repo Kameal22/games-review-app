@@ -59,8 +59,8 @@ const User: React.FC = () => {
               d="M10 19l-7-7m0 0l7-7m-7 7h18"
             />
           </svg>
-          <span className="hidden sm:inline">Back to Dashboard</span>
-          <span className="sm:hidden">Back</span>
+          <span className="hidden sm:inline">Powrót do panelu</span>
+          <span className="sm:hidden">Wstecz</span>
         </button>
       </div>
 

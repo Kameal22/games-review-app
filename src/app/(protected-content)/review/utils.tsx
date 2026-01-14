@@ -24,7 +24,7 @@ export const fetchReview = async (reviewId: string) => {
     return response.data;
   } catch (error) {
     const errorMessage =
-      error instanceof Error ? error.message : "Failed to fetch review";
+      error instanceof Error ? error.message : "Nie udało się pobrać recenzji";
     throw new Error(errorMessage);
   }
 };

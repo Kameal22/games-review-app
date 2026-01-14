@@ -55,11 +55,11 @@ const SingleReview: React.FC<Props> = ({ data }) => {
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-base items-start sm:items-center">
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
             <p className="text-customWhite">
-              <span className="sm:hidden">Genre: </span>
+              <span className="sm:hidden">Gatunek: </span>
               {data.genre}
             </p>
             <p className="text-customWhite">
-              Rating:{" "}
+              Ocena:{" "}
               <span
                 className={`font-bold text-lg ${getScoreColor(data.rating)}`}
               >
@@ -73,8 +73,8 @@ const SingleReview: React.FC<Props> = ({ data }) => {
               }}
               className="text-blue-400 truncate hover:text-blue-300 transition-colors duration-200 cursor-pointer underline decoration-blue-400 hover:decoration-blue-300"
             >
-              <span className="sm:hidden">By: </span>
-              <span className="hidden sm:inline">Reviewed by: </span>
+              <span className="sm:hidden">Przez: </span>
+              <span className="hidden sm:inline">Zrecenzowane przez: </span>
               <span className="font-medium">{data.user}</span>
             </p>
           </div>
@@ -90,9 +90,9 @@ const SingleReview: React.FC<Props> = ({ data }) => {
             <button
               onClick={handleReadReview}
               className="flex-shrink-0 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 text-sm font-medium"
-              title="Read full review"
+              title="Przeczytaj pełną recenzję"
             >
-              Read Review
+              Przeczytaj recenzję
             </button>
           </div>
         </div>

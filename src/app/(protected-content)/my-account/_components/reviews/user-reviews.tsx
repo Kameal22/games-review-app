@@ -38,8 +38,8 @@ const UserReviews: React.FC<{ reviews: Review[] }> = ({ reviews }) => {
       queryClient.invalidateQueries({ queryKey: ["userReviews"] });
       addToast({
         type: "success",
-        title: "Success",
-        message: "Review deleted successfully",
+        title: "Sukces",
+        message: "Recenzja została pomyślnie usunięta",
       });
       setReviewToDelete(null);
       // Adjust page if needed after deletion
@@ -50,8 +50,8 @@ const UserReviews: React.FC<{ reviews: Review[] }> = ({ reviews }) => {
     onError: (error: Error) => {
       addToast({
         type: "error",
-        title: "Error",
-        message: error.message || "Failed to delete review",
+        title: "Błąd",
+        message: error.message || "Nie udało się usunąć recenzji",
       });
       setReviewToDelete(null);
     },
@@ -77,11 +77,11 @@ const UserReviews: React.FC<{ reviews: Review[] }> = ({ reviews }) => {
     return (
       <div className="flex-1 lg:basis-[60%] flex flex-col justify-center items-center gap-4">
         <p className="text-customWhite text-xl lg:text-2xl font-semibold">
-          Reviews
+          Recenzje
         </p>
         <div className="text-center">
           <p className="text-greyText text-lg mb-4">
-            This user hasn&apos;t written any reviews yet.
+            Ten użytkownik nie napisał jeszcze żadnych recenzji.
           </p>
         </div>
       </div>
@@ -96,7 +96,7 @@ const UserReviews: React.FC<{ reviews: Review[] }> = ({ reviews }) => {
     <>
       <div className="flex-1 lg:basis-[60%] flex flex-col gap-4">
         <p className="text-customWhite text-xl lg:text-2xl font-semibold">
-          Reviews
+          Recenzje
         </p>
         <div className="flex flex-col gap-3">
           {currentReviews.map((review: Review) => (
@@ -129,7 +129,7 @@ const UserReviews: React.FC<{ reviews: Review[] }> = ({ reviews }) => {
                   </div>
                   <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-base">
                     <p className="text-customWhite">
-                      Rating:{" "}
+                      Ocena:{" "}
                       <span
                         className={`font-bold text-lg ${getScoreColor(
                           review.finalScore
@@ -139,7 +139,7 @@ const UserReviews: React.FC<{ reviews: Review[] }> = ({ reviews }) => {
                       </span>
                     </p>
                     <p className="text-greyText text-sm sm:text-base">
-                      {new Date(review.createdAt).toLocaleDateString()}
+                      {new Date(review.createdAt).toLocaleDateString("pl-PL")}
                     </p>
                   </div>
                 </div>
@@ -148,7 +148,7 @@ const UserReviews: React.FC<{ reviews: Review[] }> = ({ reviews }) => {
                 onClick={(e) => handleDeleteClick(e, review._id)}
                 disabled={deleteMutation.isPending}
                 className="flex-shrink-0 p-2 text-red-500 hover:bg-red-500/20 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                title="Delete review"
+                title="Usuń recenzję"
               >
                 <svg
                   className="w-5 h-5"
@@ -181,14 +181,14 @@ const UserReviews: React.FC<{ reviews: Review[] }> = ({ reviews }) => {
         isOpen={!!reviewToDelete}
         onClose={handleCancelDelete}
         onConfirm={handleConfirmDelete}
-        title="Delete Review"
+        title="Usuń recenzję"
         message={
           reviewToDeleteData
-            ? `Are you sure you want to delete your review for "${reviewToDeleteData.game.title}"? This action cannot be undone.`
-            : "Are you sure you want to delete this review?"
+            ? `Czy na pewno chcesz usunąć swoją recenzję dla "${reviewToDeleteData.game.title}"? Tej akcji nie można cofnąć.`
+            : "Czy na pewno chcesz usunąć tę recenzję?"
         }
-        confirmText="Delete"
-        cancelText="Cancel"
+        confirmText="Usuń"
+        cancelText="Anuluj"
         confirmButtonClass="bg-red-600 hover:bg-red-700"
       />
     </>

@@ -15,20 +15,19 @@ const Login: React.FC = () => {
     >
       <div className="text-center max-w-xl mb-4">
         <h1 className="text-4xl md:text-5xl font-bold text-customWhite mb-4">
-          Sign In
+          Zaloguj się
         </h1>
         <p className="text-customWhite/90 text-lg md:text-xl mb-6">
-          Access your account to review games, manage your wishlist, and
-          discover amazing gaming experiences.
+          Zaloguj się żeby móc korzystać z całej platformy.
         </p>
         <div className="flex items-center justify-center gap-4 text-customWhite/70 text-sm">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-            <span>Write reviews</span>
+            <span>Twórz Recenzje</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-            <span>Manage wishlist</span>
+            <span>Zarządzaj listą życzeń</span>
           </div>
         </div>
       </div>

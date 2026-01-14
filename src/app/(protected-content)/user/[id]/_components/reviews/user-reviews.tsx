@@ -38,9 +38,11 @@ const UserReviews: React.FC = () => {
   if (isLoadingUserReviews) {
     return (
       <div className="flex-1 lg:basis-[70%] flex flex-col justify-center items-center gap-4">
-        <p className="text-customWhite text-xl lg:text-2xl">User Reviews</p>
+        <p className="text-customWhite text-xl lg:text-2xl">
+          Recenzje użytkownika
+        </p>
         <div className="text-center">
-          <p className="text-greyText text-lg">Loading reviews...</p>
+          <p className="text-greyText text-lg">Ładowanie recenzji...</p>
         </div>
       </div>
     );
@@ -50,11 +52,13 @@ const UserReviews: React.FC = () => {
   if (userReviewsError) {
     return (
       <div className="flex-1 lg:basis-[70%] flex flex-col justify-center items-center gap-4">
-        <p className="text-customWhite text-xl lg:text-2xl">User Reviews</p>
+        <p className="text-customWhite text-xl lg:text-2xl">
+          Recenzje użytkownika
+        </p>
         <div className="text-center">
-          <p className="text-red-500 text-lg mb-2">Error loading reviews</p>
+          <p className="text-red-500 text-lg mb-2">Błąd ładowania recenzji</p>
           <p className="text-greyText text-sm">
-            {userReviewsError.message || "An error occurred"}
+            {userReviewsError.message || "Wystąpił błąd"}
           </p>
         </div>
       </div>
@@ -65,10 +69,12 @@ const UserReviews: React.FC = () => {
   if (userReviews.length === 0) {
     return (
       <div className="flex-1 lg:basis-[70%] flex flex-col justify-center items-center gap-4">
-        <p className="text-customWhite text-xl lg:text-2xl">User Reviews</p>
+        <p className="text-customWhite text-xl lg:text-2xl">
+          Recenzje użytkownika
+        </p>
         <div className="text-center">
           <p className="text-greyText text-lg mb-4">
-            This user hasn&apos;t written any reviews yet.
+            Ten użytkownik nie napisał jeszcze żadnych recenzji.
           </p>
         </div>
       </div>
@@ -106,7 +112,7 @@ const UserReviews: React.FC = () => {
               </div>
               <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-base">
                 <p className="text-customWhite">
-                  Rating:{" "}
+                  Ocena:{" "}
                   <span
                     className={`font-bold text-lg ${getScoreColor(
                       review.finalScore
@@ -116,7 +122,7 @@ const UserReviews: React.FC = () => {
                   </span>
                 </p>
                 <p className="text-greyText text-sm sm:text-base">
-                  {new Date(review.createdAt).toLocaleDateString()}
+                  {new Date(review.createdAt).toLocaleDateString("pl-PL")}
                 </p>
               </div>
             </div>

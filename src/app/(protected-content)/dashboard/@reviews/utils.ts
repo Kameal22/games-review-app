@@ -22,7 +22,7 @@ export const fetchRecentReviews = async () => {
     
     return response.data;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch recent reviews';
+    const errorMessage = error instanceof Error ? error.message : 'Nie udało się pobrać najnowszych recenzji';
     throw new Error(errorMessage);
   }
 };
@@ -33,7 +33,7 @@ export const fetchUserReviews = async (userId: string) => {
     const token = getTokenFromCookie();
     
     if (!token) {
-      throw new Error('No authentication token found');
+      throw new Error('Nie znaleziono tokenu uwierzytelniającego');
     }
     
     const response = await axios.get(`https://games-review-api.onrender.com/api/reviews/user/${userId}`, {
@@ -45,7 +45,7 @@ export const fetchUserReviews = async (userId: string) => {
     
     return response.data;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch user reviews';
+    const errorMessage = error instanceof Error ? error.message : 'Nie udało się pobrać recenzji użytkownika';
     throw new Error(errorMessage);
   }
 };

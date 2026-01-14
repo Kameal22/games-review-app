@@ -11,8 +11,8 @@ import { useUserStore } from "@/stores/user-store";
 import { useToastStore } from "@/stores/toast-store";
 
 const schema = z.object({
-  email: z.string().email(),
-  password: z.string(),
+  email: z.string().email("Nieprawidłowy adres email"),
+  password: z.string().min(1, "Hasło jest wymagane"),
 });
 
 type FormFields = z.infer<typeof schema>;
@@ -38,14 +38,15 @@ const LoginForm: React.FC = () => {
       login(data.user, data.token);
       addToast({
         type: "success",
-        title: "Login successful",
-        message: `Welcome back, ${data.user.displayName}!`,
+        title: "Logowanie udane",
+        message: `Witaj ponownie, ${data.user.displayName}!`,
       });
       router.push("/dashboard");
     },
     onError: async (error: Error) => {
       setError("root", {
-        message: error.message || "Invalid credentials, please try again.",
+        message:
+          error.message || "Nieprawidłowe dane logowania, spróbuj ponownie.",
       });
     },
   });
@@ -54,7 +55,7 @@ const LoginForm: React.FC = () => {
     try {
       await mutation.mutate(data);
     } catch {
-      setError("root", { message: "Something went wrong, please try again." });
+      setError("root", { message: "Coś poszło nie tak, spróbuj ponownie." });
     }
   };
 
@@ -69,7 +70,7 @@ const LoginForm: React.FC = () => {
             className="p-3 rounded-xl w-full"
             {...register("email")}
             type="email"
-            placeholder="Email *"
+            placeholder="Adres email *"
           />
           {errors.email && (
             <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
@@ -81,7 +82,7 @@ const LoginForm: React.FC = () => {
               className="p-3 rounded-xl w-full pr-12"
               {...register("password")}
               type={showPassword ? "text" : "password"}
-              placeholder="Password *"
+              placeholder="Hasło *"
             />
             <button
               type="button"
@@ -141,7 +142,7 @@ const LoginForm: React.FC = () => {
           disabled={isSubmitting || mutation.isPending}
           type="submit"
         >
-          {isSubmitting || mutation.isPending ? "Loading..." : "Submit"}
+          {isSubmitting || mutation.isPending ? "Ładowanie..." : "Zaloguj się"}
         </button>
       </form>
 
@@ -150,7 +151,7 @@ const LoginForm: React.FC = () => {
           href="/register"
           className="text-sm md:text-base text-customWhite underline cursor-pointer"
         >
-          New to Reviewslike? Sign up here
+          Nowy w Reviewslike? Zarejestruj się tutaj
         </Link>
       </div>
     </div>

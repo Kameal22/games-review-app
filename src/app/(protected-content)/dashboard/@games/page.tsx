@@ -75,12 +75,14 @@ const GamesList: React.FC = () => {
     <div className="bg-darkGreyBackground rounded-xl p-4 w-full h-full flex flex-col gap-4">
       <div className="flex flex-col gap-2">
         <h2 className="text-customWhite text-xl lg:text-2xl font-semibold">
-          {searchTerm ? `Search Results for "${searchTerm}"` : "Browse Games"}
+          {searchTerm
+            ? `Wyniki wyszukiwania dla "${searchTerm}"`
+            : "Przeglądaj gry"}
         </h2>
         <p className="text-greyText text-base lg:text-lg leading-relaxed">
           {searchTerm
-            ? "Discover games matching your search criteria"
-            : "Explore our extensive collection of games across all genres and platforms. Find your next favorite title and add games to your watchlist."}
+            ? "Odkryj gry pasujące do Twojego wyszukiwania"
+            : "Przeglądaj naszą obszerną kolekcję gier ze wszystkich gatunków i platform. Znajdź swój następny ulubiony tytuł i dodaj gry do swojej listy życzeń."}
         </p>
       </div>
 
@@ -96,16 +98,16 @@ const GamesList: React.FC = () => {
         {isLoading ? (
           <div className="flex flex-col gap-4 flex-1 justify-center items-center">
             <p className="text-customWhite text-lg text-center">
-              Loading games...
+              Ładowanie gier...
             </p>
           </div>
         ) : error ? (
           <div className="flex flex-col gap-4 flex-1 justify-center items-center">
             <p className="text-red-500 text-lg text-center">
-              Error loading games
+              Błąd ładowania gier
             </p>
             <p className="text-greyText text-sm text-center">
-              {error?.message || "Something went wrong"}
+              {error?.message || "Coś poszło nie tak"}
             </p>
           </div>
         ) : currentGames.length > 0 ? (
@@ -134,7 +136,9 @@ const GamesList: React.FC = () => {
           </>
         ) : (
           <div className="flex flex-col gap-4 flex-1 justify-center items-center">
-            <p className="text-greyText text-lg text-center">No games found</p>
+            <p className="text-greyText text-lg text-center">
+              Nie znaleziono gier
+            </p>
           </div>
         )}
       </div>

@@ -29,9 +29,9 @@ export const registerUser = async (credentials: RegisterCredentials): Promise<Re
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || error.message || 'Registration failed';
+      const errorMessage = error.response?.data?.message || error.message || 'Rejestracja nie powiodła się';
       throw new Error(errorMessage);
     }
-    throw new Error('An unexpected error occurred during registration');
+    throw new Error('Wystąpił nieoczekiwany błąd podczas rejestracji');
   }
 };

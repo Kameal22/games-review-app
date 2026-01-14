@@ -10,7 +10,7 @@ export const likeReview = async (reviewId: string) => {
     const token = getTokenFromCookie();
     
     if (!token) {
-      throw new Error('No authentication token found');
+      throw new Error('Nie znaleziono tokenu uwierzytelniającego');
     }
     
     const response = await axios.post(
@@ -27,10 +27,10 @@ export const likeReview = async (reviewId: string) => {
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || error.message || 'Failed to like review';
+      const errorMessage = error.response?.data?.message || error.message || 'Nie udało się polubić recenzji';
       throw new Error(errorMessage);
     }
-    const errorMessage = error instanceof Error ? error.message : 'Failed to like review';
+    const errorMessage = error instanceof Error ? error.message : 'Nie udało się polubić recenzji';
     throw new Error(errorMessage);
   }
 };
@@ -40,7 +40,7 @@ export const dislikeReview = async (reviewId: string) => {
     const token = getTokenFromCookie();
     
     if (!token) {
-      throw new Error('No authentication token found');
+      throw new Error('Nie znaleziono tokenu uwierzytelniającego');
     }
     
     const response = await axios.post(
@@ -57,10 +57,10 @@ export const dislikeReview = async (reviewId: string) => {
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || error.message || 'Failed to dislike review';
+      const errorMessage = error.response?.data?.message || error.message || 'Nie udało się oznaczyć recenzji jako niepodoba mi się';
       throw new Error(errorMessage);
     }
-    const errorMessage = error instanceof Error ? error.message : 'Failed to dislike review';
+    const errorMessage = error instanceof Error ? error.message : 'Nie udało się oznaczyć recenzji jako niepodoba mi się';
     throw new Error(errorMessage);
   }
 };
@@ -70,7 +70,7 @@ export const removeInteraction = async (reviewId: string) => {
     const token = getTokenFromCookie();
     
     if (!token) {
-      throw new Error('No authentication token found');
+      throw new Error('Nie znaleziono tokenu uwierzytelniającego');
     }
     
     const response = await axios.delete(
@@ -86,10 +86,10 @@ export const removeInteraction = async (reviewId: string) => {
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || error.message || 'Failed to remove interaction';
+      const errorMessage = error.response?.data?.message || error.message || 'Nie udało się usunąć interakcji';
       throw new Error(errorMessage);
     }
-    const errorMessage = error instanceof Error ? error.message : 'Failed to remove interaction';
+    const errorMessage = error instanceof Error ? error.message : 'Nie udało się usunąć interakcji';
     throw new Error(errorMessage);
   }
 };

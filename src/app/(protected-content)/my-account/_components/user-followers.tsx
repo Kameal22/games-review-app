@@ -21,15 +21,16 @@ const UserFollowers: React.FC<{ following?: Following }> = ({ following }) => {
       queryClient.invalidateQueries({ queryKey: ["userFollowing"] });
       addToast({
         type: "success",
-        title: "Success",
-        message: "You have unfollowed this user",
+        title: "Sukces",
+        message: "Przestałeś obserwować tego użytkownika",
       });
     },
     onError: (error: Error) => {
       addToast({
         type: "error",
-        title: "Error",
-        message: error.message || "Failed to unfollow user",
+        title: "Błąd",
+        message:
+          error.message || "Nie udało się przestać obserwować użytkownika",
       });
     },
   });
@@ -67,7 +68,7 @@ const UserFollowers: React.FC<{ following?: Following }> = ({ following }) => {
   return (
     <div className="flex-1 lg:basis-[40%]">
       <p className="text-customWhite text-xl lg:text-2xl font-semibold mb-4">
-        Following
+        Obserwowani
       </p>
       {hasFollowing ? (
         <>
@@ -82,7 +83,7 @@ const UserFollowers: React.FC<{ following?: Following }> = ({ following }) => {
                   <div className="w-12 h-12 lg:w-14 lg:h-14">
                     <Image
                       src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
-                      alt={`${user?.following?.displayName}'s avatar`}
+                      alt={`Avatar użytkownika ${user?.following?.displayName}`}
                       className="w-full h-full rounded-full object-cover"
                       width={56}
                       height={56}
@@ -101,7 +102,7 @@ const UserFollowers: React.FC<{ following?: Following }> = ({ following }) => {
                   disabled={unfollowMutation.isPending}
                   className="bg-red-600 hover:bg-red-700 disabled:bg-red-800 disabled:cursor-not-allowed text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors duration-200 flex-shrink-0"
                 >
-                  Unfollow
+                  Przestań obserwować
                 </button>
               </div>
             ))}
@@ -131,10 +132,10 @@ const UserFollowers: React.FC<{ following?: Following }> = ({ following }) => {
             />
           </svg>
           <p className="text-customWhite text-lg font-medium">
-            No users followed yet
+            Nie obserwujesz jeszcze żadnych użytkowników
           </p>
           <p className="text-gray-400 text-sm text-center">
-            Start following users to see them here
+            Zacznij obserwować użytkowników, aby zobaczyć ich tutaj
           </p>
         </div>
       )}

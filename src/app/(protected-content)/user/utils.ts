@@ -40,7 +40,7 @@ export const fetchUserData = async (userName: string) => {
     
     return response.data;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch user data';
+    const errorMessage = error instanceof Error ? error.message : 'Nie udało się pobrać danych użytkownika';
     throw new Error(errorMessage);
   }
 };
@@ -51,7 +51,7 @@ export const followUser = async (userName: string) => {
     const token = getTokenFromCookie();
     
     if (!token) {
-      throw new Error('No authentication token found');
+      throw new Error('Nie znaleziono tokenu uwierzytelniającego');
     }
     
     const response = await axios.post(
@@ -68,10 +68,10 @@ export const followUser = async (userName: string) => {
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || error.message || 'Failed to follow user';
+      const errorMessage = error.response?.data?.message || error.message || 'Nie udało się obserwować użytkownika';
       throw new Error(errorMessage);
     }
-    const errorMessage = error instanceof Error ? error.message : 'Failed to follow user';
+    const errorMessage = error instanceof Error ? error.message : 'Nie udało się obserwować użytkownika';
     throw new Error(errorMessage);
   }
 };
@@ -108,7 +108,7 @@ export const unfollowUser = async (userName: string) => {
     const token = getTokenFromCookie();
     
     if (!token) {
-      throw new Error('No authentication token found');
+      throw new Error('Nie znaleziono tokenu uwierzytelniającego');
     }
     
     const response = await axios.delete(
@@ -124,10 +124,10 @@ export const unfollowUser = async (userName: string) => {
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || error.message || 'Failed to unfollow user';
+      const errorMessage = error.response?.data?.message || error.message || 'Nie udało się przestać obserwować użytkownika';
       throw new Error(errorMessage);
     }
-    const errorMessage = error instanceof Error ? error.message : 'Failed to unfollow user';
+    const errorMessage = error instanceof Error ? error.message : 'Nie udało się przestać obserwować użytkownika';
     throw new Error(errorMessage);
   }
 };

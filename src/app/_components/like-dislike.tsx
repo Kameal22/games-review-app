@@ -90,8 +90,8 @@ const LikeDislike: React.FC<LikeDislikeProps> = ({
 
       addToast({
         type: "error",
-        title: "Error",
-        message: error.message || "Failed to like review",
+        title: "Błąd",
+        message: error.message || "Nie udało się polubić recenzji",
       });
     },
   });
@@ -130,8 +130,10 @@ const LikeDislike: React.FC<LikeDislikeProps> = ({
 
       addToast({
         type: "error",
-        title: "Error",
-        message: error.message || "Failed to dislike review",
+        title: "Błąd",
+        message:
+          error.message ||
+          "Nie udało się oznaczyć recenzji jako niepodoba mi się",
       });
     },
   });
@@ -159,8 +161,8 @@ const LikeDislike: React.FC<LikeDislikeProps> = ({
       // userInteraction still has the old value since onSuccess wasn't called
       addToast({
         type: "error",
-        title: "Error",
-        message: error.message || "Failed to remove interaction",
+        title: "Błąd",
+        message: error.message || "Nie udało się usunąć interakcji",
       });
     },
   });
@@ -172,8 +174,8 @@ const LikeDislike: React.FC<LikeDislikeProps> = ({
       router.push("/login");
       addToast({
         type: "info",
-        title: "Login Required",
-        message: "Please log in to like reviews",
+        title: "Wymagane logowanie",
+        message: "Zaloguj się, aby polubić recenzje",
       });
       return;
     }
@@ -192,8 +194,8 @@ const LikeDislike: React.FC<LikeDislikeProps> = ({
       router.push("/login");
       addToast({
         type: "info",
-        title: "Login Required",
-        message: "Please log in to dislike reviews",
+        title: "Wymagane logowanie",
+        message: "Zaloguj się, aby oznaczyć recenzje jako niepodoba mi się",
       });
       return;
     }
@@ -221,7 +223,7 @@ const LikeDislike: React.FC<LikeDislikeProps> = ({
               ? "bg-green-600 hover:bg-green-700 text-white"
               : "bg-lightGray hover:bg-lightGrayHover text-customWhite"
           } disabled:opacity-50 disabled:cursor-not-allowed`}
-          title="Like this review"
+          title="Polub tę recenzję"
         >
           <svg
             className="w-4 h-4"
@@ -241,7 +243,7 @@ const LikeDislike: React.FC<LikeDislikeProps> = ({
               ? "bg-red-600 hover:bg-red-700 text-white"
               : "bg-lightGray hover:bg-lightGrayHover text-customWhite"
           } disabled:opacity-50 disabled:cursor-not-allowed`}
-          title="Dislike this review"
+          title="Oznacz tę recenzję jako niepodoba mi się"
         >
           <svg
             className="w-4 h-4"
@@ -267,7 +269,7 @@ const LikeDislike: React.FC<LikeDislikeProps> = ({
             ? "bg-green-600 hover:bg-green-700 text-white"
             : "bg-lightGray hover:bg-lightGrayHover text-customWhite"
         } disabled:opacity-50 disabled:cursor-not-allowed`}
-        title="Like this review"
+        title="Polub tę recenzję"
       >
         <svg
           className="w-5 h-5"
@@ -287,7 +289,7 @@ const LikeDislike: React.FC<LikeDislikeProps> = ({
             ? "bg-red-600 hover:bg-red-700 text-white"
             : "bg-lightGray hover:bg-lightGrayHover text-customWhite"
         } disabled:opacity-50 disabled:cursor-not-allowed`}
-        title="Dislike this review"
+        title="Oznacz tę recenzję jako niepodoba mi się"
       >
         <svg
           className="w-5 h-5"

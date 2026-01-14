@@ -52,12 +52,14 @@ const ReviewsList: React.FC = () => {
     <div className="bg-darkGreyBackground rounded-xl p-4 w-full h-full flex flex-col gap-4">
       <div className="flex flex-col gap-2">
         <h2 className="text-customWhite text-xl lg:text-2xl font-semibold">
-          {searchTerm ? `Search Results for "${searchTerm}"` : "Latest Reviews"}
+          {searchTerm
+            ? `Wyniki wyszukiwania dla "${searchTerm}"`
+            : "Najnowsze recenzje"}
         </h2>
         <p className="text-greyText text-base lg:text-lg leading-relaxed">
           {searchTerm
-            ? "Discover reviews matching your search criteria"
-            : "Stay up-to-date with the newest game reviews from our community. Discover fresh perspectives on the latest releases and hidden gems."}
+            ? "Odkryj recenzje pasujące do Twojego wyszukiwania"
+            : "Bądź na bieżąco z najnowszymi recenzjami gier od naszej społeczności."}
         </p>
       </div>
 
@@ -65,7 +67,7 @@ const ReviewsList: React.FC = () => {
       <div className="flex flex-col gap-4 w-full">
         <input
           type="text"
-          placeholder="Search reviews by game name..."
+          placeholder="Szukaj recenzji po nazwie gry..."
           value={searchTerm}
           onChange={(e) => handleSearchChange(e.target.value)}
           className="rounded-xl p-3 w-full max-w-md bg-lightGray outline-none caret-customWhite focus:bg-lightGrayHover text-customWhite placeholder-greyText"
@@ -76,16 +78,16 @@ const ReviewsList: React.FC = () => {
         {isLoading ? (
           <div className="flex flex-col gap-4 flex-1 justify-center items-center">
             <p className="text-customWhite text-lg text-center">
-              Loading reviews...
+              Ładowanie recenzji...
             </p>
           </div>
         ) : error ? (
           <div className="flex flex-col gap-4 flex-1 justify-center items-center">
             <p className="text-red-500 text-lg text-center">
-              Error loading reviews
+              Błąd ładowania recenzji
             </p>
             <p className="text-greyText text-sm text-center">
-              {error instanceof Error ? error.message : "Something went wrong"}
+              {error instanceof Error ? error.message : "Coś poszło nie tak"}
             </p>
           </div>
         ) : filteredReviews && filteredReviews.length > 0 ? (
@@ -96,7 +98,7 @@ const ReviewsList: React.FC = () => {
                   key={review._id}
                   data={{
                     name: review.game.title,
-                    genre: review.game.genres?.join(", ") || "Unknown",
+                    genre: review.game.genres?.join(", ") || "Nieznany",
                     rating: review.finalScore,
                     user: review.user.displayName,
                     userName: review.user.displayName,
@@ -121,8 +123,8 @@ const ReviewsList: React.FC = () => {
           <div className="flex flex-col gap-4 flex-1 justify-center items-center">
             <p className="text-white text-xl text-center">
               {searchTerm
-                ? `No reviews found for "${searchTerm}"`
-                : "No reviews found"}
+                ? `Nie znaleziono recenzji dla "${searchTerm}"`
+                : "Nie znaleziono recenzji"}
             </p>
           </div>
         )}

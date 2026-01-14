@@ -16,31 +16,34 @@ import { Game } from "@/app/types/game";
 
 const reviewSchema = z.object({
   selectedGame: z.object({
-    _id: z.string().min(1, "Please select a game"),
-    title: z.string().min(1, "Please select a game"),
+    _id: z.string().min(1, "Proszę wybrać grę"),
+    title: z.string().min(1, "Proszę wybrać grę"),
     coverImageUrl: z.string(),
     genres: z.array(z.string()).default([]),
   }),
   categories: z.array(
     z.object({
       name: z.string(),
-      score: z.string().regex(/^\d+$/, "Score must be a number").max(10),
+      score: z.string().regex(/^\d+$/, "Ocena musi być liczbą").max(10),
       description: z.string().optional(),
     })
   ),
-  summary: z.string().min(10, "Summary must be at least 10 characters"),
+  summary: z.string().min(10, "Podsumowanie musi mieć co najmniej 10 znaków"),
   finalScore: z
     .string()
-    .regex(/^\d+$/, "Final score must be a number")
+    .regex(/^\d+$/, "Ocena końcowa musi być liczbą")
     .refine((val) => {
       const num = parseInt(val);
       return num >= 1 && num <= 10;
-    }, "Final score must be between 1 and 10"),
+    }, "Ocena końcowa musi być między 1 a 10"),
 });
 
-const defaultCategories = ["Gameplay", "Soundtrack", "Graphics", "Story"].map(
-  (name) => ({ name, score: "", description: "" })
-);
+const defaultCategories = [
+  "Rozgrywka",
+  "Ścieżka dźwiękowa",
+  "Grafika",
+  "Fabuła",
+].map((name) => ({ name, score: "", description: "" }));
 
 const WriteReview: React.FC = () => {
   const [showGameSelector, setShowGameSelector] = useState(false);
@@ -137,8 +140,8 @@ const WriteReview: React.FC = () => {
     if (!user) {
       addToast({
         type: "error",
-        title: "Authentication Error",
-        message: "You must be logged in to submit a review",
+        title: "Błąd uwierzytelniania",
+        message: "Musisz być zalogowany, aby przesłać recenzję",
       });
       return;
     }
@@ -150,16 +153,17 @@ const WriteReview: React.FC = () => {
       const reviewData = {
         gameId: data.selectedGame._id,
         gameplay: parseInt(
-          data.categories.find((c) => c.name === "Gameplay")?.score || "0"
+          data.categories.find((c) => c.name === "Rozgrywka")?.score || "0"
         ),
         story: parseInt(
-          data.categories.find((c) => c.name === "Story")?.score || "0"
+          data.categories.find((c) => c.name === "Fabuła")?.score || "0"
         ),
         soundtrack: parseInt(
-          data.categories.find((c) => c.name === "Soundtrack")?.score || "0"
+          data.categories.find((c) => c.name === "Ścieżka dźwiękowa")?.score ||
+            "0"
         ),
         graphics: parseInt(
-          data.categories.find((c) => c.name === "Graphics")?.score || "0"
+          data.categories.find((c) => c.name === "Grafika")?.score || "0"
         ),
         optimization: 0, // Not in form, set to 0
         worldDesign: 0, // Not in form, set to 0
@@ -173,8 +177,9 @@ const WriteReview: React.FC = () => {
       // Show success message
       addToast({
         type: "success",
-        title: "Review Submitted!",
-        message: "Your review has been successfully submitted and is now live.",
+        title: "Recenzja przesłana!",
+        message:
+          "Twoja recenzja została pomyślnie przesłana i jest już dostępna.",
       });
 
       // Navigate to dashboard
@@ -184,11 +189,11 @@ const WriteReview: React.FC = () => {
 
       addToast({
         type: "error",
-        title: "Submission Failed",
+        title: "Przesłanie nie powiodło się",
         message:
           error instanceof Error
             ? error.message
-            : "Failed to submit review. Please try again.",
+            : "Nie udało się przesłać recenzji. Spróbuj ponownie.",
       });
     } finally {
       setIsSubmitting(false);
@@ -224,17 +229,18 @@ const WriteReview: React.FC = () => {
 
   // Check if the user has already reviewed this game
   const hasAlreadyReviewed =
-    reviewCheckData?.message === "You already reviewed this game";
+    reviewCheckData?.message === "You already reviewed this game" ||
+    reviewCheckData?.message === "Już zrecenzowałeś tę grę";
 
   return (
     <div className="bg-darkGreyBackground rounded-xl p-4 w-full h-full flex flex-col gap-4">
       <div className="bg-lightGray rounded-xl p-4 w-full h-full flex flex-col gap-6">
         <div className="text-center">
           <h1 className="text-2xl lg:text-3xl font-semibold text-customWhite mb-2">
-            Write a Review
+            Napisz recenzję
           </h1>
           <p className="text-greyText text-sm lg:text-base">
-            Share your thoughts about a game with the community
+            Podziel się swoimi przemyśleniami o grze ze społecznością
           </p>
         </div>
 
@@ -245,7 +251,7 @@ const WriteReview: React.FC = () => {
           {/* Game Selection */}
           <div className="bg-lightGrayHover p-4 rounded-lg">
             <h2 className="text-xl font-semibold text-customWhite mb-4">
-              Select a Game
+              Wybierz grę
             </h2>
 
             {selectedGame.title ? (
@@ -277,14 +283,14 @@ const WriteReview: React.FC = () => {
                   }
                   className="text-red-500 hover:text-red-400 text-sm"
                 >
-                  Change
+                  Zmień
                 </button>
               </div>
             ) : (
               <div className="relative" ref={gameSelectorRef}>
                 <input
                   type="text"
-                  placeholder="Search for a game..."
+                  placeholder="Szukaj gry..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onFocus={() => setShowGameSelector(true)}
@@ -295,11 +301,11 @@ const WriteReview: React.FC = () => {
                   <div className="absolute top-full left-0 right-0 mt-2 bg-lightGray rounded-lg shadow-lg max-h-96 overflow-y-auto z-10">
                     {gamesLoading ? (
                       <div className="p-3 text-greyText text-center">
-                        Loading games...
+                        Ładowanie gier...
                       </div>
                     ) : gamesError ? (
                       <div className="p-3 text-red-500 text-center">
-                        Error loading games: {gamesError?.message}
+                        Błąd ładowania gier: {gamesError?.message}
                       </div>
                     ) : filteredGames.length > 0 ? (
                       filteredGames.map((game: Game) => (
@@ -327,7 +333,7 @@ const WriteReview: React.FC = () => {
                       ))
                     ) : (
                       <div className="p-3 text-greyText text-center">
-                        No games found
+                        Nie znaleziono gier
                       </div>
                     )}
                   </div>
@@ -358,11 +364,11 @@ const WriteReview: React.FC = () => {
                   </svg>
                   <div>
                     <p className="text-yellow-500 font-medium">
-                      You&apos;ve already reviewed this game
+                      Już zrecenzowałeś tę grę
                     </p>
                     <p className="text-yellow-400/80 text-sm mt-1">
-                      You can only write one review per game. Please select a
-                      different game or edit your existing review.
+                      Możesz napisać tylko jedną recenzję na grę. Wybierz inną
+                      grę lub edytuj swoją istniejącą recenzję.
                     </p>
                   </div>
                 </div>
@@ -373,17 +379,17 @@ const WriteReview: React.FC = () => {
           {/* Review Categories */}
           <div className="bg-lightGrayHover p-4 rounded-lg">
             <h2 className="text-xl font-semibold text-customWhite mb-4">
-              Rate Categories
+              Oceń kategorie
             </h2>
             {!isGameSelected && (
               <p className="text-greyText text-sm mb-4">
-                Please select a game first to enable review inputs
+                Najpierw wybierz grę, aby włączyć pola recenzji
               </p>
             )}
             {isGameSelected && hasAlreadyReviewed && (
               <p className="text-yellow-500 text-sm mb-4">
-                You cannot review this game as you have already submitted a
-                review for it
+                Nie możesz zrecenzować tej gry, ponieważ już przesłałeś dla niej
+                recenzję
               </p>
             )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -401,7 +407,7 @@ const WriteReview: React.FC = () => {
                     type="number"
                     min="1"
                     max="10"
-                    placeholder="Score (1-10)"
+                    placeholder="Ocena (1-10)"
                     disabled={!isGameSelected || hasAlreadyReviewed}
                     {...register(`categories.${index}.score`)}
                     className={`p-3 rounded-lg bg-darkGreyBackground text-customWhite border border-transparent focus:border-customWhite outline-none ${
@@ -432,10 +438,10 @@ const WriteReview: React.FC = () => {
           {/* Summary */}
           <div className="bg-lightGrayHover p-4 rounded-lg">
             <h2 className="text-xl font-semibold text-customWhite mb-4">
-              Review Summary
+              Podsumowanie recenzji
             </h2>
             <textarea
-              placeholder="Write a comprehensive summary of your review..."
+              placeholder="Napisz szczegółowe podsumowanie swojej recenzji..."
               disabled={!isGameSelected || hasAlreadyReviewed}
               {...register("summary")}
               rows={6}
@@ -455,13 +461,13 @@ const WriteReview: React.FC = () => {
           {/* Final Score */}
           <div className="bg-lightGrayHover p-4 rounded-lg">
             <h2 className="text-xl font-semibold text-customWhite mb-4">
-              Final Score
+              Ocena końcowa
             </h2>
             <input
               type="number"
               min="1"
               max="10"
-              placeholder="Score (1-10)"
+              placeholder="Ocena (1-10)"
               disabled={!isGameSelected || hasAlreadyReviewed}
               {...register("finalScore")}
               className={`w-full p-3 rounded-lg bg-lightGray text-customWhite border border-transparent focus:border-customWhite outline-none ${
@@ -508,12 +514,12 @@ const WriteReview: React.FC = () => {
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-                Submitting...
+                Przesyłanie...
               </>
             ) : hasAlreadyReviewed ? (
-              "Already Reviewed"
+              "Już zrecenzowane"
             ) : (
-              "Submit Review"
+              "Prześlij recenzję"
             )}
           </button>
         </form>

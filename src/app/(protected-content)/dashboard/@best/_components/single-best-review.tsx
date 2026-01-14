@@ -12,6 +12,10 @@ interface Props {
 const SingleBestReview: React.FC<Props> = ({ data }) => {
   const router = useRouter();
 
+  const handleReadReview = () => {
+    router.push(`/review/${data._id}`);
+  };
+
   return (
     <div className="bg-lightGray rounded-xl p-3 flex flex-col sm:flex-row items-start sm:items-center w-full hover:bg-lightGrayHover gap-3">
       <div
@@ -46,7 +50,7 @@ const SingleBestReview: React.FC<Props> = ({ data }) => {
             onClick={() => router.push(`/review/${data._id}`)}
           >
             <p className="text-customWhite">
-              Rating:{" "}
+              Ocena:{" "}
               <span
                 className={`font-bold text-lg ${getScoreColor(
                   data.finalScore
@@ -63,17 +67,26 @@ const SingleBestReview: React.FC<Props> = ({ data }) => {
               }}
               className="text-blue-400 truncate hover:text-blue-300 transition-colors duration-200 cursor-pointer underline decoration-blue-400 hover:decoration-blue-300"
             >
-              <span className="sm:hidden">By: </span>
-              <span className="hidden sm:inline">Reviewed by: </span>
+              <span className="sm:hidden">Przez: </span>
+              <span className="hidden sm:inline">Zrecenzowane przez: </span>
               <span className="font-medium">{data.user.displayName}</span>
             </p>
           </div>
-          <LikeDislike
-            reviewId={data._id}
-            initialLikes={data.likes}
-            initialDislikes={data.dislikes}
-            compact={true}
-          />
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <LikeDislike
+              reviewId={data._id}
+              initialLikes={data.likes}
+              initialDislikes={data.dislikes}
+              compact={true}
+            />
+            <button
+              onClick={handleReadReview}
+              className="flex-shrink-0 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 text-sm font-medium"
+              title="Przeczytaj pełną recenzję"
+            >
+              Przeczytaj recenzję
+            </button>
+          </div>
         </div>
       </div>
     </div>

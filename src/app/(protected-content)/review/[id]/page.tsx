@@ -47,8 +47,8 @@ const ReviewPage: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ["reviews"] });
       addToast({
         type: "success",
-        title: "Success",
-        message: "Review deleted successfully",
+        title: "Sukces",
+        message: "Recenzja została pomyślnie usunięta",
       });
       setShowDeleteModal(false);
       // Redirect to dashboard after deletion
@@ -57,8 +57,8 @@ const ReviewPage: React.FC = () => {
     onError: (error: Error) => {
       addToast({
         type: "error",
-        title: "Error",
-        message: error.message || "Failed to delete review",
+        title: "Błąd",
+        message: error.message || "Nie udało się usunąć recenzji",
       });
       setShowDeleteModal(false);
     },
@@ -75,16 +75,16 @@ const ReviewPage: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ["reviews"] });
       addToast({
         type: "success",
-        title: "Success",
-        message: "Review updated successfully",
+        title: "Sukces",
+        message: "Recenzja została pomyślnie zaktualizowana",
       });
       setIsEditing(false);
     },
     onError: (error: Error) => {
       addToast({
         type: "error",
-        title: "Error",
-        message: error.message || "Failed to update review",
+        title: "Błąd",
+        message: error.message || "Nie udało się zaktualizować recenzji",
       });
     },
   });
@@ -141,7 +141,7 @@ const ReviewPage: React.FC = () => {
         <div className="bg-darkGreyBackground rounded-xl p-4 w-full h-full flex flex-col gap-4">
           <div className="bg-lightGray rounded-xl p-4 w-full flex-1 flex flex-col gap-4">
             <div className="flex items-center justify-center h-full">
-              <p className="text-customWhite text-lg">Loading review...</p>
+              <p className="text-customWhite text-lg">Ładowanie recenzji...</p>
             </div>
           </div>
         </div>
@@ -160,11 +160,11 @@ const ReviewPage: React.FC = () => {
           <div className="bg-lightGray rounded-xl p-4 w-full flex-1 flex flex-col gap-4">
             <div className="flex items-center justify-center h-full">
               <div className="text-center">
-                <p className="text-red-500 text-lg">Error loading review</p>
+                <p className="text-red-500 text-lg">Błąd ładowania recenzji</p>
                 <p className="text-greyText text-sm mt-2">
                   {error instanceof Error
                     ? error.message
-                    : "Something went wrong"}
+                    : "Coś poszło nie tak"}
                 </p>
               </div>
             </div>
@@ -184,7 +184,9 @@ const ReviewPage: React.FC = () => {
         <div className="bg-darkGreyBackground rounded-xl p-4 w-full h-full flex flex-col gap-4">
           <div className="bg-lightGray rounded-xl p-4 w-full flex-1 flex flex-col gap-4">
             <div className="flex items-center justify-center h-full">
-              <p className="text-customWhite text-lg">Review not found</p>
+              <p className="text-customWhite text-lg">
+                Recenzja nie znaleziona
+              </p>
             </div>
           </div>
         </div>
@@ -193,7 +195,7 @@ const ReviewPage: React.FC = () => {
   }
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
+    return new Date(dateString).toLocaleDateString("pl-PL", {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -228,10 +230,10 @@ const ReviewPage: React.FC = () => {
                     d="M10 19l-7-7m0 0l7-7m-7 7h18"
                   />
                 </svg>
-                Home
+                Powrót
               </button>
               <h1 className="text-customWhite text-lg lg:text-xl">
-                Review Details
+                Szczegóły recenzji
               </h1>
             </div>
             {isOwner && !isEditing && (
@@ -239,7 +241,7 @@ const ReviewPage: React.FC = () => {
                 <button
                   onClick={handleEditClick}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2"
-                  title="Edit review"
+                  title="Edytuj recenzję"
                 >
                   <svg
                     className="w-4 h-4"
@@ -255,13 +257,13 @@ const ReviewPage: React.FC = () => {
                       d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                     />
                   </svg>
-                  Edit
+                  Edytuj
                 </button>
                 <button
                   onClick={() => setShowDeleteModal(true)}
                   disabled={deleteMutation.isPending}
                   className="bg-red-600 hover:bg-red-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2"
-                  title="Delete review"
+                  title="Usuń recenzję"
                 >
                   <svg
                     className="w-4 h-4"
@@ -277,7 +279,7 @@ const ReviewPage: React.FC = () => {
                       d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                     />
                   </svg>
-                  Delete
+                  Usuń
                 </button>
               </div>
             )}
@@ -313,12 +315,12 @@ const ReviewPage: React.FC = () => {
                 </div> */}
 
                 <p className="text-greyText mb-3">
-                  Released: {formatDate(review.game.releaseDate)}
+                  Wydano: {formatDate(review.game.releaseDate)}
                 </p>
 
                 <div className="flex items-center gap-4">
                   <div className="text-center">
-                    <p className="text-greyText text-sm">Final Score</p>
+                    <p className="text-greyText text-sm">Ocena końcowa</p>
                     <div
                       className={`text-3xl lg:text-4xl font-bold ${getScoreColor(
                         review.finalScore
@@ -335,14 +337,14 @@ const ReviewPage: React.FC = () => {
           {/* Review Scores */}
           <div className="bg-darkGreyBackground rounded-xl p-4">
             <h3 className="text-customWhite text-lg font-bold mb-3">
-              Score Breakdown
+              Szczegółowa ocena
             </h3>
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
               {[
-                { label: "Gameplay", score: review.gameplay },
-                { label: "Story", score: review.story },
-                { label: "Soundtrack", score: review.soundtrack },
-                { label: "Graphics", score: review.graphics },
+                { label: "Rozgrywka", score: review.gameplay },
+                { label: "Fabuła", score: review.story },
+                { label: "Ścieżka dźwiękowa", score: review.soundtrack },
+                { label: "Grafika", score: review.graphics },
               ].map(({ label, score }) => (
                 <div
                   key={label}
@@ -362,7 +364,7 @@ const ReviewPage: React.FC = () => {
           {/* Review Text */}
           <div className="bg-darkGreyBackground rounded-xl p-4">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-customWhite text-lg font-bold">Review</h3>
+              <h3 className="text-customWhite text-lg font-bold">Recenzja</h3>
               {isOwner && isEditing && (
                 <div className="flex items-center gap-2">
                   <button
@@ -370,7 +372,7 @@ const ReviewPage: React.FC = () => {
                     disabled={updateMutation.isPending}
                     className="px-3 py-1.5 bg-lightGray hover:bg-lightGrayHover disabled:bg-gray-600 disabled:cursor-not-allowed text-customWhite rounded-lg transition-colors duration-200 text-sm"
                   >
-                    Cancel
+                    Anuluj
                   </button>
                   <button
                     onClick={handleSaveEdit}
@@ -402,7 +404,7 @@ const ReviewPage: React.FC = () => {
                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                           ></path>
                         </svg>
-                        Saving...
+                        Zapisywanie...
                       </>
                     ) : (
                       <>
@@ -420,7 +422,7 @@ const ReviewPage: React.FC = () => {
                             d="M5 13l4 4L19 7"
                           />
                         </svg>
-                        Save
+                        Zapisz
                       </>
                     )}
                   </button>
@@ -433,7 +435,7 @@ const ReviewPage: React.FC = () => {
                 value={editedText}
                 onChange={(e) => setEditedText(e.target.value)}
                 className="w-full bg-darkGreyBackground border border-lightGray rounded-lg p-4 text-customWhite placeholder-greyText focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none min-h-[200px] leading-relaxed"
-                placeholder="Write your review here..."
+                placeholder="Napisz swoją recenzję tutaj..."
                 disabled={updateMutation.isPending}
               />
             ) : (
@@ -448,7 +450,7 @@ const ReviewPage: React.FC = () => {
           {/* Like/Dislike Section */}
           <div className="bg-darkGreyBackground rounded-xl p-4">
             <h3 className="text-customWhite text-lg font-bold mb-3">
-              Community Feedback
+              Opinie społeczności
             </h3>
             <LikeDislike
               reviewId={review._id}
@@ -461,7 +463,7 @@ const ReviewPage: React.FC = () => {
           {/* Author Information */}
           <div className="bg-darkGreyBackground rounded-xl p-4">
             <h3 className="text-customWhite text-lg font-bold mb-3">
-              Reviewer
+              Recenzent
             </h3>
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 bg-lightGray rounded-full flex items-center justify-center">
@@ -474,7 +476,7 @@ const ReviewPage: React.FC = () => {
                   {review.user.displayName}
                 </p>
                 <p className="text-greyText text-sm">
-                  Reviewed on {formatDate(review.createdAt)}
+                  Zrecenzowano {formatDate(review.createdAt)}
                 </p>
               </div>
             </div>
@@ -506,14 +508,14 @@ const ReviewPage: React.FC = () => {
             deleteMutation.mutate(review._id);
           }
         }}
-        title="Delete Review"
+        title="Usuń recenzję"
         message={
           review
-            ? `Are you sure you want to delete your review for "${review.game.title}"? This action cannot be undone.`
-            : "Are you sure you want to delete this review?"
+            ? `Czy na pewno chcesz usunąć swoją recenzję dla "${review.game.title}"? Tej akcji nie można cofnąć.`
+            : "Czy na pewno chcesz usunąć tę recenzję?"
         }
-        confirmText="Delete"
-        cancelText="Cancel"
+        confirmText="Usuń"
+        cancelText="Anuluj"
         confirmButtonClass="bg-red-600 hover:bg-red-700"
       />
     </div>

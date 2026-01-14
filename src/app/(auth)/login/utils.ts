@@ -26,9 +26,9 @@ export const loginUser = async (credentials: LoginCredentials): Promise<LoginRes
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || error.message || 'Login failed';
+      const errorMessage = error.response?.data?.message || error.message || 'Logowanie nie powiodło się';
       throw new Error(errorMessage);
     }
-    throw new Error('An unexpected error occurred during login');
+    throw new Error('Wystąpił nieoczekiwany błąd podczas logowania');
   }
 };

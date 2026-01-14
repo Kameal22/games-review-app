@@ -13,13 +13,15 @@ import { useToastStore } from "@/stores/toast-store";
 //Zod schema for validation
 const schema = z
   .object({
-    displayName: z.string().min(3),
-    email: z.string().email(),
-    password: z.string().min(8),
-    confirm_password: z.string().min(8),
+    displayName: z
+      .string()
+      .min(3, "Nazwa wyświetlana musi mieć co najmniej 3 znaki"),
+    email: z.string().email("Nieprawidłowy adres email"),
+    password: z.string().min(8, "Hasło musi mieć co najmniej 8 znaków"),
+    confirm_password: z.string().min(8, "Hasło musi mieć co najmniej 8 znaków"),
   })
   .refine((data) => data.password === data.confirm_password, {
-    message: "Passwords don't match",
+    message: "Hasła nie są identyczne",
     path: ["confirm_password"],
   });
 
@@ -47,8 +49,8 @@ const RegisterForm: React.FC = () => {
       login(data.user, data.token);
       addToast({
         type: "success",
-        title: "Registration successful",
-        message: `Welcome to Reviewslike, ${data.user.displayName}!`,
+        title: "Rejestracja udana",
+        message: `Witaj w Reviewslike, ${data.user.displayName}!`,
       });
       router.push("/dashboard");
     },
@@ -56,11 +58,11 @@ const RegisterForm: React.FC = () => {
       console.log("Registration error:", error.message);
       addToast({
         type: "error",
-        title: "Registration failed",
-        message: error.message || "Something went wrong, please try again.",
+        title: "Rejestracja nie powiodła się",
+        message: error.message || "Coś poszło nie tak, spróbuj ponownie.",
       });
       setError("root", {
-        message: error.message || "Something went wrong, please try again.",
+        message: error.message || "Coś poszło nie tak, spróbuj ponownie.",
       });
     },
   });
@@ -69,7 +71,7 @@ const RegisterForm: React.FC = () => {
     try {
       await mutation.mutate(data);
     } catch {
-      setError("root", { message: "Something went wrong, please try again." });
+      setError("root", { message: "Coś poszło nie tak, spróbuj ponownie." });
     }
   };
 
@@ -84,7 +86,7 @@ const RegisterForm: React.FC = () => {
             className="p-3 rounded-xl w-full"
             {...register("displayName")}
             type="text"
-            placeholder="Display Name *"
+            placeholder="Nazwa wyświetlana *"
           />
           {errors.displayName && (
             <p className="text-red-500 text-sm mt-1">
@@ -97,7 +99,7 @@ const RegisterForm: React.FC = () => {
             className="p-3 rounded-xl w-full"
             {...register("email")}
             type="email"
-            placeholder="Email *"
+            placeholder="Adres email *"
           />
           {errors.email && (
             <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
@@ -109,7 +111,7 @@ const RegisterForm: React.FC = () => {
               className="p-3 rounded-xl w-full pr-12"
               {...register("password")}
               type={showPassword ? "text" : "password"}
-              placeholder="Password *"
+              placeholder="Hasło *"
             />
             <button
               type="button"
@@ -165,7 +167,7 @@ const RegisterForm: React.FC = () => {
               className="p-3 rounded-xl w-full pr-12"
               {...register("confirm_password")}
               type={showConfirmPassword ? "text" : "password"}
-              placeholder="Confirm Password *"
+              placeholder="Potwierdź hasło *"
             />
             <button
               type="button"
@@ -227,7 +229,9 @@ const RegisterForm: React.FC = () => {
           disabled={isSubmitting || mutation.isPending}
           type="submit"
         >
-          {isSubmitting || mutation.isPending ? "Loading..." : "Submit"}
+          {isSubmitting || mutation.isPending
+            ? "Ładowanie..."
+            : "Zarejestruj się"}
         </button>
       </form>
 
@@ -236,7 +240,7 @@ const RegisterForm: React.FC = () => {
           href="/login"
           className="text-sm md:text-base text-customWhite underline cursor-pointer"
         >
-          Already have an account? Sign In
+          Masz już konto? Zaloguj się
         </Link>
       </div>
     </div>

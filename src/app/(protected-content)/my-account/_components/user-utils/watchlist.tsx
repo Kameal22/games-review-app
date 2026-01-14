@@ -23,7 +23,7 @@ const Watchlist: React.FC<{ watchlist: WatchlistType[] }> = ({ watchlist }) => {
   return (
     <div className="mt-4 flex-1 lg:basis-[40%]">
       <p className="text-customWhite text-xl lg:text-2xl font-semibold mb-2">
-        Watchlist
+        Lista życzeń
       </p>
       <div className="flex flex-col gap-3">
         {watchlistGames.length > 0 ? (
@@ -52,7 +52,7 @@ const Watchlist: React.FC<{ watchlist: WatchlistType[] }> = ({ watchlist }) => {
         ) : (
           <div className="flex flex-col gap-4 flex-1 justify-center items-center">
             <p className="text-greyText text-lg text-center">
-              No games in watchlist
+              Brak gier na liście życzeń
             </p>
           </div>
         )}

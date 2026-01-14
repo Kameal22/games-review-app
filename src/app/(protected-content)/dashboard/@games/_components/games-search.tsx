@@ -11,7 +11,7 @@ const GamesSearch: React.FC<GamesSearchProps> = ({
     <div className="flex flex-col gap-4  w-full">
       <input
         type="text"
-        placeholder="Search for games..."
+        placeholder="Szukaj gier..."
         value={searchTerm}
         onChange={(e) => onSearchChange(e.target.value)}
         className="rounded-xl p-3 w-full max-w-md bg-lightGray outline-none caret-customWhite focus:bg-lightGrayHover text-customWhite placeholder-greyText"

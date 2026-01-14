@@ -64,7 +64,7 @@ const Watchlist: React.FC<WatchlistProps> = ({ watchlist, onGameClick }) => {
           ))
         ) : (
           <div className="text-center py-4">
-            <p className="text-greyText text-sm">No games in watchlist</p>
+            <p className="text-greyText text-sm">Brak gier na liście życzeń</p>
           </div>
         )}
       </div>

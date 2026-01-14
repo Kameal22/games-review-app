@@ -23,7 +23,7 @@ const DashboardLayout = ({
     >
       {/* Mobile Sidebar Toggle */}
       <div className="lg:hidden flex justify-between items-center p-4 bg-darkGreyBackground rounded-xl">
-        <h1 className="text-customWhite text-xl font-semibold">Dashboard</h1>
+        <h1 className="text-customWhite text-xl font-semibold">Panel</h1>
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className="p-2 bg-lightGray rounded-lg"
@@ -39,7 +39,9 @@ const DashboardLayout = ({
       </div>
 
       {/* Sidebar */}
-      <Suspense fallback={<p className="text-customWhite">Loading User..</p>}>
+      <Suspense
+        fallback={<p className="text-customWhite">Ładowanie użytkownika...</p>}
+      >
         <div
           className={`
             ${sidebarOpen ? "block" : "hidden"} 
@@ -58,7 +60,7 @@ const DashboardLayout = ({
       </Suspense>
 
       {/* Main Content */}
-      <Suspense fallback={<p className="text-customWhite">Loading..</p>}>
+      <Suspense fallback={<p className="text-customWhite">Ładowanie...</p>}>
         {activeTab === "reviews" && (
           <div className="flex-grow h-auto lg:h-full">{reviews}</div>
         )}

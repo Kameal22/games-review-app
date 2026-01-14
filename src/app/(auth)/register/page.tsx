@@ -2,9 +2,9 @@ import { Metadata } from "next";
 import RegisterForm from "./register-form";
 
 export const metadata: Metadata = {
-  title: "Sign Up - Reviewslike",
+  title: "Rejestracja - Reviewslike",
   description:
-    "Join Reviewslike to review games, create wishlists, and discover your next favorite game through community insights.",
+    "Dołącz do Reviewslike, aby recenzować gry, tworzyć listy życzeń i odkrywać swoją następną ulubioną grę dzięki przemyśleniom społeczności.",
 };
 
 const Register: React.FC = () => {
@@ -16,42 +16,45 @@ const Register: React.FC = () => {
       {/* Website Description Section */}
       <div className="text-center max-w-2xl mb-4">
         <h1 className="text-4xl md:text-5xl font-bold text-customWhite mb-6">
-          Welcome to Reviewslike
+          Witaj w Reviewslike
         </h1>
         <div className="space-y-4 text-customWhite/90 text-lg md:text-xl">
-          <p>
-            Your ultimate destination for{" "}
-            <span className="text-customWhite font-semibold">game reviews</span>{" "}
-            and
+          {/* <p>
+            Miejsce na{" "}
+            <span className="text-customWhite font-semibold">
+              recenzje gier
+            </span>{" "}
+            i
             <span className="text-customWhite font-semibold">
               {" "}
-              gaming insights
+              gamingowe przemyślenia
             </span>
             .
-          </p>
+          </p> */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
             <div className="bg-darkGreyBackground/50 p-4 rounded-xl">
               <h3 className="text-customWhite text-lg font-semibold mb-2">
-                📝 Write Reviews
+                📝 Pisz recenzje
               </h3>
               <p className="text-sm text-customWhite/80">
-                Share your thoughts and experiences with the gaming community
+                Dziel się swoimi przemyśleniami i doświadczeniami ze
+                społecznością graczy
               </p>
             </div>
             <div className="bg-darkGreyBackground/50 p-4 rounded-xl">
               <h3 className="text-customWhite font-semibold mb-2 text-lg">
-                ❤️ Wishlist Games
+                ❤️ Lista życzeń
               </h3>
               <p className="text-sm text-customWhite/80">
-                Keep track of games you want to play and review later
+                Śledź gry, które chcesz zagrać i zrecenzować później
               </p>
             </div>
             <div className="bg-darkGreyBackground/50 p-4 rounded-xl">
               <h3 className="text-customWhite font-semibold mb-2 text-lg">
-                🎮 Discover
+                🎮 Odkrywaj
               </h3>
               <p className="text-sm text-customWhite/80">
-                Find your next favorite game through community reviews
+                Znajdź swoją następną ulubioną grę dzięki recenzjom społeczności
               </p>
             </div>
           </div>

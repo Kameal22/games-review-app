@@ -21,7 +21,7 @@ export const fetchBestReviews = async (category: string) => {
     
     return response.data;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch best reviews';
+    const errorMessage = error instanceof Error ? error.message : 'Nie udało się pobrać najlepszych recenzji';
     throw new Error(errorMessage);
   }
 };

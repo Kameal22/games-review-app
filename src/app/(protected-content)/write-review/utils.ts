@@ -20,7 +20,7 @@ export const saveReview = async (review: CreateReviewData) => {
     const token = getTokenFromCookie();
     
     if (!token) {
-      throw new Error('No authentication token found');
+      throw new Error('Nie znaleziono tokenu uwierzytelniającego');
     }
     
     console.log("Sending review data:", review);
@@ -38,12 +38,12 @@ export const saveReview = async (review: CreateReviewData) => {
   } catch (error) {
     console.error("Review submission error:", error);
     
-    let errorMessage = 'Failed to save review';
+    let errorMessage = 'Nie udało się zapisać recenzji';
     if (axios.isAxiosError(error)) {
       if (error.response?.data?.message) {
         errorMessage = error.response.data.message;
       } else if (error.response?.data?.issues) {
-        errorMessage = `Validation error: ${error.response.data.issues.map((issue: { message: string }) => issue.message).join(', ')}`;
+        errorMessage = `Błąd walidacji: ${error.response.data.issues.map((issue: { message: string }) => issue.message).join(', ')}`;
       } else {
         errorMessage = error.response?.statusText || error.message;
       }
@@ -61,7 +61,7 @@ export const checkIfGameIsReviewed = async (gameId: string) => {
     const token = getTokenFromCookie();
 
     if (!token) {
-      throw new Error('No authentication token found');
+      throw new Error('Nie znaleziono tokenu uwierzytelniającego');
     }
 
     const response = await axios.get(`https://games-review-api.onrender.com/api/reviews/check-exists/${gameId}`, {
@@ -73,7 +73,7 @@ export const checkIfGameIsReviewed = async (gameId: string) => {
 
     return response.data;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to check if game is reviewed';
+    const errorMessage = error instanceof Error ? error.message : 'Nie udało się sprawdzić, czy gra została zrecenzowana';
     throw new Error(errorMessage);
   }
 };

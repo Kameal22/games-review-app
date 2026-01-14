@@ -30,7 +30,7 @@ const Pagination: React.FC<PaginationProps> = ({
         onClick={handlePrevClick}
         disabled={currentPage === 1}
       >
-        Prev
+        Poprzednia
       </button>
 
       {/* Show limited page numbers on mobile */}
@@ -85,7 +85,7 @@ const Pagination: React.FC<PaginationProps> = ({
         onClick={handleNextClick}
         disabled={currentPage === totalPages}
       >
-        Next
+        Następna
       </button>
     </div>
   );

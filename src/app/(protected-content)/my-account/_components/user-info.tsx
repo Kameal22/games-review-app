@@ -31,8 +31,8 @@ const UserInfo: React.FC<{ data: User }> = ({ data }) => {
       await queryClient.invalidateQueries({ queryKey: ["userData"] });
       addToast({
         type: "success",
-        title: "Bio updated",
-        message: "Your bio has been updated successfully",
+        title: "Biografia zaktualizowana",
+        message: "Twoja biografia została pomyślnie zaktualizowana",
       });
       setIsEditing(false);
     },
@@ -56,7 +56,7 @@ const UserInfo: React.FC<{ data: User }> = ({ data }) => {
       <div className="w-20 h-20 lg:w-24 lg:h-24 flex-shrink-0">
         <Image
           src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
-          alt="User Avatar"
+          alt="Avatar użytkownika"
           className="w-full h-full rounded-full object-cover"
           width={96}
           height={96}
@@ -75,7 +75,7 @@ const UserInfo: React.FC<{ data: User }> = ({ data }) => {
                 value={bio}
                 onChange={handleBioChange}
                 onBlur={handleBioBlur}
-                placeholder="Tell us about yourself..."
+                placeholder="Opowiedz nam o sobie..."
                 className="w-full max-w-full p-3 bg-darkGreyBackground border border-gray-600 rounded-lg text-customWhite placeholder-gray-400 focus:outline-none focus:border-blue-500 resize-none"
                 rows={2}
                 autoFocus
@@ -85,13 +85,13 @@ const UserInfo: React.FC<{ data: User }> = ({ data }) => {
                   onClick={handleCancel}
                   className="px-3 py-1 text-sm text-gray-400 hover:text-customWhite transition-colors duration-200"
                 >
-                  Cancel
+                  Anuluj
                 </button>
                 <button
                   onClick={handleSubmit}
                   className="px-4 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors duration-200"
                 >
-                  Save
+                  Zapisz
                 </button>
               </div>
             </div>
@@ -104,7 +104,7 @@ const UserInfo: React.FC<{ data: User }> = ({ data }) => {
                 <p className="text-sm text-customWhite text-center">{bio}</p>
               ) : (
                 <p className="text-sm text-gray-400 text-center">
-                  Click here to add your bio
+                  Kliknij tutaj, aby dodać swoją biografię
                 </p>
               )}
               <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">

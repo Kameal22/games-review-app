@@ -21,7 +21,7 @@ export const fetchGames = async () => {
     
     return response.data;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch games';
+    const errorMessage = error instanceof Error ? error.message : 'Nie udało się pobrać gier';
     throw new Error(errorMessage);
   }
 };
@@ -57,7 +57,7 @@ export const addToWatchlist = async (gameId: string) => {
     const token = getTokenFromCookie();
     
     if (!token) {
-      throw new Error('No authentication token found');
+      throw new Error('Nie znaleziono tokenu uwierzytelniającego');
     }
     
     const response = await axios.post("https://games-review-api.onrender.com/api/watchlist/", {
@@ -74,7 +74,7 @@ export const addToWatchlist = async (gameId: string) => {
     
     return response.data;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to add to watchlist';
+    const errorMessage = error instanceof Error ? error.message : 'Nie udało się dodać do listy życzeń';
     throw new Error(errorMessage);
   } finally {
   }
@@ -86,7 +86,7 @@ export const removeFromWatchlist = async (gameId: string) => {
     const token = getTokenFromCookie();
     
     if (!token) {
-      throw new Error('No authentication token found');
+      throw new Error('Nie znaleziono tokenu uwierzytelniającego');
     }
     
     const response = await axios.delete(`https://games-review-api.onrender.com/api/watchlist/${gameId}`, {
@@ -98,7 +98,7 @@ export const removeFromWatchlist = async (gameId: string) => {
     
     return response.data;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to remove from watchlist';
+    const errorMessage = error instanceof Error ? error.message : 'Nie udało się usunąć z listy życzeń';
     throw new Error(errorMessage);
   }
 };  

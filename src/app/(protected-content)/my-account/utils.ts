@@ -8,7 +8,7 @@ export const fetchUserReviews = async () => {
     const token = getTokenFromCookie();
     
     if (!token) {
-      throw new Error('No authentication token found');
+      throw new Error('Nie znaleziono tokenu uwierzytelniającego');
     }
     
     const response = await axios.get("https://games-review-api.onrender.com/api/reviews/me", {
@@ -20,7 +20,7 @@ export const fetchUserReviews = async () => {
     
     return response.data;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch user reviews';
+    const errorMessage = error instanceof Error ? error.message : 'Nie udało się pobrać recenzji użytkownika';
     throw new Error(errorMessage);
   }
 };
@@ -32,7 +32,7 @@ export const fetchMyUserData = async () => {
     const token = getTokenFromCookie();
     
     if (!token) {
-      throw new Error('No authentication token found');
+      throw new Error('Nie znaleziono tokenu uwierzytelniającego');
     }
     
     const response = await axios.get(`https://games-review-api.onrender.com/api/profile/`, {
@@ -44,7 +44,7 @@ export const fetchMyUserData = async () => {
     
     return response.data;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch user data';
+    const errorMessage = error instanceof Error ? error.message : 'Nie udało się pobrać danych użytkownika';
     throw new Error(errorMessage);
   }
 };
@@ -53,7 +53,7 @@ export const handleUpdateBio = async (bio: string) => {
   try {
     const token = getTokenFromCookie();
     if (!token) {
-      throw new Error('No authentication token found');
+      throw new Error('Nie znaleziono tokenu uwierzytelniającego');
     }
 
     const response = await axios.put(`https://games-review-api.onrender.com/api/profile/bio`, {
@@ -66,7 +66,7 @@ export const handleUpdateBio = async (bio: string) => {
     });
     return response.data;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to update bio';
+    const errorMessage = error instanceof Error ? error.message : 'Nie udało się zaktualizować bio';
     throw new Error(errorMessage);
   }
 };
@@ -78,7 +78,7 @@ export const fetchUserFollowing = async () => {
     const token = getTokenFromCookie();
     
     if (!token) {
-      throw new Error('No authentication token found');
+      throw new Error('Nie znaleziono tokenu uwierzytelniającego');
     }
     
     const response = await axios.get(`https://games-review-api.onrender.com/api/follow/following`, {
@@ -90,7 +90,7 @@ export const fetchUserFollowing = async () => {
     
     return response.data;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch user data';
+    const errorMessage = error instanceof Error ? error.message : 'Nie udało się pobrać danych użytkownika';
     throw new Error(errorMessage);
   }
 };
@@ -101,7 +101,7 @@ export const unfollowUser = async (userId: string) => {
     const token = getTokenFromCookie();
     
     if (!token) {
-      throw new Error('No authentication token found');
+      throw new Error('Nie znaleziono tokenu uwierzytelniającego');
     }
     
     const response = await axios.delete(
@@ -117,10 +117,10 @@ export const unfollowUser = async (userId: string) => {
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || error.message || 'Failed to unfollow user';
+      const errorMessage = error.response?.data?.message || error.message || 'Nie udało się przestać obserwować użytkownika';
       throw new Error(errorMessage);
     }
-    const errorMessage = error instanceof Error ? error.message : 'Failed to unfollow user';
+    const errorMessage = error instanceof Error ? error.message : 'Nie udało się przestać obserwować użytkownika';
     throw new Error(errorMessage);
   }
 };
@@ -131,7 +131,7 @@ export const deleteReview = async (reviewId: string) => {
     const token = getTokenFromCookie();
     
     if (!token) {
-      throw new Error('No authentication token found');
+      throw new Error('Nie znaleziono tokenu uwierzytelniającego');
     }
     
     const response = await axios.delete(
@@ -147,10 +147,10 @@ export const deleteReview = async (reviewId: string) => {
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || error.message || 'Failed to delete review';
+      const errorMessage = error.response?.data?.message || error.message || 'Nie udało się usunąć recenzji';
       throw new Error(errorMessage);
     }
-    const errorMessage = error instanceof Error ? error.message : 'Failed to delete review';
+    const errorMessage = error instanceof Error ? error.message : 'Nie udało się usunąć recenzji';
     throw new Error(errorMessage);
   }
 };
@@ -161,7 +161,7 @@ export const updateReviewText = async (reviewId: string, text: string) => {
     const token = getTokenFromCookie();
     
     if (!token) {
-      throw new Error('No authentication token found');
+      throw new Error('Nie znaleziono tokenu uwierzytelniającego');
     }
     
     const response = await axios.patch(
@@ -178,10 +178,10 @@ export const updateReviewText = async (reviewId: string, text: string) => {
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || error.message || 'Failed to update review';
+      const errorMessage = error.response?.data?.message || error.message || 'Nie udało się zaktualizować recenzji';
       throw new Error(errorMessage);
     }
-    const errorMessage = error instanceof Error ? error.message : 'Failed to update review';
+    const errorMessage = error instanceof Error ? error.message : 'Nie udało się zaktualizować recenzji';
     throw new Error(errorMessage);
   }
 };

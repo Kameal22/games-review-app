@@ -6,7 +6,9 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
       style={{ minHeight: "calc(100vh - 7rem)" }}
       className="flex bg-darkBackground gap-2 p-2"
     >
-      <Suspense fallback={<p className="text-customWhite">Loading Data..</p>}>
+      <Suspense
+        fallback={<p className="text-customWhite">Ładowanie danych...</p>}
+      >
         <div className="flex-grow h-auto lg:h-full">{children}</div>
       </Suspense>
     </div>

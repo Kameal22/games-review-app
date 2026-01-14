@@ -33,8 +33,8 @@ const SingleGame: React.FC<Props> = ({ data, watchlist }) => {
       router.push("/login");
       addToast({
         type: "info",
-        title: "Login Required",
-        message: "Please log in to add games to your watchlist",
+        title: "Wymagane logowanie",
+        message: "Zaloguj się, aby dodać gry do listy życzeń",
       });
       return;
     }
@@ -44,15 +44,15 @@ const SingleGame: React.FC<Props> = ({ data, watchlist }) => {
         await removeFromWatchlist(data._id);
         addToast({
           type: "success",
-          title: "Removed from watchlist",
-          message: `${data.title} has been removed from your watchlist`,
+          title: "Usunięto z listy życzeń",
+          message: `${data.title} zostało usunięte z Twojej listy życzeń`,
         });
       } else {
         await addToWatchlist(data._id);
         addToast({
           type: "success",
-          title: "Added to watchlist",
-          message: `${data.title} has been added to your watchlist`,
+          title: "Dodano do listy życzeń",
+          message: `${data.title} zostało dodane do Twojej listy życzeń`,
         });
       }
 
@@ -62,10 +62,10 @@ const SingleGame: React.FC<Props> = ({ data, watchlist }) => {
       console.log(error);
       addToast({
         type: "error",
-        title: "Error",
+        title: "Błąd",
         message: isInWatchlist
-          ? "Failed to remove from watchlist"
-          : "Failed to add to watchlist",
+          ? "Nie udało się usunąć z listy życzeń"
+          : "Nie udało się dodać do listy życzeń",
       });
     }
   };
@@ -75,8 +75,8 @@ const SingleGame: React.FC<Props> = ({ data, watchlist }) => {
       router.push("/login");
       addToast({
         type: "info",
-        title: "Login Required",
-        message: "Please log in to write a review",
+        title: "Wymagane logowanie",
+        message: "Zaloguj się, aby napisać recenzję",
       });
       return;
     }
@@ -110,9 +110,9 @@ const SingleGame: React.FC<Props> = ({ data, watchlist }) => {
           <button
             onClick={handleWriteReview}
             className="flex-shrink-0 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 text-sm font-medium"
-            title="Write a review for this game"
+            title="Napisz recenzję dla tej gry"
           >
-            Write a review
+            Napisz recenzję
           </button>
 
           {isAuthenticated && (
@@ -120,7 +120,7 @@ const SingleGame: React.FC<Props> = ({ data, watchlist }) => {
               onClick={toggleWatchlist}
               className="flex-shrink-0 p-2 rounded-lg hover:bg-gray-600 transition-colors duration-200"
               title={
-                isInWatchlist ? "Remove from watchlist" : "Add to watchlist"
+                isInWatchlist ? "Usuń z listy życzeń" : "Dodaj do listy życzeń"
               }
             >
               <svg
