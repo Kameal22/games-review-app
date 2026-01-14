@@ -24,12 +24,15 @@ interface Props {
 const SingleReview: React.FC<Props> = ({ data }) => {
   const router = useRouter();
 
+  const handleReadReview = () => {
+    if (data.reviewId) {
+      router.push(`/review/${data.reviewId}`);
+    }
+  };
+
   return (
     <div className="bg-lightGray rounded-xl p-3 flex flex-col sm:flex-row items-start sm:items-center w-full hover:bg-lightGrayHover gap-3">
-      <div
-        className="flex-shrink-0 cursor-pointer"
-        onClick={() => router.push(`/review/${data.reviewId}`)}
-      >
+      <div className="flex-shrink-0">
         <Image
           src={data.image}
           alt={data.name}
@@ -40,10 +43,7 @@ const SingleReview: React.FC<Props> = ({ data }) => {
       </div>
 
       <div className="flex flex-col sm:flex-row flex-1 gap-2 sm:gap-4 min-w-0 w-full">
-        <div
-          className="flex-1 min-w-0 max-w-full cursor-pointer"
-          onClick={() => router.push(`/review/${data.reviewId}`)}
-        >
+        <div className="flex-1 min-w-0 max-w-full">
           <p className="text-customWhite text-lg lg:text-xl font-medium truncate max-w-full">
             {data.name}
           </p>
@@ -53,10 +53,7 @@ const SingleReview: React.FC<Props> = ({ data }) => {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-base items-start sm:items-center">
-          <div
-            className="flex flex-col sm:flex-row gap-2 sm:gap-4 cursor-pointer"
-            onClick={() => router.push(`/review/${data.reviewId}`)}
-          >
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
             <p className="text-customWhite">
               <span className="sm:hidden">Genre: </span>
               {data.genre}
@@ -81,14 +78,23 @@ const SingleReview: React.FC<Props> = ({ data }) => {
               <span className="font-medium">{data.user}</span>
             </p>
           </div>
-          {data.reviewId && (
-            <LikeDislike
-              reviewId={data.reviewId}
-              initialLikes={data.likes}
-              initialDislikes={data.dislikes}
-              compact={true}
-            />
-          )}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {data.reviewId && (
+              <LikeDislike
+                reviewId={data.reviewId}
+                initialLikes={data.likes}
+                initialDislikes={data.dislikes}
+                compact={true}
+              />
+            )}
+            <button
+              onClick={handleReadReview}
+              className="flex-shrink-0 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 text-sm font-medium"
+              title="Read full review"
+            >
+              Read Review
+            </button>
+          </div>
         </div>
       </div>
     </div>
