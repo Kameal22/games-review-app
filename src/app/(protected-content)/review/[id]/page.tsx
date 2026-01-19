@@ -210,11 +210,11 @@ const ReviewPage: React.FC = () => {
       <div className="bg-darkGreyBackground rounded-xl p-4 w-full h-full flex flex-col gap-4">
         <div className="bg-lightGray rounded-xl p-4 w-full flex-1 flex flex-col gap-4">
           {/* Header */}
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 min-w-0">
+            <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-shrink">
               <button
                 onClick={() => router.push("/dashboard")}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-2 sm:px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-1 sm:gap-2 flex-shrink-0 text-sm sm:text-base"
               >
                 <svg
                   className="w-4 h-4"
@@ -230,17 +230,17 @@ const ReviewPage: React.FC = () => {
                     d="M10 19l-7-7m0 0l7-7m-7 7h18"
                   />
                 </svg>
-                Powrót
+                <span className="hidden sm:inline">Powrót</span>
               </button>
-              <h1 className="text-customWhite text-lg lg:text-xl">
+              <h1 className="text-customWhite text-base sm:text-lg lg:text-xl truncate min-w-0">
                 Szczegóły recenzji
               </h1>
             </div>
             {isOwner && !isEditing && (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-shrink-0">
                 <button
                   onClick={handleEditClick}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-2 sm:px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
                   title="Edytuj recenzję"
                 >
                   <svg
@@ -257,12 +257,12 @@ const ReviewPage: React.FC = () => {
                       d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                     />
                   </svg>
-                  Edytuj
+                  <span className="hidden sm:inline">Edytuj</span>
                 </button>
                 <button
                   onClick={() => setShowDeleteModal(true)}
                   disabled={deleteMutation.isPending}
-                  className="bg-red-600 hover:bg-red-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2"
+                  className="bg-red-600 hover:bg-red-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-2 sm:px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
                   title="Usuń recenzję"
                 >
                   <svg
@@ -279,7 +279,7 @@ const ReviewPage: React.FC = () => {
                       d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                     />
                   </svg>
-                  Usuń
+                  <span className="hidden sm:inline">Usuń</span>
                 </button>
               </div>
             )}
