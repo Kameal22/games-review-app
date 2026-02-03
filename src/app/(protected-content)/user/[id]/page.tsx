@@ -9,9 +9,9 @@ import {
 } from "../utils";
 import Image from "next/image";
 import { getScoreColor } from "@/app/global-utils/get-score-color";
-import { getScoreBackground as getScoreBg } from "@/app/global-utils/get-score-background";
 import { Review } from "@/app/types/review";
 import Watchlist from "./_components/user-utils/watchlist/watchlist";
+import Insights from "@/app/(protected-content)/my-account/_components/user-utils/insights";
 import { useToastStore } from "@/stores/toast-store";
 import { useUserStore } from "@/stores/user-store";
 
@@ -262,6 +262,39 @@ const User: React.FC = () => {
 
   const { user, insights, reviews, watchlist } = userData;
 
+  // Compute full insights from reviews (same shape as my-account)
+  const fullInsights = (() => {
+    const count = reviews.length;
+    if (count === 0) {
+      return {
+        averageFinalScore: insights.averageFinalScore ?? 0,
+        reviewCount: 0,
+        highestScore: 0,
+        lowestScore: 0,
+        mostReviewedGenre: "—",
+      };
+    }
+    const scores = reviews.map((r) => r.finalScore);
+    const genreCounts: Record<string, number> = {};
+    reviews.forEach((r) => {
+      (r.game.genres || []).forEach((g: string) => {
+        genreCounts[g] = (genreCounts[g] || 0) + 1;
+      });
+    });
+    const mostReviewedGenre =
+      Object.keys(genreCounts).length === 0
+        ? "—"
+        : Object.entries(genreCounts).sort((a, b) => b[1] - a[1])[0][0];
+    return {
+      averageFinalScore:
+        insights.averageFinalScore ?? scores.reduce((a, b) => a + b, 0) / count,
+      reviewCount: count,
+      highestScore: Math.max(...scores),
+      lowestScore: Math.min(...scores),
+      mostReviewedGenre,
+    };
+  })();
+
   return (
     <div className="bg-darkGreyBackground rounded-xl p-6 w-full h-full flex flex-col gap-6">
       {/* Header with back button */}
@@ -428,28 +461,7 @@ const User: React.FC = () => {
 
           {/* Insights Section */}
           <div className="bg-lightGray rounded-xl p-6">
-            <h3 className="text-lg font-bold text-customWhite mb-4">
-              Statystyki
-            </h3>
-            <div className="space-y-4">
-              <div
-                className={`${getScoreBg(
-                  insights.averageFinalScore
-                )} rounded-lg p-4 text-center`}
-              >
-                <div className="text-2xl font-bold text-customWhite mb-1">
-                  {insights.averageFinalScore.toFixed(1)}
-                </div>
-                <div className="text-sm text-greyText">Średnia ocena</div>
-              </div>
-
-              <div className="bg-blue-500/20 border border-blue-500/30 rounded-lg p-4 text-center">
-                <div className="text-2xl font-bold text-customWhite mb-1">
-                  {insights.reviewCount}
-                </div>
-                <div className="text-sm text-greyText">Łącznie recenzji</div>
-              </div>
-            </div>
+            <Insights insights={fullInsights} />
           </div>
         </div>
       </div>
