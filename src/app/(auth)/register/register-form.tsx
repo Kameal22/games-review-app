@@ -55,7 +55,6 @@ const RegisterForm: React.FC = () => {
       router.push("/dashboard");
     },
     onError: async (error: Error) => {
-      console.log("Registration error:", error.message);
       addToast({
         type: "error",
         title: "Rejestracja nie powiodła się",

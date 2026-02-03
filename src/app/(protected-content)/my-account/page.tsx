@@ -14,7 +14,13 @@ import UserFollowers from "./_components/user-followers";
 
 type UserData = {
   user: UserType;
-  insights: { averageFinalScore: number; reviewCount: number };
+  insights: {
+    averageFinalScore: number;
+    reviewCount: number;
+    highestScore: number;
+    lowestScore: number;
+    mostReviewedGenre: string;
+  };
   reviews: Review[];
   watchlist: Watchlist[];
 };
@@ -36,7 +42,6 @@ const User: React.FC = () => {
     router.push("/dashboard");
   };
 
-  console.log(userFollowing, "userFollowing");
   return (
     <div className="bg-darkGreyBackground rounded-xl p-2 sm:p-4 w-full h-full flex flex-col gap-4 min-w-0 max-w-full overflow-x-hidden">
       {/* Header with back button */}

@@ -23,7 +23,6 @@ export const saveReview = async (review: CreateReviewData) => {
       throw new Error('Nie znaleziono tokenu uwierzytelniającego');
     }
     
-    console.log("Sending review data:", review);
     
     const response = await axios.post("https://games-review-api.onrender.com/api/reviews/", review, {
       headers: {
@@ -32,7 +31,6 @@ export const saveReview = async (review: CreateReviewData) => {
       },
     })
 
-    console.log("Review response:", response.data);
     
     return response.data;
   } catch (error) {

@@ -11,7 +11,7 @@ import { getScoreColor } from "@/app/global-utils/get-score-color";
 import { useUserStore } from "@/stores/user-store";
 
 const UserMenu: React.FC = () => {
-  const [showReviewedGames, setShowReviewedGames] = useState(false);
+  const [showReviewedGames, setShowReviewedGames] = useState(true);
   const { activeTab, setActiveTab, setSidebarOpen } = useDashboardStore();
   const { isAuthenticated } = useUserStore();
   const { data: userReviews = [] } = useQuery<Review[]>({
