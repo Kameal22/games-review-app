@@ -13,14 +13,17 @@ const Pagination: React.FC<PaginationProps> = ({
 }) => {
   const handlePrevClick = () => {
     if (currentPage > 1) onPageChange(currentPage - 1);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleNextClick = () => {
     if (currentPage < totalPages) onPageChange(currentPage + 1);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handlePageClick = (page: number) => {
     onPageChange(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
