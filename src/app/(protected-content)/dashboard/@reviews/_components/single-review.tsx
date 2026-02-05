@@ -31,34 +31,34 @@ const SingleReview: React.FC<Props> = ({ data }) => {
   };
 
   return (
-    <div className="bg-lightGray rounded-xl p-3 flex flex-col sm:flex-row items-start sm:items-center w-full hover:bg-lightGrayHover gap-3">
-      <div className="flex-shrink-0">
+    <div className="bg-lightGray rounded-xl p-3 flex flex-col md:flex-row items-start md:items-center w-full min-w-0 hover:bg-lightGrayHover gap-3">
+      <div className="flex-shrink-0 w-full sm:w-auto">
         <Image
           src={data.image}
           alt={data.name}
-          className="w-full sm:w-32 h-32 sm:h-20 object-cover rounded-lg"
+          className="w-full sm:w-32 h-32 sm:h-20 object-cover rounded-lg max-w-[8rem] sm:max-w-none"
           width={128}
           height={128}
         />
       </div>
 
-      <div className="flex flex-col sm:flex-row flex-1 gap-2 sm:gap-4 min-w-0 w-full">
-        <div className="flex-1 min-w-0 max-w-full">
-          <p className="text-customWhite text-lg lg:text-xl font-medium truncate max-w-full">
+      <div className="flex flex-col md:flex-row flex-1 gap-2 md:gap-4 min-w-0 w-full">
+        <div className="flex-1 min-w-0">
+          <p className="text-customWhite text-lg lg:text-xl font-medium truncate">
             {data.name}
           </p>
-          <p className="text-greyText text-base hidden sm:block truncate">
+          <p className="text-greyText text-base hidden md:block truncate">
             {data.genre}
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-base items-start sm:items-center">
-          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
-            <p className="text-customWhite">
-              <span className="sm:hidden">Gatunek: </span>
+        <div className="flex flex-col md:flex-row gap-2 md:gap-4 text-base items-start md:items-center flex-wrap min-w-0">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-2 md:gap-4 min-w-0">
+            <p className="text-customWhite min-w-0 truncate max-w-full">
+              <span className="md:hidden">Gatunek: </span>
               {data.genre}
             </p>
-            <p className="text-customWhite">
+            <p className="text-customWhite flex-shrink-0">
               Ocena:{" "}
               <span
                 className={`font-bold text-lg ${getScoreColor(data.rating)}`}
@@ -71,14 +71,14 @@ const SingleReview: React.FC<Props> = ({ data }) => {
                 e.stopPropagation();
                 router.push(`/user/${data.userName}`);
               }}
-              className="text-blue-400 truncate hover:text-blue-300 transition-colors duration-200 cursor-pointer underline decoration-blue-400 hover:decoration-blue-300"
+              className="text-blue-400 truncate max-w-full hover:text-blue-300 transition-colors duration-200 cursor-pointer underline decoration-blue-400 hover:decoration-blue-300"
             >
-              <span className="sm:hidden">Przez: </span>
-              <span className="hidden sm:inline">Zrecenzowane przez: </span>
+              <span className="md:hidden">Przez: </span>
+              <span className="hidden md:inline">Zrecenzowane przez: </span>
               <span className="font-medium">{data.user}</span>
             </p>
           </div>
-          <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="flex items-center gap-2 flex-shrink-0 flex-wrap">
             {data.reviewId && (
               <LikeDislike
                 reviewId={data.reviewId}

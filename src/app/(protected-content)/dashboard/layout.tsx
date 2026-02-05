@@ -19,7 +19,7 @@ const DashboardLayout = ({
   return (
     <div
       style={{ minHeight: "calc(100vh - 7rem)" }}
-      className="flex flex-col lg:flex-row bg-darkBackground gap-2 p-2"
+      className="flex flex-col lg:flex-row bg-darkBackground gap-2 p-2 min-w-0 overflow-x-hidden"
     >
       {/* Mobile Sidebar Toggle */}
       <div className="lg:hidden flex justify-between items-center p-4 bg-darkGreyBackground rounded-xl">
@@ -53,6 +53,7 @@ const DashboardLayout = ({
             bg-darkGreyBackground 
             rounded-xl 
             lg:min-w-80
+            min-w-0
           `}
         >
           {user}
@@ -62,13 +63,19 @@ const DashboardLayout = ({
       {/* Main Content */}
       <Suspense fallback={<p className="text-customWhite">Ładowanie...</p>}>
         {activeTab === "reviews" && (
-          <div className="flex-grow h-auto lg:h-full">{reviews}</div>
+          <div className="flex-grow h-auto lg:h-full min-w-0 overflow-x-hidden">
+            {reviews}
+          </div>
         )}
         {activeTab === "best-reviews" && (
-          <div className="flex-grow h-auto lg:h-full">{best}</div>
+          <div className="flex-grow h-auto lg:h-full min-w-0 overflow-x-hidden">
+            {best}
+          </div>
         )}
         {activeTab === "games" && (
-          <div className="flex-grow h-auto lg:h-full">{games}</div>
+          <div className="flex-grow h-auto lg:h-full min-w-0 overflow-x-hidden">
+            {games}
+          </div>
         )}
       </Suspense>
     </div>

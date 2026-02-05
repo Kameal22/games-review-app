@@ -8,7 +8,7 @@ const GamesSearch: React.FC<GamesSearchProps> = ({
   onSearchChange,
 }) => {
   return (
-    <div className="flex flex-col gap-4  w-full">
+    <div className="flex flex-col gap-4 w-full min-w-0">
       <input
         type="text"
         placeholder="Szukaj gier..."

@@ -85,28 +85,28 @@ const SingleGame: React.FC<Props> = ({ data, watchlist }) => {
   };
 
   return (
-    <div className="bg-lightGray rounded-xl p-3 flex flex-col sm:flex-row items-start sm:items-center w-full hover:bg-lightGrayHover transition-colors duration-200 gap-3">
-      <div className="flex-shrink-0">
+    <div className="bg-lightGray rounded-xl p-3 flex flex-col md:flex-row items-start md:items-center w-full min-w-0 hover:bg-lightGrayHover transition-colors duration-200 gap-3">
+      <div className="flex-shrink-0 w-full sm:w-auto">
         <Image
           src={data.coverImageUrl}
           alt={data.title}
           width={128}
           height={128}
-          className="w-full sm:w-32 h-32 sm:h-20 object-cover rounded-lg"
+          className="w-full sm:w-32 h-32 sm:h-20 object-cover rounded-lg max-w-[8rem] sm:max-w-none"
         />
       </div>
 
-      <div className="flex flex-col sm:flex-row flex-1 gap-2 sm:gap-4 min-w-0 w-full">
-        <div className="flex-1 min-w-0 max-w-full">
-          <p className="text-customWhite text-base lg:text-lg font-medium truncate max-w-full">
+      <div className="flex flex-col md:flex-row flex-1 gap-2 md:gap-4 min-w-0 w-full">
+        <div className="flex-1 min-w-0">
+          <p className="text-customWhite text-base lg:text-lg font-medium truncate">
             {data.title}
           </p>
-          <p className="text-greyText text-sm hidden sm:block truncate">
+          <p className="text-greyText text-sm hidden md:block truncate">
             {data.genres.join(", ")}
           </p>
         </div>
 
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="flex items-center gap-2 flex-shrink-0 flex-wrap min-w-0">
           <button
             onClick={handleWriteReview}
             className="flex-shrink-0 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 text-sm font-medium"

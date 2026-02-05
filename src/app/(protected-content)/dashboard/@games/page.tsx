@@ -72,14 +72,14 @@ const GamesList: React.FC = () => {
   };
 
   return (
-    <div className="bg-darkGreyBackground rounded-xl p-4 w-full h-full flex flex-col gap-4">
-      <div className="flex flex-col gap-2">
-        <h2 className="text-customWhite text-xl lg:text-2xl font-semibold">
+    <div className="bg-darkGreyBackground rounded-xl p-4 w-full h-full flex flex-col gap-4 min-w-0 overflow-x-hidden">
+      <div className="flex flex-col gap-2 min-w-0">
+        <h2 className="text-customWhite text-xl lg:text-2xl font-semibold truncate min-w-0">
           {searchTerm
             ? `Wyniki wyszukiwania dla "${searchTerm}"`
             : "Przeglądaj gry"}
         </h2>
-        <p className="text-greyText text-base lg:text-lg leading-relaxed">
+        <p className="text-greyText text-base lg:text-lg leading-relaxed min-w-0">
           {searchTerm
             ? "Odkryj gry pasujące do Twojego wyszukiwania"
             : "Przeglądaj naszą obszerną kolekcję gier ze wszystkich gatunków i platform. Znajdź swój następny ulubiony tytuł i dodaj gry do swojej listy życzeń."}
@@ -94,7 +94,7 @@ const GamesList: React.FC = () => {
         }}
       />
 
-      <div className="flex flex-col gap-4 flex-1">
+      <div className="flex flex-col gap-4 flex-1 min-w-0">
         {isLoading ? (
           <div className="flex flex-col gap-4 flex-1 justify-center items-center">
             <p className="text-customWhite text-lg text-center">

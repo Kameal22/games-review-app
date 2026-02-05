@@ -35,17 +35,17 @@ const BestReviewsList: React.FC = () => {
   });
 
   return (
-    <div className="bg-darkGreyBackground rounded-xl p-4 w-full h-full flex flex-col gap-4">
-      <div className="flex flex-col gap-2">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-          <h2 className="text-customWhite text-xl lg:text-2xl font-semibold">
+    <div className="bg-darkGreyBackground rounded-xl p-4 w-full h-full flex flex-col gap-4 min-w-0 overflow-x-hidden">
+      <div className="flex flex-col gap-2 min-w-0">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4 min-w-0">
+          <h2 className="text-customWhite text-xl lg:text-2xl font-semibold truncate min-w-0">
             {categories.find((category) => category.value === selectedCategory)
               ?.label || "Najlepsze recenzje"}
           </h2>
 
           <label
             htmlFor="category-select"
-            className="text-greyText text-base ml-8"
+            className="text-greyText text-base sm:ml-8 flex-shrink-0"
           >
             Sortuj według:
           </label>
@@ -66,13 +66,13 @@ const BestReviewsList: React.FC = () => {
             ))}
           </select>
         </div>
-        <p className="text-greyText text-base lg:text-lg leading-relaxed">
+        <p className="text-greyText text-base lg:text-lg leading-relaxed min-w-0">
           Odkryj najlepiej oceniane gry w różnych kategoriach. Przeglądaj tytuły
           na podstawie rozgrywki, grafiki, fabuły i innych aspektów z recenzji
           naszej społeczności.
         </p>
       </div>
-      <div className="flex flex-col gap-4 flex-1">
+      <div className="flex flex-col gap-4 flex-1 min-w-0">
         {isLoading ? (
           <div className="flex flex-col gap-4 flex-1 justify-center items-center">
             <p className="text-customWhite text-lg text-center">

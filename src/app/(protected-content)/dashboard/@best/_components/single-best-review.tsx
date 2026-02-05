@@ -17,9 +17,9 @@ const SingleBestReview: React.FC<Props> = ({ data }) => {
   };
 
   return (
-    <div className="bg-lightGray rounded-xl p-3 flex flex-col sm:flex-row items-start sm:items-center w-full hover:bg-lightGrayHover gap-3">
+    <div className="bg-lightGray rounded-xl p-3 flex flex-col md:flex-row items-start md:items-center w-full min-w-0 hover:bg-lightGrayHover gap-3">
       <div
-        className="flex-shrink-0 cursor-pointer"
+        className="flex-shrink-0 w-full sm:w-auto cursor-pointer"
         onClick={() => router.push(`/review/${data._id}`)}
       >
         <Image
@@ -27,29 +27,29 @@ const SingleBestReview: React.FC<Props> = ({ data }) => {
           alt={data.game.title}
           width={128}
           height={128}
-          className="w-full sm:w-32 h-32 sm:h-20 object-cover rounded-lg"
+          className="w-full sm:w-32 h-32 sm:h-20 object-cover rounded-lg max-w-[8rem] sm:max-w-none"
         />
       </div>
 
-      <div className="flex flex-col sm:flex-row flex-1 gap-2 sm:gap-4 min-w-0 w-full">
+      <div className="flex flex-col md:flex-row flex-1 gap-2 md:gap-4 min-w-0 w-full">
         <div
-          className="flex-1 min-w-0 max-w-full cursor-pointer"
+          className="flex-1 min-w-0 cursor-pointer"
           onClick={() => router.push(`/review/${data._id}`)}
         >
-          <p className="text-customWhite text-base lg:text-lg font-medium truncate max-w-full">
+          <p className="text-customWhite text-base lg:text-lg font-medium truncate">
             {data.game.title}
           </p>
-          <p className="text-greyText text-sm hidden sm:block truncate">
+          <p className="text-greyText text-sm hidden md:block truncate">
             {data.game.genres.join(", ")}
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-base items-start sm:items-center">
+        <div className="flex flex-col md:flex-row gap-2 md:gap-4 text-base items-start md:items-center flex-wrap min-w-0">
           <div
-            className="flex flex-col sm:flex-row gap-2 sm:gap-4 cursor-pointer"
+            className="flex flex-col sm:flex-row flex-wrap gap-2 md:gap-4 min-w-0 cursor-pointer"
             onClick={() => router.push(`/review/${data._id}`)}
           >
-            <p className="text-customWhite">
+            <p className="text-customWhite flex-shrink-0">
               Ocena:{" "}
               <span
                 className={`font-bold text-lg ${getScoreColor(
@@ -65,14 +65,14 @@ const SingleBestReview: React.FC<Props> = ({ data }) => {
                 e.stopPropagation();
                 router.push(`/user/${data.user.displayName}`);
               }}
-              className="text-blue-400 truncate hover:text-blue-300 transition-colors duration-200 cursor-pointer underline decoration-blue-400 hover:decoration-blue-300"
+              className="text-blue-400 truncate max-w-full hover:text-blue-300 transition-colors duration-200 cursor-pointer underline decoration-blue-400 hover:decoration-blue-300"
             >
-              <span className="sm:hidden">Przez: </span>
-              <span className="hidden sm:inline">Zrecenzowane przez: </span>
+              <span className="md:hidden">Przez: </span>
+              <span className="hidden md:inline">Zrecenzowane przez: </span>
               <span className="font-medium">{data.user.displayName}</span>
             </p>
           </div>
-          <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="flex items-center gap-2 flex-shrink-0 flex-wrap">
             <LikeDislike
               reviewId={data._id}
               initialLikes={data.likes}

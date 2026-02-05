@@ -49,7 +49,7 @@ const ReviewsList: React.FC = () => {
   };
 
   return (
-    <div className="bg-darkGreyBackground rounded-xl p-4 w-full h-full flex flex-col gap-4">
+    <div className="bg-darkGreyBackground rounded-xl p-4 w-full h-full flex flex-col gap-4 min-w-0 overflow-x-hidden">
       <div className="flex flex-col gap-2">
         <h2 className="text-customWhite text-xl lg:text-2xl font-semibold">
           {searchTerm
