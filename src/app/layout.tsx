@@ -12,13 +12,43 @@ const poppins = Poppins({
   weight: ["200", "300", "400", "500", "600", "700"],
 });
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_APP_URL ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://reviewslike.pl");
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     absolute: "",
     default: "Home | Reviewslike",
     template: "%s | Reviewslike",
   },
-  description: "Reviewslike Homepage.",
+  description:
+    "Reviewslike – recenzje gier od społeczności. Pisz recenzje, przeglądaj gry i zarządzaj listą życzeń.",
+  openGraph: {
+    title: "Reviewslike – recenzje gier",
+    description:
+      "Reviewslike – recenzje gier od społeczności. Pisz recenzje, przeglądaj gry i zarządzaj listą życzeń.",
+    url: siteUrl,
+    siteName: "Reviewslike",
+    images: [
+      {
+        url: "/logo_white.png",
+        width: 512,
+        height: 512,
+        alt: "Reviewslike – recenzje gier",
+      },
+    ],
+    type: "website",
+    locale: "pl_PL",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Reviewslike – recenzje gier",
+    description:
+      "Reviewslike – recenzje gier od społeczności. Pisz recenzje, przeglądaj gry i zarządzaj listą życzeń.",
+    images: ["/logo_white.png"],
+  },
 };
 
 export default function RootLayout({
