@@ -118,22 +118,16 @@ const SingleGame: React.FC<Props> = ({ data, watchlist }) => {
           {isAuthenticated && (
             <button
               onClick={toggleWatchlist}
-              className="flex-shrink-0 p-2 rounded-lg hover:bg-gray-600 transition-colors duration-200"
+              className={`flex-shrink-0 px-3 py-2 rounded-lg transition-colors duration-200 text-sm font-medium ${
+                isInWatchlist
+                  ? "bg-red-500/20 text-red-400 hover:bg-red-500/30 border border-red-500/30"
+                  : "bg-lightGray hover:bg-lightGrayHover text-customWhite border border-gray-600"
+              }`}
               title={
                 isInWatchlist ? "Usuń z listy życzeń" : "Dodaj do listy życzeń"
               }
             >
-              <svg
-                className={`w-5 h-5 transition-colors duration-200 ${
-                  isInWatchlist
-                    ? "fill-red-500 text-red-500"
-                    : "fill-gray-400 text-gray-400 hover:fill-red-400 hover:text-red-400"
-                }`}
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-              </svg>
+              {isInWatchlist ? "Usuń z listy życzeń" : "Dodaj do listy życzeń"}
             </button>
           )}
         </div>
